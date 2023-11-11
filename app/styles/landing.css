@@ -1,7 +1,6 @@
 body {
     @apply bg-white;
 }
-
 #team {
     background-image: url('https://cdn.umsys.com.ua/landing/team.svg');
 }
@@ -66,17 +65,7 @@ footer .mobile-pages li {
 }
 
 @media (min-width: 1024px) {
-    header {
-        @apply h-24;
-    }
 
-    .icon {
-        @apply hidden;
-    }
-
-    header ul {
-        @apply inline-flex items-center justify-between;
-    }
 
     .task__item {
         @apply flex-col flex-wrap;
@@ -124,21 +113,6 @@ footer .mobile-pages li {
 }
 
 @media (max-width: 1024px) {
-    header {
-        @apply h-12 px-4;
-    }
-
-    header img {
-        @apply h-1/2 w-1/2;
-    }
-
-    header nav {
-        @apply absolute left-0 top-12 mr-4 w-full bg-white px-3 py-3;
-    }
-
-    header li {
-        @apply mb-2 ml-2;
-    }
 
     .task__item svg {
         @apply mx-auto;

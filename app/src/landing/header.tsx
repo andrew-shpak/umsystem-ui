@@ -37,32 +37,32 @@ export default function LandingHeader(props: {
     const {cdnUrl} = props;
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
     return (
-        <Navbar as={"header"} isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen} className="bg-white h-24">
-            <NavbarContent>
-                <NavbarBrand >
-                    <picture>
-                        <source
-                            src={`${cdnUrl}/landing/umsystem-logo.avif`}
-                            type="image/avif"
-                        />
-                        <source
-                            src={`${cdnUrl}/landing/umsystem-logo.webp`}
-                            type="image/webp"
-                        />
-                        <img
-                            loading="lazy"
-                            decoding="async"
-                            src={`${cdnUrl}/landing/umsystem-logo.svg`}
-                            alt="UMSystem header logo"
-                        />
-                    </picture>
-                </NavbarBrand>
-                <NavbarMenuToggle
-                    aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-                    className="sm:hidden">
-                </NavbarMenuToggle>
-            </NavbarContent>
-            <NavbarContent as="nav" className="hidden sm:flex" justify="end">
+        <Navbar isBordered isMenuOpen={isMenuOpen} onMenuOpenChange={setIsMenuOpen}
+                className="bg-white h-24"
+                maxWidth="2xl">
+            <NavbarBrand className="">
+                <picture>
+                    <source
+                        src={`${cdnUrl}/landing/umsystem-logo.avif`}
+                        type="image/avif"
+                    />
+                    <source
+                        src={`${cdnUrl}/landing/umsystem-logo.webp`}
+                        type="image/webp"
+                    />
+                    <img
+                        loading="lazy"
+                        decoding="async"
+                        src={`${cdnUrl}/landing/umsystem-logo.svg`}
+                        alt="UMSystem header logo"
+                    />
+                </picture>
+            </NavbarBrand>
+            <NavbarMenuToggle
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                className="md:hidden">
+            </NavbarMenuToggle>
+            <NavbarContent className="hidden md:flex" justify="end">
                 {pagesList.map(page => (
                     <NavbarItem
                         key={page.id}
