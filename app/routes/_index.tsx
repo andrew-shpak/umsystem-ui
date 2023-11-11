@@ -1,4 +1,4 @@
-import type { MetaFunction } from "@remix-run/node";
+import type {LoaderFunction, MetaFunction } from "@remix-run/node";
 
 export const meta: MetaFunction = () => {
   return [
@@ -7,6 +7,10 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export const loader: LoaderFunction = async ({request}) => {
+  const {headers} = request
+  return null;
+}
 export default function Index() {
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}>
