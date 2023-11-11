@@ -33,26 +33,25 @@ export const meta: MetaFunction = () => {
 
 export const loader: LoaderFunction = async ({request}) => {
     const {headers} = request
-    // const cookie = headers.get('cookie') as string
-    // console.log(environment(),"test")
-    // const res = await fetch(
-    //     `${environment().VITE_TARRIFS_SERVICE_BASE_URL}/${endpoints.tariffs}`,
-    //     {
-    //         headers: {
-    //             Accept: 'application/json',
-    //             cookie,
-    //         },
-    //         credentials: 'include',
-    //     },
-    // )
-    // if (res.status === 401) {
-    //     return redirect(`${routes.signIn}?redirect=${request.url}`)
-    // }
-    // if (res.status === 403) {
-    //     return redirect(routes.accessDenied)
-    // }
-    // return await res.json()
-    return null;
+    const cookie = headers.get('cookie') as string
+    console.log(environment(),"test")
+    const res = await fetch(
+        `${environment().TARRIFS_SERVICE_BASE_URL}/${endpoints.tariffs}`,
+        {
+            headers: {
+                Accept: 'application/json',
+                cookie,
+            },
+            credentials: 'include',
+        },
+    )
+    if (res.status === 401) {
+        return redirect(`${routes.signIn}?redirect=${request.url}`)
+    }
+    if (res.status === 403) {
+        return redirect(routes.accessDenied)
+    }
+    return await res.json()
 }
 
 type LoaderData = {
@@ -61,14 +60,14 @@ type LoaderData = {
 export default function LandingPage() {
     const response = useLoaderData<LoaderData>()
     const context = useOutletContext<ContextType>()
-    // const cdnUrl = context.environment.VITE_CDN_URL;
-    // const [form, fields] = useForm({
-    //     constraint: getFieldsetConstraint(orderSchema),
-    //     onValidate({formData}) {
-    //         return parse(formData, {schema: orderSchema});
-    //     },
-    //     shouldValidate: "onBlur",
-    // });
+    const cdnUrl = context.environment.CDN_URL;
+    const [form, fields] = useForm({
+        constraint: getFieldsetConstraint(orderSchema),
+        onValidate({formData}) {
+            return parse(formData, {schema: orderSchema});
+        },
+        shouldValidate: "onBlur",
+    });
     return (
         <>
             1
