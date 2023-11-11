@@ -1,4 +1,4 @@
-import type {LoaderFunction} from "@remix-run/node";
+import type {LinksFunction, LoaderFunction} from "@remix-run/node";
 import {json} from "@remix-run/node";
 import {
     Links,
@@ -10,13 +10,16 @@ import {
     useLoaderData,
     useNavigate,
 } from "@remix-run/react";
-import "./tailwind.css"
 import {commitSession, getSession} from "~/message.server";
 import {environment} from "~/environment.server";
 import type {ContextType} from "./src/shared/types";
 import {NextUIProvider} from "@nextui-org/react";
 import {getThemeSession} from "./theme.server";
+import styles from "./tailwind.css";
 
+export const links: LinksFunction = () => [
+    { rel: "stylesheet", href: styles },
+];
 export const loader: LoaderFunction = async ({request}) => {
     const {headers} = request
     const cookieSession = await getSession(request.headers.get('cookie'))
