@@ -1,4 +1,3 @@
-import type { LinksFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -7,12 +6,6 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-import {NextUIProvider} from "@nextui-org/react";
-import styles from "./tailwind.css";
-
-export const links: LinksFunction = () => [
-   { rel: "stylesheet", href: styles }
-];
 
 export default function App() {
   return (
@@ -24,12 +17,10 @@ export default function App() {
         <Links />
       </head>
       <body>
-      <NextUIProvider>
         <Outlet />
         <ScrollRestoration />
         <Scripts />
         <LiveReload />
-      </NextUIProvider>
       </body>
     </html>
   );
