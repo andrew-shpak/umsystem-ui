@@ -1,21 +1,23 @@
 import {Form, useLoaderData, useOutletContext} from "@remix-run/react"
 import type {ContextType} from "~/src/shared/types";
 import Layout from "~/src/layout";
-import "../../styles/layout.css";
+import styles from "../styles/layout.css";
 import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, Pagination} from "@nextui-org/react";
 import *as  React from "react";
 import {useForm} from "@conform-to/react";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
-import {orderSchema, User} from "~/src/entities";
-import {json, LoaderFunction, redirect} from "@remix-run/node";
+import type {User} from "~/src/entities";
+import type { LinksFunction, LoaderFunction} from "@remix-run/node";
+import {json, redirect} from "@remix-run/node";
 import {environment} from "~/environment.server";
 import {endpoints, routes} from "~/src/constants";
-import {OrderSystemForm} from "~/src/landing";
-import { UsersPageFiltersForm } from "~/src/services/users-service/pages";
-import { usersPageFiltersSchema } from "~/src/services/users-service/pages/users";
+import {UsersPageFiltersForm} from "~/src/services/users-service/pages";
+import {usersPageFiltersSchema} from "~/src/services/users-service/pages/users";
 
 const pageTitle = 'Список користувачів'
-
+export const links: LinksFunction = () => [
+    { rel: "stylesheet", href: styles }
+];
 export function meta() {
     return [
         {

@@ -1,0 +1,17 @@
+body {
+    @apply flex min-h-screen flex-col;
+}
+
+.content {
+    height: calc(100vh - 6rem);
+    display: flex;
+    width: 100%;
+}
+
+main {
+    min-height: calc(100vh - 6rem);
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 9999px;
+}

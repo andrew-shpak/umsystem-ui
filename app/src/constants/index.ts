@@ -1,4 +1,4 @@
-import { dateFormat, parseDate } from "./date";
+import {dateFormat, parseDate} from "./date";
 import endpoints from "./endpoints";
 import {routes} from './routes'
 

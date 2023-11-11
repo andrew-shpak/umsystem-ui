@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type {ReactNode} from "react";
 import type {UsersPageFilters} from "./users-page-filters-schema";
 import type {Fieldset} from "@conform-to/react";
 

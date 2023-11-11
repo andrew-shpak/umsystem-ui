@@ -2,8 +2,7 @@ import * as z from "zod";
 import {uk} from "~/src/i18n";
 import * as phoneValidator from "phone";
 import validator from "validator";
-import {dateFormat, parseDate} from "~/src/constants";
-import {parse} from "date-fns";
+import {parseDate} from "~/src/constants";
 
 const createUserSchema = z.object({
     name: z.string({required_error: uk.requiredField}),

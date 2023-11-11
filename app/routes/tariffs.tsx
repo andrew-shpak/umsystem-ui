@@ -3,15 +3,17 @@ import type {Tariff} from "~/src/entities";
 import type {ContextType} from "~/src/shared/types";
 import Layout from "~/src/layout";
 import {endpoints, routes} from "~/src/constants";
-import "../../styles/layout.css";
-import type {LoaderFunction} from "@remix-run/node";
+import styles from "../styles/layout.css";
+import type {LinksFunction, LoaderFunction} from "@remix-run/node";
 import {redirect} from "@remix-run/node";
 import {environment} from "~/environment.server";
 import {DataGrid} from "~/src/data-grid";
 import {tariffsColumns} from "~/src/columns";
 
 const pageTitle = 'Створення користувача'
-
+export const links: LinksFunction = () => [
+    { rel: "stylesheet", href: styles }
+];
 export function meta() {
     return [
         {

@@ -6,10 +6,14 @@ import Layout from "~/src/layout";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import {routes} from "~/src/constants";
 import {CreateUserForm, createUserSchema} from "~/src/services/users-service/pages/create-user-page";
-import "../../styles/layout.css";
+import styles from "../styles/layout.css";
 import {Button} from "@nextui-org/react";
+import type {LinksFunction} from "@remix-run/node";
 
 const pageTitle = 'Створення користувача'
+export const links: LinksFunction = () => [
+    { rel: "stylesheet", href: styles }
+];
 
 export function meta() {
     return [

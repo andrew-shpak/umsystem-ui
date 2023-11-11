@@ -1,9 +1,9 @@
 import {
-  AcademicCapIcon,
-  ArrowsRightLeftIcon,
-  CalendarIcon,
-  DocumentDuplicateIcon,
-  HandThumbUpIcon,
+    AcademicCapIcon,
+    ArrowsRightLeftIcon,
+    CalendarIcon,
+    DocumentDuplicateIcon,
+    HandThumbUpIcon,
 } from '@heroicons/react/24/outline'
 
 const tasks = [
