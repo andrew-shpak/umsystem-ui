@@ -107,37 +107,37 @@ export default function LandingPage() {
         </>
     );
 }
-export const action: ActionFunction = async ({request}) => {
-    const {headers} = request
-    const formData = await request.formData();
-    const submission = parse(formData, {schema: orderSchema});
-    const cookie = headers.get('cookie') as string
-    const session = await getSession(cookie)
-    const response = await fetch(
-        `${environment().VITE_EMAILS_SERVICE_BASE_URL}/${endpoints.orderSystem}`,
-        {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-                cookie,
-            },
-            credentials: 'include',
-            body: JSON.stringify(submission.value),
-        },
-    )
-    if (response.ok) {
-        setSuccessMessage(
-            session,
-            "Дякуємо! Ваше замовлення надіслано, розробники зв'яжуться з Вами у найкоротший термін.",
-        )
-        return redirect(routes.root, {
-            headers: {'Set-Cookie': await commitSession(session)},
-        })
-    }
-    if (response.status === 401) {
-        return redirect(`${routes.signIn}?redirect=${request.url}`)
-    }
-
-    return await response.json()
-};
+// export const action: ActionFunction = async ({request}) => {
+//     const {headers} = request
+//     const formData = await request.formData();
+//     const submission = parse(formData, {schema: orderSchema});
+//     const cookie = headers.get('cookie') as string
+//     const session = await getSession(cookie)
+//     const response = await fetch(
+//         `${environment().VITE_EMAILS_SERVICE_BASE_URL}/${endpoints.orderSystem}`,
+//         {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 Accept: 'application/json',
+//                 cookie,
+//             },
+//             credentials: 'include',
+//             body: JSON.stringify(submission.value),
+//         },
+//     )
+//     if (response.ok) {
+//         setSuccessMessage(
+//             session,
+//             "Дякуємо! Ваше замовлення надіслано, розробники зв'яжуться з Вами у найкоротший термін.",
+//         )
+//         return redirect(routes.root, {
+//             headers: {'Set-Cookie': await commitSession(session)},
+//         })
+//     }
+//     if (response.status === 401) {
+//         return redirect(`${routes.signIn}?redirect=${request.url}`)
+//     }
+//
+//     return await response.json()
+// };
