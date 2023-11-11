@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind screens;
+@layer base {
+    html,
+    body {
+        font-family: 'Roboto', sans-serif;
+        height: 100%;
+        width: 100%;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+}
+
+
+@layer components {
+
+
+}
+
+@layer utilities {
+}
+
+.rdp {
+    margin: 0 !important;
+}
