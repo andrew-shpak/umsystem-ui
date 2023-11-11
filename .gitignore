@@ -1,6 +1,19 @@
 node_modules
-
+.idea
 /.cache
-/build
+/server/build
 /public/build
+app/styles
 .env
+/build
+!/docker-compose.yml
+docker-compose.yml
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
