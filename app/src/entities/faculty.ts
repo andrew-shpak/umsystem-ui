@@ -9,8 +9,8 @@ const facultySchema = z.object({
     start: z.string({required_error: uk.requiredField}).refine(validateDate, uk.invalidDate),
     end: z.string().optional(),
 }).refine((entity) => validateDateRange(entity.start, entity.end), {
-    message: "Дата закінчення повинна бути пізнішою за дату початку",
-    path: ["endDate"],
+    message:uk.invalidDateRange,
+    path:["end"] ,
 });
 export type Faculty = z.infer<typeof facultySchema>;
 export {

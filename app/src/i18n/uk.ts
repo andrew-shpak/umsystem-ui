@@ -8,7 +8,11 @@ const uk = {
     invalidEmail: "Невірний формат електронної пошти",
     invalidPhone: "Невірний формат телефону",
     requiredField: "Обов'язкове поле",
-    positiveNumber: "Повинно бути додатнім числом", invalidDate: "Невірна дата",
+    positiveNumber: "Повинно бути додатнім числом",
+    invalidDate: "Невірна дата",
+    invalidDateRange: "Дата закінчення повинна бути пізнішою за дату початку",
+    validate: "Перевірити",
+    cancel: "Скасувати",
 
 
 }
