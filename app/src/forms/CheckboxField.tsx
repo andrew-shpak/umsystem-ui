@@ -31,6 +31,7 @@ export default function CheckboxField(props: CheckboxFieldProps) {
     return (
         <Checkbox {...rest}
                   radius="sm"
+                  isRequired={rest.required}
                   color="success"
                   defaultSelected={defaultChecked}
         >{label}</Checkbox>

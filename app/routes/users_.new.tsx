@@ -237,6 +237,7 @@ export default function CreateNewUserPage() {
         shouldValidate: "onBlur",
     });
     const passportFields= useFieldset(form.ref, fields.passport);
+    console.log(passportFields.validUntil)
     return (
         <Layout title="Створення нового користувача" {...context}>
             <Form
