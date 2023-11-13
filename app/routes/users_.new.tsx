@@ -9,6 +9,7 @@ import {CreateUserForm, createUserSchema} from "~/src/services/users-service/pag
 import styles from "../styles/layout.css";
 import {Button} from "@nextui-org/react";
 import type {LinksFunction} from "@remix-run/node";
+import { uk } from "~/src/i18n";
 
 const pageTitle = 'Створення користувача'
 export const links: LinksFunction = () => [
@@ -251,7 +252,7 @@ export default function CreateNewUserPage() {
                         variant="flat"
                         className="md:w-1/4"
                     >
-                        Скасувати
+                        {uk.cancel}
                     </Button>
                     <Button
                         type="submit"
@@ -261,7 +262,7 @@ export default function CreateNewUserPage() {
                         variant="flat"
                         value="validate"
                     >
-                        Перевірити
+                        {uk.validate}
                     </Button>
                     <Button
                         type="submit"
@@ -271,7 +272,7 @@ export default function CreateNewUserPage() {
                         color={"success"}
                         className={"md:w-1/4"}
                     >
-                        Зберегти
+                        {uk.save}
                     </Button>
                 </div>
             </Form>

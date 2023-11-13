@@ -2,7 +2,7 @@ import * as z from "zod";
 import {uk} from "~/src/i18n";
 import * as phoneValidator from "phone";
 import validator from "validator";
-import {parseDate} from "~/src/constants";
+import {validateDate} from "~/src/constants";
 
 const createUserSchema = z.object({
     name: z.string({required_error: uk.requiredField}),
@@ -14,7 +14,7 @@ const createUserSchema = z.object({
         .refine((value) => phoneValidator.phone(value).isValid, uk.invalidPhone)
         .optional(),
     birthday: z.string()
-        .refine(parseDate, uk.invalidDate)
+        .refine(validateDate, uk.invalidDate)
         .optional(),
     studentId: z.string().optional(),
     identityNumber: z.string().optional(),
