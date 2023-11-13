@@ -1,16 +1,17 @@
-import {conform, Fieldset} from "@conform-to/react";
+import type { Fieldset} from "@conform-to/react";
+import {conform} from "@conform-to/react";
 import {DateField, TextField} from "~/src/forms";
 import type {CreateUser} from "./create-user-schema";
 
-export default function CreateUserInformationForm(props: {
+export default function GeneralInformationSection(props: {
     fields: Fieldset<CreateUser>
 }) {
     const {fields} = props;
     return (
-        <div className="w-full flex flex-col gap-4">
-            <div className="divider mb-4 text-center text-lg font-medium">
+        <section className="w-full flex flex-col gap-4">
+            <h3 className="divider text-center text-lg font-medium">
                 Інформація про користувача
-            </div>
+            </h3>
             <TextField
                 {...conform.input(fields.recoveryEmail)}
                 label="Резервна пошта"
@@ -37,6 +38,6 @@ export default function CreateUserInformationForm(props: {
                 helperText="Введіть ID фізичної особи із ЄДБО"
                 errorMessage={fields.studentId.error}
             />
-        </div>
+        </section>
     )
 }

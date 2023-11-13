@@ -1,7 +1,10 @@
-import CreateUserForm from "./create-user-form";
 import {createUserSchema} from "./create-user-schema";
-
-export {CreateUserForm};
+import GeneralInformationSection from "./general-information-section";
+import FullNameSection from "./full-name-section";
+import PassportSection from "./passport-section";
 export {
-    createUserSchema
+    createUserSchema,
+    GeneralInformationSection,
+    FullNameSection,
+    PassportSection
 }

@@ -5,10 +5,18 @@ import type {ContextType} from "~/src/shared/types";
 import Layout from "~/src/layout";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import {routes} from "~/src/constants";
-import {CreateUserForm, createUserSchema} from "~/src/services/users-service/pages/create-user-page";
+import {
+    createUserSchema,
+    FullNameSection,
+    GeneralInformationSection
+} from "~/src/services/users-service/pages/create-user-page";
 import styles from "../styles/layout.css";
 import {Button} from "@nextui-org/react";
+<<<<<<< Updated upstream
 import type {LinksFunction} from "@remix-run/node";
+=======
+import type {ActionFunction, LinksFunction} from "@remix-run/node";
+>>>>>>> Stashed changes
 import { uk } from "~/src/i18n";
 
 const pageTitle = 'Створення користувача'
@@ -224,10 +232,6 @@ export default function CreateNewUserPage() {
     const location = useLocation()
     // console.log(actionData)
     const [form, fields] = useForm({
-        defaultValue: {
-            studentIdentifier: undefined,
-            middleName: undefined
-        },
         constraint: getFieldsetConstraint(createUserSchema),
         onValidate({formData}) {
             return parse(formData, {schema: createUserSchema});
@@ -242,7 +246,10 @@ export default function CreateNewUserPage() {
                 action={`${routes.users}/new${location.search}`}
                 className="mb-10 mt-4 flex flex-col items-center justify-center gap-2"
             >
-                <CreateUserForm fields={fields} {...response}/>
+                <div className="md:grid md:grid-cols-2 md:gap-7 w-full">
+                    <FullNameSection fields={fields}/>
+                    <GeneralInformationSection fields={fields}/>
+                </div>
                 <div className="flex w-full mt-7 flex-row items-center justify-center gap-4">
                     <Button
                         as={Link}
@@ -252,7 +259,11 @@ export default function CreateNewUserPage() {
                         variant="flat"
                         className="md:w-1/4"
                     >
+<<<<<<< Updated upstream
                         {uk.cancel}
+=======
+                        {uk.close}
+>>>>>>> Stashed changes
                     </Button>
                     <Button
                         type="submit"
@@ -278,4 +289,11 @@ export default function CreateNewUserPage() {
             </Form>
         </Layout>
     )
+}
+export const action: ActionFunction = async ({request}) => {
+    const {headers} = request
+    const cookie = headers.get('cookie') as string
+    const text = await request.text();
+    console.log(text)
+    return null
 }
