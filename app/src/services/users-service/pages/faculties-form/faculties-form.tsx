@@ -1,7 +1,7 @@
 import type {Fieldset} from "@conform-to/react";
 import {conform} from "@conform-to/react";
 import type {Faculty} from "~/src/entities";
-import {TextField} from "~/src/forms";
+import {DateField, TextField} from "~/src/forms";
 
 export default function FacultiesForm(props: {
     fields: Fieldset<Faculty>
@@ -21,17 +21,17 @@ export default function FacultiesForm(props: {
                 label={'Скорочена назва факультету'}
                 placeholder={'Введіть скорочену назву факультету'}
             />
-            {/*<DateField*/}
-            {/*{...conform.input(fields.start)}*/}
-            {/*errorMessage={fields.start.error}*/}
-            {/*    label={'Дата початку'}*/}
-            {/*    placeholder={'Введіть дату початку створення факультету'}*/}
-            {/*/>*/}
-            {/*<DateField*/}
-            {/*{...conform.input(fields.name)}*/}
-            {/*    label={'Дата завершення'}*/}
-            {/*    placeholder={'Введіть дату закриття факультету'}*/}
-            {/*/>*/}
+            <DateField
+            {...conform.input(fields.start)}
+            errorMessage={fields.start.error}
+                label={'Дата початку'}
+                placeholder={'Введіть дату початку створення факультету'}
+            />
+            <DateField
+            {...conform.input(fields.end)}
+                label={'Дата завершення'}
+                placeholder={'Введіть дату закриття факультету'}
+            />
         </>
     )
 }

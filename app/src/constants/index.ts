@@ -1,4 +1,4 @@
-import {dateFormat, parseDate} from "./date";
+import {dateFormat, validateDate, validateDateRange} from "./date";
 import endpoints from "./endpoints";
 import {routes} from './routes'
 
@@ -6,5 +6,6 @@ export {
     endpoints,
     routes,
     dateFormat,
-    parseDate
+    validateDate,
+    validateDateRange
 }
