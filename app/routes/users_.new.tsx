@@ -1,6 +1,6 @@
 import {Form, Link, useLoaderData, useLocation, useOutletContext} from "@remix-run/react"
 import type {EducationForm, EducationProgram, Organization, Role} from "~/src/entities";
-import {useForm} from "@conform-to/react";
+import {useFieldset, useForm} from "@conform-to/react";
 import type {ContextType} from "~/src/shared/types";
 import Layout from "~/src/layout";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
@@ -8,15 +8,11 @@ import {routes} from "~/src/constants";
 import {
     createUserSchema,
     FullNameSection,
-    GeneralInformationSection
+    GeneralInformationSection, PassportSection
 } from "~/src/services/users-service/pages/create-user-page";
 import styles from "../styles/layout.css";
 import {Button} from "@nextui-org/react";
-<<<<<<< Updated upstream
-import type {LinksFunction} from "@remix-run/node";
-=======
 import type {ActionFunction, LinksFunction} from "@remix-run/node";
->>>>>>> Stashed changes
 import { uk } from "~/src/i18n";
 
 const pageTitle = 'Створення користувача'
@@ -234,10 +230,13 @@ export default function CreateNewUserPage() {
     const [form, fields] = useForm({
         constraint: getFieldsetConstraint(createUserSchema),
         onValidate({formData}) {
-            return parse(formData, {schema: createUserSchema});
+            const a =  parse(formData, {schema: createUserSchema});
+            console.log(a)
+            return a ;
         },
         shouldValidate: "onBlur",
     });
+    const passportFields= useFieldset(form.ref, fields.passport);
     return (
         <Layout title="Створення нового користувача" {...context}>
             <Form
@@ -249,6 +248,7 @@ export default function CreateNewUserPage() {
                 <div className="md:grid md:grid-cols-2 md:gap-7 w-full">
                     <FullNameSection fields={fields}/>
                     <GeneralInformationSection fields={fields}/>
+                    <PassportSection fields={passportFields}/>
                 </div>
                 <div className="flex w-full mt-7 flex-row items-center justify-center gap-4">
                     <Button
@@ -259,11 +259,7 @@ export default function CreateNewUserPage() {
                         variant="flat"
                         className="md:w-1/4"
                     >
-<<<<<<< Updated upstream
-                        {uk.cancel}
-=======
                         {uk.close}
->>>>>>> Stashed changes
                     </Button>
                     <Button
                         type="submit"

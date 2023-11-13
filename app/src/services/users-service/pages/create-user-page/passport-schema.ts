@@ -1,6 +1,6 @@
 import * as z from "zod";
 import {uk} from "~/src/i18n";
-import {parseDate} from "~/src/constants";
+import {validateDate} from "~/src/constants";
 
 const passportSchema = z.object({
     type: z.string().optional(),
@@ -8,10 +8,10 @@ const passportSchema = z.object({
     number: z.string().optional(),
     issuedBy: z.string().optional(),
     issuedDate: z.string()
-        .refine(parseDate, uk.invalidDate)
+        .refine(validateDate, uk.invalidDate)
         .optional(),
     validUntil: z.string()
-        .refine(parseDate, uk.invalidDate)
+        .refine(validateDate, uk.invalidDate)
         .optional(),
 
 });

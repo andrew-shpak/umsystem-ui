@@ -29,7 +29,7 @@ type Fields = object & {
     url?: string
     id?: string
 }
-type Key = string | number | bigint;
+type Key = string | number | null | undefined;
 
 export default function AutocompleteField<T extends Fields>(props: AutocompleteFieldProps<T>) {
     const {
@@ -46,7 +46,7 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
         config,
         ...rest
     } = props;
-    const [selectedKey, setSelectedKey] = useState<Key>(config?.defaultValue ?? '');
+    const [selectedKey, setSelectedKey] = useState<Key >(config?.defaultValue ?? null);
 
 
     const shadowInputRef = useRef<HTMLInputElement>(null);

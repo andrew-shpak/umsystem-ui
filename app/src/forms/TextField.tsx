@@ -1,5 +1,7 @@
 import type {InputHTMLAttributes, ReactNode} from 'react';
+import {useRef, useState} from "react";
 import {Input} from "@nextui-org/input";
+import {useInputEvent} from "@conform-to/react";
 
 type TextFieldParams = Omit<InputHTMLAttributes<HTMLInputElement>,
     "size"
@@ -30,19 +32,44 @@ export default function TextField(props: TextFieldParams) {
         isClearable = true,
         ...rest
     } = props
+    const [value, setValue] = useState<string | null | undefined>(rest?.defaultValue ?? null);
+
+    const shadowInputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
+    const control = useInputEvent({
+        ref: shadowInputRef,
+        onReset: () => setValue(rest?.defaultValue ?? ''),
+    });
     return (
-        <Input
-            {...rest}
-            type="text"
-            variant="faded"
-            radius="sm"
-            isInvalid={!!rest.errorMessage}
-            description={helperText}
-            isClearable={isClearable}
-            className={inputClassName}
-            onClear={onClear}
-            fullWidth={fullWidth}
-            isRequired={props.required}
-        />
+        <>
+            <input ref={shadowInputRef}
+                   type="hidden"
+                   name={rest.name}
+                   value={value?.toString() ?? ''}/>
+            <Input
+                {...rest}
+                ref={inputRef}
+                type="text"
+                variant="faded"
+                radius="sm"
+                isInvalid={!!rest.errorMessage}
+                description={helperText}
+                isClearable={isClearable}
+                className={inputClassName}
+                onClear={() => {
+                    if (onClear) onClear();
+                    setValue('');
+                }}
+                fullWidth={fullWidth}
+                isRequired={props.required}
+                value={value?.toString() ?? ''}
+                onBlur={control.blur}
+                onFocus={control.focus}
+                onChange={event => {
+                    if (onChange) onChange(event);
+                    setValue(event.target.value);
+                }}
+            />
+        </>
     )
 }

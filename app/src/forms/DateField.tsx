@@ -1,8 +1,10 @@
 import type {InputHTMLAttributes, ReactNode} from 'react';
-import {useState} from 'react'
+import {useRef, useState} from 'react'
 import {Input} from "@nextui-org/input";
 import {useIMask} from 'react-imask'
 import type {FactoryOpts} from "imask";
+import {useInputEvent} from "@conform-to/react";
+import {convertToISOString} from "~/src/constants";
 
 export type DateFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>,
     "size"
@@ -37,16 +39,25 @@ export default function DateField(props: DateFieldProps) {
         isClearable = true,
         ...rest
     } = props
-    const [, setInputValue] = useState<string| undefined>(
+    const [inputValue, setInputValue] = useState<string| undefined>(
         props.defaultValue
     )
     const [opts] = useState({mask: Date, radix: '.'})
     const {ref} = useIMask<HTMLInputElement, FactoryOpts>(opts, {
         onAccept: newValue => setInputValue(newValue)
     })
-
-
+    const shadowInputRef = useRef<HTMLInputElement>(null);
+    const control = useInputEvent({
+        ref: shadowInputRef,
+        onReset: () => setInputValue(rest?.defaultValue ?? ''),
+    });
+console.log(inputValue)
     return (
+        <>
+            <input ref={shadowInputRef}
+                   type="hidden"
+                   name={rest.name}
+                   value={convertToISOString(inputValue?.toString() ?? '')}/>
         <Input
             {...rest}
             ref={ref}
@@ -57,9 +68,20 @@ export default function DateField(props: DateFieldProps) {
             description={helperText}
             isClearable={isClearable}
             className={inputClassName}
-            onClear={onClear}
             fullWidth={fullWidth}
             isRequired={props.required}
+            onClear={() => {
+                if (onClear) onClear();
+                setInputValue('');
+            }}
+            value={inputValue?.toString() ?? ''}
+            onBlur={control.blur}
+            onFocus={control.focus}
+            onChange={event => {
+                if (onChange) onChange(event);
+                setInputValue(event.target.value);
+            }}
         />
+            </>
     )
 }

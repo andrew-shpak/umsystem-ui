@@ -1,56 +1,62 @@
-import type {FieldConfig, Fieldset} from "@conform-to/react";
-import {conform, useFieldset} from "@conform-to/react";
-import {AutocompleteField, DateField, TextField} from "~/src/forms";
-import type {CreateUser} from "./create-user-schema";
-import { useRef } from "react";
+import type {Fieldset} from "@conform-to/react";
+import {conform} from "@conform-to/react";
+import {DateField, TextField} from "~/src/forms";
 import type {Passport} from "./passport-schema";
 
 export default function PassportForm(props: {
-    config: FieldConfig<Passport>;
+    fields: Fieldset<Passport>
 }) {
-    const {config} = props;
-    const ref = useRef<HTMLFieldSetElement>(null);
-    const { series,number,validUntil, issuedBy,issueDate } = useFieldset(ref, config);
+    const {fields} = props;
+    const {
+        series, number,
+        validUntil, issuedBy,
+        issuedDate
+    } = fields
 
     return (
-        <fieldset ref={ref} className="w-full flex flex-col gap-4">
+        <section className="w-full flex flex-col gap-4">
             <h3 className="divider text-center text-lg font-medium">
                 Паспорт
             </h3>
-                {/*<AutocompleteField*/}
-                {/*    name="passport.type"*/}
-                {/*    getLabel={f => f.name}*/}
-                {/*    options={[{name: '1', id: '1'}]}*/}
-                {/*    label="Тип документу"*/}
-                {/*    placeholder="Виберіть тип документу"*/}
-                {/*    ariaLabel="Тип документу"*/}
-                {/*    required={false}*/}
-                {/*/>*/}
-                <TextField
-                    {...conform.input(series)}
-                    label="Серія паспорта"
-                    placeholder="Введіть серію паспорта"
-                />
-                <TextField
-                    {...conform.input(number)}
-                    label="Номер паспорта"
-                    placeholder="Введіть номер паспорта"
-                />
-                <TextField
-                    {...conform.input(issuedBy)}
-                    label="Ким видано"
-                    placeholder="Введіть місце видачі паспорта"
-                />
-                <DateField
-                    {...conform.input(issueDate)}
-                    label="Дата видачі"
-                    placeholder="Введіть дату видачі"
-                />
-                <DateField
-                    {...conform.input(validUntil)}
-                    label="Дійсний до"
-                    placeholder="Введіть дату закінчення строку дії паспорта"
-                />
-            </fieldset>
+            {/*<AutocompleteField*/}
+            {/*    name="passport.type"*/}
+            {/*    getLabel={f => f.name}*/}
+            {/*    options={[{name: '1', id: '1'}]}*/}
+            {/*    label="Тип документу"*/}
+            {/*    placeholder="Виберіть тип документу"*/}
+            {/*    ariaLabel="Тип документу"*/}
+            {/*    required={false}*/}
+            {/*/>*/}
+            <TextField
+                {...conform.input(series)}
+                label="Серія паспорта"
+                placeholder="Введіть серію паспорта"
+                errorMessage={series.error}
+            />
+            <TextField
+                {...conform.input(number)}
+                label="Номер паспорта"
+                placeholder="Введіть номер паспорта"
+                errorMessage={number.error}
+            />
+            <TextField
+                {...conform.input(issuedBy)}
+                label="Ким видано"
+                placeholder="Введіть місце видачі паспорта"
+                errorMessage={issuedBy.error}
+            />
+            <DateField
+                {...conform.input(issuedDate)}
+                label="Дата видачі"
+                placeholder="Введіть дату видачі"
+                errorMessage={issuedDate.error}
+            />
+            <DateField
+                {...conform.input(validUntil)}
+                label="Дійсний до"
+                placeholder="Введіть дату закінчення строку дії паспорта"
+                errorMessage={validUntil.error}
+            />
+        </section>
     )
 }

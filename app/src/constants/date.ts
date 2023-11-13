@@ -2,6 +2,11 @@ import dayjs from "dayjs";
 
 export const dateFormat="d.M.yyyy";
 export const minDate = new Date(1940, 0, 1)
+export const convertToISOString = (date: string) => {
+    const parsedDate = dayjs(date, dateFormat);
+    return parsedDate.isValid() ? parsedDate.toISOString() : ''
+
+}
 export const validateDateRange = (startDate: string, endDate?: string) => {
     if (!endDate) {
         return validateDate(startDate)

@@ -2,12 +2,8 @@ import * as z from "zod";
 import {uk} from "~/src/i18n";
 import * as phoneValidator from "phone";
 import validator from "validator";
-<<<<<<< Updated upstream
-import {validateDate} from "~/src/constants";
-=======
-import {parseDate} from "~/src/constants";
 import {passportSchema} from "~/src/services/users-service/pages/create-user-page/passport-schema";
->>>>>>> Stashed changes
+import {validateDate} from "~/src/constants";
 
 const createUserSchema = z.object({
     name: z.string({required_error: uk.requiredField}),
@@ -25,13 +21,24 @@ const createUserSchema = z.object({
     identityNumber: z.string().optional(),
     passport: z.object(passportSchema.shape).optional(),
 })
-    .superRefine((data, ctx) => {
-        console.log(data,"test")
-        if(!data.identityNumber?.length && !data.passport?.number?.length && !data.studentId?.length) {
+    .superRefine((entity, ctx) => {
+        const {studentId, identityNumber, passport} = entity;
+        const message = "Введіть інформацію про ІНП або паспорт або ID ФО";
+        if (!studentId?.length && !identityNumber?.length && !passport?.number?.length) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                path: ['identityNumber', 'passport.number',"studentId"],
-                message: 'Введіть номер паспорту або ідентифікаційний номер або ID ФО',
+                path: ['identityNumber'],
+                message
+            });
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ['studentId'],
+                message,
+            });
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                path: ['passport', 'number'],
+                message,
             });
         }
     });
