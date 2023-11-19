@@ -1,6 +1,7 @@
 import {useActionData} from "@remix-run/react";
 import {Accordion, AccordionItem, Divider} from "@nextui-org/react";
 import {Chip} from "@nextui-org/chip";
+
 type Student = {
     url: string
     userFullName: string
@@ -47,10 +48,11 @@ export default function DuplicatesSection(props: {}) {
         </div>
     )
 }
-function getValidationReason (student: Student){
-    if(student.findByStudentId) return "Знайдено за ІПН";
-    if(student.findByUserFullName) return "Знайдено за ПІБ";
-    if(student.findByPassport) return "Знайдено за паспортом";
-    if(student.findByIdentityNumber) return "Знайдено за ідентифікаційним номером";
+
+function getValidationReason(student: Student) {
+    if (student.findByStudentId) return "Знайдено за ІПН";
+    if (student.findByUserFullName) return "Знайдено за ПІБ";
+    if (student.findByPassport) return "Знайдено за паспортом";
+    if (student.findByIdentityNumber) return "Знайдено за ідентифікаційним номером";
     return "Знайдено за іншими даними";
 }

@@ -16,11 +16,10 @@ import {
 } from "~/src/services/users-service/pages/create-user-page";
 import styles from "../styles/layout.css";
 import {Button} from "@nextui-org/react";
-import type {ActionFunction, LinksFunction} from "@remix-run/node";
-import {json, LoaderFunction, redirect} from "@remix-run/node";
+import type {ActionFunction, LinksFunction, LoaderFunction} from "@remix-run/node";
+import {json, redirect} from "@remix-run/node";
 import {uk} from "~/src/i18n";
 import {environment} from "~/environment.server";
-import {validationResponseStatusCode} from "~/helpers.server";
 
 const pageTitle = 'Створення користувача'
 export const links: LinksFunction = () => [
@@ -106,7 +105,8 @@ export default function CreateNewUserPage() {
                 </div>
 
                 <DuplicatesSection/>
-                <div className={`w-full text-center text-2xl font-semibold  ${actionData?.students || !actionData ? "hidden" : "block"}`} >
+                <div
+                    className={`w-full text-center text-2xl font-semibold  ${actionData?.students || !actionData ? "hidden" : "block"}`}>
                     Валідація пройшла успішно - збігів не знайдено
                 </div>
                 <div className="flex w-full mt-7 md:flex-row flex-col items-center justify-center gap-4">

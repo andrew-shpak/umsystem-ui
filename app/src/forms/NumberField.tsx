@@ -1,8 +1,7 @@
-import {InputHTMLAttributes, ReactNode, useRef, useState} from 'react'
+import {InputHTMLAttributes, ReactNode, useState} from 'react'
 import {Input} from "@nextui-org/input";
 import {useIMask} from "react-imask";
 import {FactoryOpts} from "imask";
-import {useInputEvent} from "@conform-to/react";
 
 type NumberFieldParams = Omit<InputHTMLAttributes<HTMLInputElement>,
     "size"
@@ -51,30 +50,30 @@ export default function NumberField(props: NumberFieldParams) {
         onAccept: newValue => setValue(newValue)
     })
     return (
-            <Input
-                ref={ref}
-                type="text"
-                variant="faded"
-                radius="sm"
-                isInvalid={!!errorMessage}
-                description={helperText}
-                isClearable={isClearable}
-                isDisabled={disabled}
-                className={inputClassName}
-                onClear={() => {
-                    if (onClear) onClear();
-                    setValue('');
-                }}
-                fullWidth={fullWidth}
-                isRequired={required}
-                value={value?.toString() ?? ''}
-                onChange={event => {
-                    if (onChange) onChange(event);
-                    setValue(event.target.value);
-                }}
-                required={required}
-                label={label}
-                placeholder={placeholder}
-            />
+        <Input
+            ref={ref}
+            type="text"
+            variant="faded"
+            radius="sm"
+            isInvalid={!!errorMessage}
+            description={helperText}
+            isClearable={isClearable}
+            isDisabled={disabled}
+            className={inputClassName}
+            onClear={() => {
+                if (onClear) onClear();
+                setValue('');
+            }}
+            fullWidth={fullWidth}
+            isRequired={required}
+            value={value?.toString() ?? ''}
+            onChange={event => {
+                if (onChange) onChange(event);
+                setValue(event.target.value);
+            }}
+            required={required}
+            label={label}
+            placeholder={placeholder}
+        />
     )
 }

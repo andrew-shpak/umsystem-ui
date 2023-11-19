@@ -32,7 +32,7 @@ export default function PasswordField(props: TextFieldParams) {
         ...rest
     } = props
     const [isVisible, setIsVisible] = useState(false);
-    const [value, setValue] = useState<string | null | undefined>(rest?.defaultValue );
+    const [value, setValue] = useState<string | null | undefined>(rest?.defaultValue);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
     return (
