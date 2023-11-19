@@ -20,6 +20,7 @@ import type {ActionFunction, LinksFunction} from "@remix-run/node";
 import {json, LoaderFunction, redirect} from "@remix-run/node";
 import {uk} from "~/src/i18n";
 import {environment} from "~/environment.server";
+import {validationResponseStatusCode} from "~/helpers.server";
 
 const pageTitle = 'Створення користувача'
 export const links: LinksFunction = () => [
@@ -49,12 +50,12 @@ export const loader: LoaderFunction = async ({request}) => {
             credentials: 'include',
         },
     )
-    if (res.status === 401) {
-        return redirect(`${routes.signIn}?redirect=${request.url}`)
-    }
-    if (res.status === 403) {
-        return redirect(routes.accessDenied)
-    }
+    // if (res.status === 401) {
+    //     return redirect(`${routes.signIn}?redirect=${request.url}`)
+    // }
+    // if (res.status === 403) {
+    //     return redirect(routes.accessDenied)
+    // }
     const response = await res.json();
     return json({
         ...response,
