@@ -1,39 +1,30 @@
+import type {CheckboxProps} from '@nextui-org/react';
 import {Checkbox} from '@nextui-org/react'
-import {InputHTMLAttributes, ReactNode} from 'react'
+import type {ReactNode} from "react";
 
-type CheckboxFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>,
-    "size"
-    | "value"
-    | "color"
-    | "onFocus"
-    | "onChange"
-    | "onBlur"
-    | "isInvalid"
-    | "errorMessage"
-    | "onClear"
-> & {
+type CheckboxFieldProps = CheckboxProps & {
     label?: ReactNode
-    name: string
-    defaultChecked?: boolean
-    onChange?: (value: boolean) => void
 }
 
 export default function CheckboxField(props: CheckboxFieldProps) {
     const {
         label,
+        color = "success",
         name,
-        defaultChecked = false,
-        onChange,
+        required,
         disabled,
-        className,
-        ...rest
+        defaultSelected
     } = props
     return (
-        <Checkbox {...rest}
-                  radius="sm"
-                  isRequired={rest.required}
-                  color="success"
-                  defaultSelected={defaultChecked}
+        <Checkbox
+            defaultSelected={defaultSelected}
+            radius="sm"
+            disabled={disabled}
+            isDisabled={!!disabled}
+            isRequired={required}
+            required={required}
+            name={name}
+            color={color}
         >{label}</Checkbox>
     )
 }

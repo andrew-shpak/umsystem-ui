@@ -19,7 +19,6 @@ export default function PassportForm(props: {
                 Паспорт
             </h3>
             {/*<AutocompleteField*/}
-            {/*    name="passport.type"*/}
             {/*    getLabel={f => f.name}*/}
             {/*    options={[{name: '1', id: '1'}]}*/}
             {/*    label="Тип документу"*/}
@@ -46,13 +45,13 @@ export default function PassportForm(props: {
                 errorMessage={issuedBy.error}
             />
             <DateField
-                {...conform.input(issuedDate)}
+                config={issuedDate}
                 label="Дата видачі"
                 placeholder="Введіть дату видачі"
                 errorMessage={issuedDate.error}
             />
             <DateField
-                {...conform.input(validUntil)}
+                config={validUntil}
                 label="Дійсний до"
                 placeholder="Введіть дату закінчення строку дії паспорта"
                 errorMessage={validUntil.error}

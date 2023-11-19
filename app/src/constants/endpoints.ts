@@ -72,6 +72,7 @@ enum endpoints {
     bookingClassrooms = 'booking/classrooms',
     additionalCourses = 'courses/additional',
     journals = 'journals',
+    students = 'students',
 }
 
 export default endpoints;

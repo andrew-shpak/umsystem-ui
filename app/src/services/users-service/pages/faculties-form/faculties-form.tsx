@@ -22,13 +22,13 @@ export default function FacultiesForm(props: {
                 placeholder={'Введіть скорочену назву факультету'}
             />
             <DateField
-            {...conform.input(fields.start)}
-            errorMessage={fields.start.error}
+                config={fields.start}
+                errorMessage={fields.start.error}
                 label={'Дата початку'}
                 placeholder={'Введіть дату початку створення факультету'}
             />
             <DateField
-            {...conform.input(fields.end)}
+                config={fields.end}
                 label={'Дата завершення'}
                 placeholder={'Введіть дату закриття факультету'}
             />

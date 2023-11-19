@@ -9,7 +9,7 @@ const environmentSchema = z.object({
     // REDIRECT_URL: z.string().url(),
     // RATING_SERVICE_BASE_URL: z.string().url(),
     // SURVEY_SERVICE_BASE_URL: z.string().url(),
-    // USERS_SERVICE_BASE_URL: z.string().url(),
+    USERS_SERVICE_BASE_URL: z.string().url(),
     // PERMISSIONS_SERVICE_BASE_URL: z.string().url(),
     // NOTIFICATIONS_SERVICE_BASE_URL: z.string().url(),
     TARRIFS_SERVICE_BASE_URL: z.string().url(),

@@ -1,6 +1,7 @@
 body {
     @apply bg-white;
 }
+
 #team {
     background-image: url('https://cdn.umsys.com.ua/landing/team.svg');
 }

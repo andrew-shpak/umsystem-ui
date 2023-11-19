@@ -28,10 +28,11 @@ export default function PasswordField(props: TextFieldParams) {
         onChange,
         className: inputClassName = '',
         onClear,
-        isClearable = true,
+        isClearable = false,
         ...rest
     } = props
     const [isVisible, setIsVisible] = useState(false);
+    const [value, setValue] = useState<string | null | undefined>(rest?.defaultValue );
 
     const toggleVisibility = () => setIsVisible(!isVisible);
     return (
@@ -44,8 +45,12 @@ export default function PasswordField(props: TextFieldParams) {
             description={helperText}
             isClearable={isClearable}
             className={inputClassName}
+            isDisabled={!!rest.disabled}
             isRequired={props.required}
-            onClear={onClear}
+            onClear={() => {
+                if (onClear) onClear();
+                setValue('')
+            }}
             fullWidth={fullWidth}
             endContent={
                 <button className="focus:outline-none cursor-pointer" type="button" onClick={toggleVisibility}>
@@ -62,6 +67,11 @@ export default function PasswordField(props: TextFieldParams) {
                     )}
                 </button>
             }
+            value={value?.toString() ?? ''}
+            onChange={event => {
+                if (onChange) onChange(event);
+                setValue(event.target.value);
+            }}
         />
     )
 }

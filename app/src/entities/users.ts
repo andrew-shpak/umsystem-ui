@@ -1,4 +1,4 @@
-import type EducationRecord from '~/src/entities/education/education-record'
+import type {EducationRecord} from '~/src/entities/education/education-record'
 
 export default interface User {
     url: string

@@ -32,44 +32,29 @@ export default function TextField(props: TextFieldParams) {
         isClearable = true,
         ...rest
     } = props
-    const [value, setValue] = useState<string | null | undefined>(rest?.defaultValue ?? null);
-
-    const shadowInputRef = useRef<HTMLInputElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
-    const control = useInputEvent({
-        ref: shadowInputRef,
-        onReset: () => setValue(rest?.defaultValue ?? ''),
-    });
+    const [value, setValue] = useState<string | null | undefined>(rest?.defaultValue );
     return (
-        <>
-            <input ref={shadowInputRef}
-                   type="hidden"
-                   name={rest.name}
-                   value={value?.toString() ?? ''}/>
             <Input
                 {...rest}
-                ref={inputRef}
                 type="text"
                 variant="faded"
                 radius="sm"
                 isInvalid={!!rest.errorMessage}
                 description={helperText}
                 isClearable={isClearable}
+                isDisabled={!!rest.disabled}
                 className={inputClassName}
                 onClear={() => {
                     if (onClear) onClear();
-                    setValue('');
+                    setValue('')
                 }}
                 fullWidth={fullWidth}
                 isRequired={props.required}
                 value={value?.toString() ?? ''}
-                onBlur={control.blur}
-                onFocus={control.focus}
                 onChange={event => {
                     if (onChange) onChange(event);
                     setValue(event.target.value);
                 }}
             />
-        </>
     )
 }

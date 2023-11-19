@@ -12,8 +12,9 @@ import {tariffsColumns} from "~/src/columns";
 
 const pageTitle = 'Створення користувача'
 export const links: LinksFunction = () => [
-    { rel: "stylesheet", href: styles }
+    {rel: "stylesheet", href: styles}
 ];
+
 export function meta() {
     return [
         {

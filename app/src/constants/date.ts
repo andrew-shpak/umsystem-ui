@@ -14,7 +14,10 @@ export const convertToISOString = (date: string) => {
     return isValid(parsedDate) ? formatISO(parsedDate) : ''
 
 }
-export const validateDateRange = (startDate: string, endDate?: string) => {
+export const validateDateRange = (startDate?: string, endDate?: string) => {
+    if (!startDate) {
+        return true;
+    }
     if (!endDate) {
         return validateDate(startDate)
     }
@@ -24,6 +27,5 @@ export const validateDateRange = (startDate: string, endDate?: string) => {
 }
 export const validateDate = (date: string) => {
     const parsedDate = parseDate(date)
-    console.log(parsedDate,isValid(parsedDate),isAfter(parsedDate, minDate),"parsedDate")
     return isValid(parsedDate) && isAfter(parsedDate, minDate)
 }

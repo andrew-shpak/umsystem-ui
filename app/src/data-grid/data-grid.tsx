@@ -119,7 +119,9 @@ export default function DataGrid<T extends {
                     <div className="flex gap-3">
                         <Dropdown>
                             <DropdownTrigger className="hidden sm:flex">
-                                <Button endContent={<ChevronDownIcon className="text-small"/>} color="primary"
+                                <Button endContent={<ChevronDownIcon className="text-small"/>}
+                                        radius="sm"
+                                        color="primary"
                                         variant="flat">
                                     Columns
                                 </Button>
@@ -189,10 +191,12 @@ export default function DataGrid<T extends {
                     variant="flat"
                 />
                 <div className="hidden sm:flex w-[30%] justify-end gap-4">
-                    <Button isDisabled={pages === 1} color='primary' size="md" variant="flat" onPress={onPreviousPage}>
+                    <Button isDisabled={pages === 1} color='primary' size="md" radius="sm" variant="flat"
+                            onPress={onPreviousPage}>
                         Назад
                     </Button>
-                    <Button isDisabled={pages === 1} color='primary' size="md" variant="flat" onPress={onNextPage}>
+                    <Button isDisabled={pages === 1} color='primary' size="md" radius="sm" variant="flat"
+                            onPress={onNextPage}>
                         Вперед
                     </Button>
                 </div>
@@ -209,8 +213,7 @@ export default function DataGrid<T extends {
                         <div className="relative md:hidden flex justify-end items-center gap-2">
                             <Dropdown>
                                 <DropdownTrigger>
-
-                                    <Button isIconOnly size="sm" variant="light">
+                                    <Button isIconOnly size="sm" variant="light" radius="sm">
                                         <Tooltip content="Створити">
                                             <EllipsisVerticalIcon
                                                 className="text-default-300 cursor-pointer w-7 h-7"/>
@@ -312,6 +315,7 @@ export default function DataGrid<T extends {
                                     <Button
                                         as={Link}
                                         to="new"
+                                        radius="sm"
                                         prefetch="intent"
                                         isIconOnly variant="light" color="success">
                                         <PlusCircleIcon className="h-7 w-7"/>

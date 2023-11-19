@@ -20,6 +20,10 @@ const createUserSchema = z.object({
     studentId: z.string().optional(),
     identityNumber: z.string().optional(),
     passport: z.object(passportSchema.shape).optional(),
+    roleId: z.string().optional(),
+    password: z.string().optional(),
+    generatePassword: z.boolean().optional(),
+    validation: z.boolean().default(true).optional(),
 })
     .superRefine((entity, ctx) => {
         const {studentId, identityNumber, passport} = entity;

@@ -18,7 +18,7 @@ import {getThemeSession} from "./theme.server";
 import styles from "./tailwind.css";
 
 export const links: LinksFunction = () => [
-    { rel: "stylesheet", href: styles },
+    {rel: "stylesheet", href: styles},
 ];
 export const loader: LoaderFunction = async ({request}) => {
     const {headers} = request

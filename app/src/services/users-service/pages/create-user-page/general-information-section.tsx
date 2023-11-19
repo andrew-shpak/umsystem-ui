@@ -26,7 +26,7 @@ export default function GeneralInformationSection(props: {
                 errorMessage={fields.recoveryPhone.error}
             />
             <DateField
-                {...conform.input(fields.birthday)}
+                config={fields.birthday}
                 label="Дата народження"
                 placeholder="Введіть дату народження"
                 errorMessage={fields.birthday.error}
