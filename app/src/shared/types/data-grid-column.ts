@@ -6,4 +6,5 @@ export interface DataGridColumn<T> {
     sortable?: boolean,
     searchable?: boolean,
     className?: string
+    type?: "text" | "number" | "date" | "datetime" | "time" | "currency" | "percentage" | "boolean" ,
 }

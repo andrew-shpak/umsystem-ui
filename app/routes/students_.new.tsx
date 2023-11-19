@@ -1,4 +1,12 @@
-import {Form, Link, useActionData, useLocation, useOutletContext, useSearchParams} from "@remix-run/react"
+import {
+    Form,
+    Link,
+    useActionData,
+    useLocation,
+    useNavigation,
+    useOutletContext,
+    useSearchParams
+} from "@remix-run/react"
 import {useFieldset, useForm} from "@conform-to/react";
 import type {ContextType} from "~/src/shared/types";
 import Layout from "~/src/layout";
@@ -15,7 +23,7 @@ import {
     ValidationSection
 } from "~/src/services/users-service/pages/create-user-page";
 import styles from "../styles/layout.css";
-import {Button} from "@nextui-org/react";
+import {Button, Spinner} from "@nextui-org/react";
 import type {ActionFunction, LinksFunction, LoaderFunction} from "@remix-run/node";
 import {json, redirect} from "@remix-run/node";
 import {uk} from "~/src/i18n";
@@ -87,6 +95,7 @@ export default function CreateNewUserPage() {
         shouldValidate: "onBlur",
     });
     const passportFields = useFieldset(form.ref, fields.passport);
+    const navigation = useNavigation();
     return (
         <Layout title="Створення нового користувача" {...context}>
             <Form
@@ -104,7 +113,10 @@ export default function CreateNewUserPage() {
                     <ValidationSection fields={fields}/>
                 </div>
 
+                <Spinner label="Перевірка на збіги" className={navigation.state === "idle" ? "hidden" : ""}/>
+
                 <DuplicatesSection/>
+
                 <div
                     className={`w-full text-center text-2xl font-semibold  ${actionData?.students || !actionData ? "hidden" : "block"}`}>
                     Валідація пройшла успішно - збігів не знайдено

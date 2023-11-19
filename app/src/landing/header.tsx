@@ -83,7 +83,7 @@ export default function LandingHeader(props: {
                     </Link>
                 </NavbarItem>
             </NavbarContent>
-            <NavbarMenu className="text-center">
+            <NavbarMenu className="text-center mt-4">
                 {pagesList.map((page, index) => (
                     <NavbarMenuItem key={`${page.id}_${index}`}
                                     className="cursor-pointer text-lg font-medium transition duration-300 ease-in-out hover:border-b-2 hover:border-b-slate-900 lg:mr-7"

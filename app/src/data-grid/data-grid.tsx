@@ -28,17 +28,23 @@ import {SearchIcon} from "@nextui-org/shared-icons";
 import {matchSorter} from 'match-sorter';
 import {Link} from '@remix-run/react';
 import type {DataGridColumn} from "~/src/shared/types";
+import {formatValue} from "~/src/constants";
 
 export default function DataGrid<T extends {
-    url?: string,
-    id?: string
+    url?: string, id?: string
 }>(props: {
     columns: DataGridColumn<T>[],
     rows: T[],
+    isEditable?: boolean,
+    isDeletable?: boolean,
+    isCreatable?: boolean,
+    isCopyable?: boolean,
 }) {
-    const {columns, rows} = props
+    const {
+        columns, rows, isCopyable = true, isCreatable = true, isDeletable = true, isEditable = true,
+    } = props
     const [filterValue, setFilterValue] = React.useState("");
-    const [_, setSelectedKeys] = React.useState<Selection>(new Set([]));
+    const [, setSelectedKeys] = React.useState<Selection>(new Set([]));
     const keys = React.useMemo(() => {
         return columns
             .filter(f => f.sortable ?? true)
@@ -112,9 +118,15 @@ export default function DataGrid<T extends {
         setFilterValue("")
         setPage(1)
     }, [])
+    const columnsDictionary = React.useMemo(() => {
+        return columns.reduce((acc, column) => {
+            acc[column.key] = column;
+            return acc;
+        }, {} as Record<keyof T, DataGridColumn<T>>);
+    }, [columns]);
+
     const topContent = React.useMemo(() => {
-        return (
-            <div className="flex flex-col gap-4">
+        return (<div className="flex flex-col gap-4">
                 <div className="flex justify-between gap-3 items-center">
                     <div className="flex gap-3">
                         <Dropdown>
@@ -123,7 +135,7 @@ export default function DataGrid<T extends {
                                         radius="sm"
                                         color="primary"
                                         variant="flat">
-                                    Columns
+                                    Колонки
                                 </Button>
                             </DropdownTrigger>
                             <DropdownMenu
@@ -134,11 +146,9 @@ export default function DataGrid<T extends {
                                 selectionMode="multiple"
                                 onSelectionChange={setVisibleColumns}
                             >
-                                {columns.map((column) => (
-                                    <DropdownItem key={column.key} className="capitalize">
+                                {columns.map((column) => (<DropdownItem key={column.key} textValue={column.key} className="capitalize">
                                         {column.label}
-                                    </DropdownItem>
-                                ))}
+                                    </DropdownItem>))}
                             </DropdownMenu>
                         </Dropdown>
                     </div>
@@ -166,19 +176,16 @@ export default function DataGrid<T extends {
                             value={rowsPerPage}
                         >
                             {[5, 10, 20, 30, 40, 50, 100].map((option) => (
-                                <option key={option} value={option}>{option}</option>
-                            ))}
+                                <option key={option} value={option}>{option}</option>))}
                         </select>
                     </label>
                 </div>
-            </div>
-        );
+            </div>);
     }, [filterValue, onSearchChange, visibleColumns, columns, rows.length, onRowsPerPageChange, rowsPerPage, onClear]);
 
 
     const bottomContent = React.useMemo(() => {
-        return (
-            <div className="py-2 px-2 flex justify-between items-center">
+        return (<div className="py-2 px-2 flex justify-between items-center">
                 <span className="w-[30%] text-small text-default-400"/>
                 <Pagination
                     isCompact
@@ -200,16 +207,14 @@ export default function DataGrid<T extends {
                         Вперед
                     </Button>
                 </div>
-            </div>
-        );
+            </div>);
     }, [page, pages, onPreviousPage, onNextPage]);
     const renderCell = React.useCallback((entity: any, columnKey: React.Key) => {
         const cellValue = entity[columnKey as keyof T];
         switch (columnKey) {
             case "url":
             case "id":
-                return (
-                    <>
+                return (<>
                         <div className="relative md:hidden flex justify-end items-center gap-2">
                             <Dropdown>
                                 <DropdownTrigger>
@@ -221,39 +226,33 @@ export default function DataGrid<T extends {
                                     </Button>
                                 </DropdownTrigger>
                                 <DropdownMenu>
-                                    <DropdownItem startContent={
-                                        <DocumentDuplicateIcon
-                                            className="h-7 w-7 cursor-pointer"
-                                            aria-hidden="true"
-                                        />
-                                    }>
+                                    {isCopyable ? <DropdownItem startContent={<DocumentDuplicateIcon
+                                        className="h-7 w-7 cursor-pointer"
+                                        aria-hidden="true"
+                                    />}>
                                         <Link
                                             to={cellValue + "/copy"}
                                             prefetch="intent"
                                         />
                                         Скопіювати
-                                    </DropdownItem>
-                                    <DropdownItem startContent={
-                                        <PencilIcon
-                                            className="h-7 w-7 cursor-pointer text-blue-500"
-                                            aria-hidden="true"
-                                        />
-                                    }>
+                                    </DropdownItem> : <span/>}
+                                    {isEditable ? <DropdownItem startContent={<PencilIcon
+                                        className="h-7 w-7 cursor-pointer text-blue-500"
+                                        aria-hidden="true"
+                                    />}>
                                         Редагувати
-                                    </DropdownItem>
-                                    <DropdownItem startContent={
-                                        <TrashIcon
-                                            className="h-7 w-7 cursor-pointer text-red-500"
-                                            aria-hidden="true"
-                                        />
-                                    }>
+                                    </DropdownItem> : <span/>}
+                                    {isDeletable ? <DropdownItem startContent={<TrashIcon
+                                        className="h-7 w-7 cursor-pointer text-red-500"
+                                        aria-hidden="true"
+                                    />}>
                                         Видалити
-                                    </DropdownItem>
+                                    </DropdownItem> : <span/>}
                                 </DropdownMenu>
                             </Dropdown>
                         </div>
                         <div className="relative hidden md:flex justify-end items-center gap-2">
-                            <Tooltip content="Скопіювати">
+                            {isCopyable ? <Tooltip content="Скопіювати">
                                 <Link
                                     to={`${cellValue}/copy`}
                                     prefetch="intent"
@@ -263,8 +262,8 @@ export default function DataGrid<T extends {
                                         aria-hidden="true"
                                     />
                                 </Link>
-                            </Tooltip>
-                            <Tooltip content="Редагувати">
+                            </Tooltip> : null}
+                            {isEditable ? <Tooltip content="Редагувати">
                                 <Link
                                     to={`${cellValue}/edit`}
                                     prefetch="intent"
@@ -274,8 +273,8 @@ export default function DataGrid<T extends {
                                         aria-hidden="true"
                                     />
                                 </Link>
-                            </Tooltip>
-                            <Tooltip content="Видалити">
+                            </Tooltip> : null}
+                            {isDeletable ? <Tooltip content="Видалити">
                                 <Link
                                     to={`${cellValue}/delete`}
                                     prefetch="intent"
@@ -285,30 +284,31 @@ export default function DataGrid<T extends {
                                         aria-hidden="true"
                                     />
                                 </Link>
-                            </Tooltip>
+                            </Tooltip> : null}
                         </div>
-                    </>
-                );
+                    </>);
             default:
+                const column = columnsDictionary[columnKey as keyof T];
+                if(column?.type === 'date') {
+                    return formatValue(cellValue);
+                }
                 return cellValue;
         }
-    }, []);
+    }, [isCopyable, isDeletable, isEditable]);
 
-    return (
-        <Table aria-label="table"
-               isHeaderSticky isStriped
-               bottomContent={bottomContent}
-               topContent={topContent}
-               sortDescriptor={sortDescriptor}
-               topContentPlacement="outside"
-               onSelectionChange={setSelectedKeys}
-               onSortChange={setSortDescriptor}
+    return (<Table aria-label="table"
+                   isHeaderSticky isStriped
+                   bottomContent={bottomContent}
+                   topContent={topContent}
+                   sortDescriptor={sortDescriptor}
+                   topContentPlacement="outside"
+                   onSelectionChange={setSelectedKeys}
+                   onSortChange={setSortDescriptor}
         >
             <TableHeader columns={headerColumns}>
                 {(column) => {
-                    if (column.key === 'url' || column.key === "id") {
-                        return (
-                            <TableColumn
+                    if ((column.key === 'url' || column.key === "id") && isCreatable) {
+                        return (<TableColumn
                                 className="w-10"
                                 key={column.key}>
                                 <div className="flex justify-center">
@@ -321,26 +321,20 @@ export default function DataGrid<T extends {
                                         <PlusCircleIcon className="h-7 w-7"/>
                                     </Button>
                                 </div>
-                            </TableColumn>
-                        )
+                            </TableColumn>)
                     }
-                    return (
-                        <TableColumn
+                    return (<TableColumn
                             key={column.key}
                             allowsSorting={column.sortable}
                         >
                             {column.label}
-                        </TableColumn>
-                    );
+                        </TableColumn>);
                 }}
             </TableHeader>
             <TableBody items={items}>
-                {(item) => (
-                    <TableRow key={item?.url ?? item?.id ?? ''}>
+                {(item) => (<TableRow key={item?.url ?? item?.id ?? ''}>
                         {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                    </TableRow>
-                )}
+                    </TableRow>)}
             </TableBody>
-        </Table>
-    )
+        </Table>)
 }
