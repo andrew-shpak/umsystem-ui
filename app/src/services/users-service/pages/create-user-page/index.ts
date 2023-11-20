@@ -6,6 +6,7 @@ import RoleSection from "./role-section";
 import PasswordSection from "./password-section";
 import ValidationSection from "./validation-section";
 import DuplicatesSection from "./duplicates-section";
+import EducationSection from "./education-section";
 
 export {
     createUserSchema,
@@ -15,5 +16,6 @@ export {
     RoleSection,
     PasswordSection,
     ValidationSection,
-    DuplicatesSection
+    DuplicatesSection,
+    EducationSection,
 }

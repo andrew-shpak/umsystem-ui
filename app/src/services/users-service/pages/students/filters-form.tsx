@@ -93,7 +93,7 @@ export default function FiltersForm(props: {
                 />
 
                 <CheckboxField
-                    {...conform.input(fields.deleted)}
+                    config={fields.deleted}
                     label="Видалені"
                 />
             </div>

@@ -50,7 +50,6 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
     const [inputValue, setInputValue] = useState<string>('');
 
     const shadowInputRef = useRef<HTMLInputElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
     const control = useInputEvent({
         ref: shadowInputRef,
         onReset: () => setSelectedKey(config?.defaultValue?.toString() ?? ''),
@@ -68,14 +67,13 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
             const optionLabel = getLabel(option)
             return optionLabel.toLowerCase().includes(inputValue.toLowerCase())
         })
-    }, [getLabel, options, inputValue])
+    }, [selectedKey, options, getLabel, inputValue])
     return (
         <>
             <input ref={shadowInputRef}
                    {...conform.input(config, {hidden: true})}/>
             <Autocomplete
                 {...rest}
-                ref={inputRef}
                 variant="faded"
                 radius="sm"
                 inputValue={inputValue}

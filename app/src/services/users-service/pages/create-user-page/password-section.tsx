@@ -15,10 +15,10 @@ export default function PasswordSection(props: {
                 Пароль
             </h3>
             <CheckboxField
-                {...conform.input(fields.generatePassword)}
+                config={fields.generatePassword}
                 label="Згенерувати пароль"
-                onChange={(event) => {
-                    setGeneratePassword(event.target.checked)
+                onValueChange={(checked) => {
+                    setGeneratePassword(checked)
                 }}
             />
             <PasswordField

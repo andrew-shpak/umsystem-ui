@@ -13,10 +13,9 @@ export default function ValidationSection(props: {
                 Валідація
             </h3>
             <CheckboxField
-                {...conform.input(fields.validation)}
+               config={fields.validation}
                 label="Перевірка на збіги"
                 color={"danger"}
-                defaultSelected={Boolean(fields.validation.defaultValue ?? true)}
             />
         </section>
     )

@@ -14,7 +14,7 @@ import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import {endpoints, routes} from "~/src/constants";
 import {
     createUserSchema,
-    DuplicatesSection,
+    DuplicatesSection, EducationSection,
     FullNameSection,
     GeneralInformationSection,
     PassportSection,
@@ -28,6 +28,7 @@ import type {ActionFunction, LinksFunction, LoaderFunction} from "@remix-run/nod
 import {json, redirect} from "@remix-run/node";
 import {uk} from "~/src/i18n";
 import {environment} from "~/environment.server";
+import { getZodDefaultValues } from "~/src/shared/helpers";
 
 const pageTitle = 'Створення користувача'
 export const links: LinksFunction = () => [
@@ -74,7 +75,6 @@ export const handle = {
 }
 export default function CreateNewUserPage() {
     const context = useOutletContext<ContextType>()
-    const [searchParams] = useSearchParams()
     const actionData = useActionData<typeof action>()
     // const canDisableUserValidation = context.permissions.includes(
     //   DISABLE_USERS_VALIDATION,
@@ -85,8 +85,7 @@ export default function CreateNewUserPage() {
     const location = useLocation()
     const [form, fields] = useForm({
         defaultValue: {
-            validate: true,
-            ...Object.fromEntries(searchParams),
+            validation: true,
         },
         constraint: getFieldsetConstraint(createUserSchema),
         onValidate({formData}) {
@@ -95,6 +94,7 @@ export default function CreateNewUserPage() {
         shouldValidate: "onBlur",
     });
     const passportFields = useFieldset(form.ref, fields.passport);
+    const educationFields = useFieldset(form.ref, fields.education);
     const navigation = useNavigation();
     return (
         <Layout title="Створення нового користувача" {...context}>
@@ -107,6 +107,7 @@ export default function CreateNewUserPage() {
                 <div className="md:grid md:grid-cols-2 md:gap-7 w-full">
                     <FullNameSection fields={fields}/>
                     <GeneralInformationSection fields={fields}/>
+                    <EducationSection fields={educationFields}/>
                     <PassportSection fields={passportFields}/>
                     <RoleSection fields={fields}/>
                     <PasswordSection fields={fields}/>
@@ -169,7 +170,18 @@ export const action: ActionFunction = async ({request}) => {
     const cookie = headers.get('cookie') as string
     const formData = await request.formData();
     const submission = parse(formData, {schema: createUserSchema});
-    const url = `${environment().USERS_SERVICE_BASE_URL}/${endpoints.students}/validation`
+
+    if(submission.value?.education && !submission.value?.education?.educationProgramId) {
+        delete submission.value.education
+    }
+
+    if (submission.value?.passport &&!submission.value?.passport?.number) {
+        delete submission.value.passport
+    }
+
+    const url = submission.value?.action === "validate"
+        ?`${environment().USERS_SERVICE_BASE_URL}/${endpoints.students}/validation`
+        : `${environment().USERS_SERVICE_BASE_URL}/${endpoints.users}`
     const response = await fetch(url, {
         method: 'POST',
         headers: {
