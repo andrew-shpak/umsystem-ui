@@ -120,12 +120,6 @@ export function ErrorBoundary() {
     // }
 
     return (
-        <main>
-            <main>
-                <h1>
-                    {error.status}: {error.statusText}
-                </h1>
-            </main>
-        </main>
+        <main/>
     )
 }

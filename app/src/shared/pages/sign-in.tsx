@@ -32,13 +32,16 @@ export default function SignInPage() {
     //         },
     //     })
     // }
+
+
     return (
         <main className="h-screen w-screen flex-wrap items-center justify-between md:flex">
-            <div
-                className="org-cover md:w-3/5"
-                style={{
-                    backgroundImage: `url(${logo})`,
-                }}
+            <img
+                loading="lazy"
+                decoding="async"
+                src={logo}
+                alt="UMSystem logo"
+                className="bg-cover bg-center bg-no-repeat bg-fafafa box-border m-0 md:flex hidden flex-row flex-wrap h-screen md:w-3/5"
             />
             <div className="bg-white drop-shadow sm:w-full md:w-2/5">
                 <div className="container m-auto flex h-screen w-3/5 flex-col flex-wrap items-center justify-center">
