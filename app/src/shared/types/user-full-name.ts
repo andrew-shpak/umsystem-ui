@@ -1,4 +1,4 @@
-import type { UserFullName } from "~/src/entities";
+import type {UserFullName} from "~/src/entities";
 
 type FullName= UserFullName &{
     userFullName:string;

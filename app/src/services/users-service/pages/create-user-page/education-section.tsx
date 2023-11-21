@@ -1,9 +1,9 @@
 import type {Fieldset} from "@conform-to/react";
-import {conform} from "@conform-to/react";
-import {AutocompleteField, DateField, TextField} from "~/src/forms";
+import {AutocompleteField, DateField} from "~/src/forms";
 import type {Education} from "~/src/services/users-service/pages/create-user-page/education-schema";
 import {useLoaderData} from "@remix-run/react";
 import type {EducationForm, EducationLevel, EducationProgram, FinancialSource} from "~/src/entities";
+
 type LoaderData = {
     educationPrograms: EducationProgram[]
     educationForms: EducationForm[]
@@ -66,13 +66,11 @@ export default function EducationSection(props: {
                 config={start}
                 label="Початок навчання"
                 placeholder="Введіть дату початку навчання"
-                errorMessage={start.error}
             />
             <DateField
                 config={end}
                 label="Завершення навчання"
                 placeholder="Введіть дату завершення навчання"
-                errorMessage={end.error}
             />
         </section>
     )

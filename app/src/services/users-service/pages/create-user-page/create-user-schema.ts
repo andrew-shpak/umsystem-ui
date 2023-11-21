@@ -3,8 +3,8 @@ import {uk} from "~/src/i18n";
 import * as phoneValidator from "phone";
 import validator from "validator";
 import {validateDate, validateDateRange} from "~/src/constants";
-import { educationSchema } from "./education-schema";
-import { passportSchema } from "./passport-schema";
+import {educationSchema} from "./education-schema";
+import {passportSchema} from "./passport-schema";
 
 const createUserSchema = z.object({
     name: z.string({required_error: uk.requiredField}),

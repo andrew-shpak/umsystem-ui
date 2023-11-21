@@ -1,5 +1,4 @@
 import type {Fieldset} from '@conform-to/react';
-import {conform} from "@conform-to/react";
 import {AutocompleteField, TextareaField, TextField} from "~/src/forms";
 import type {Order, Tariff} from "~/src/entities";
 
@@ -12,29 +11,25 @@ export default function OrderSystemForm(props: {
         <>
             <div className="w-full flex flex-col md:grid md:grid-cols-2 gap-4">
                 <TextField
-                    {...conform.input(fields.name)}
+                    config={fields.name}
                     label="Ім'я"
                     placeholder="Введіть ім'я"
-                    errorMessage={fields.name.error}
                 />
                 <TextField
-                    {...conform.input(fields.lastName)}
                     label="Прізвище"
                     placeholder="Введіть прізвище"
-                    errorMessage={fields.lastName.error}
+                    config={fields.lastName}
                 />
                 <TextField
-                    {...conform.input(fields.phone)}
+                    config={fields.phone}
                     label="Телефон"
                     placeholder="Введіть номер телефону"
-                    helperText={"Наприклад: +380123456789"}
-                    errorMessage={fields.phone.error}
+                    description={"Наприклад: +380123456789"}
                 />
                 <TextField
-                    {...conform.input(fields.email)}
                     label="Пошта"
                     placeholder="Введіть ел. пошту"
-                    errorMessage={fields.email.error}
+                    config={fields.email}
                 />
             </div>
             <div className="w-full mt-4">
@@ -48,11 +43,10 @@ export default function OrderSystemForm(props: {
             </div>
             <div className="w-full my-4">
                 <TextareaField
-                    {...conform.textarea(fields.message)}
                     label="Повідомлення"
                     placeholder="Введіть опис вашої задачі"
                     minRows={3}
-                    errorMessage={fields.message.error}
+                    config={fields.message}
                 />
             </div>
 

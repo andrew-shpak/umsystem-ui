@@ -1,6 +1,6 @@
 import * as z from "zod";
 import {uk} from "~/src/i18n";
-import {validateDate, validateDateRange} from "~/src/constants";
+import {validateDate} from "~/src/constants";
 
 
 const educationSchema = z.object({

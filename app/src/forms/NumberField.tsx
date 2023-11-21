@@ -1,44 +1,27 @@
-import {InputHTMLAttributes, ReactNode, useState} from 'react'
+import {useState} from 'react'
 import {Input} from "@nextui-org/input";
 import {useIMask} from "react-imask";
-import {FactoryOpts} from "imask";
+import type {FactoryOpts} from "imask";
+import type {InputProps} from "@nextui-org/react";
+import type { FieldConfig} from '@conform-to/react';
+import {conform} from '@conform-to/react';
 
-type NumberFieldParams = Omit<InputHTMLAttributes<HTMLInputElement>,
-    "size"
-    | "value"
-    | "color"
-    | "onFocus"
-    | "onBlur"
-    | "isInvalid"
-    | "errorMessage"
-    | "onClear"
-> & {
-    fullWidth?: boolean
-    helperText?: ReactNode
-    errorMessage?: string
-    label?: string
-    onClear?: () => void
-    isClearable?: boolean
+type NumberFieldParams = InputProps & {
     mapToRadix?: string[]
+    config: FieldConfig<string>
 }
 
 export default function NumberField(props: NumberFieldParams) {
     const {
         fullWidth = true,
-        helperText,
-        className: inputClassName = '',
         onClear,
-        isClearable = true,
         mapToRadix = [',', '.'],
-        errorMessage,
-        defaultValue,
-        required,
-        onChange,
-        label,
-        placeholder,
-        disabled
+        isClearable = true,
+        config,
+        ...rest
     } = props
-    const [value, setValue] = useState<string | null | undefined>(defaultValue?.toString() ?? null);
+    const fieldProps = conform.input(config);
+    const [value, setValue] = useState<string | null | undefined>(config?.toString() ?? '');
 
     const [opts] = useState<FactoryOpts>({
         mask: Number,
@@ -51,29 +34,27 @@ export default function NumberField(props: NumberFieldParams) {
     })
     return (
         <Input
+            {...rest}
+            {...fieldProps}
             ref={ref}
             type="text"
             variant="faded"
             radius="sm"
-            isInvalid={!!errorMessage}
-            description={helperText}
+            errorMessage={config.error}
+            isInvalid={!!config.error}
             isClearable={isClearable}
-            isDisabled={disabled}
-            className={inputClassName}
+            isDisabled={rest.disabled}
             onClear={() => {
                 if (onClear) onClear();
                 setValue('');
             }}
             fullWidth={fullWidth}
-            isRequired={required}
+            isRequired={config.required}
             value={value?.toString() ?? ''}
             onChange={event => {
-                if (onChange) onChange(event);
+                if (rest.onChange) rest?.onChange(event);
                 setValue(event.target.value);
             }}
-            required={required}
-            label={label}
-            placeholder={placeholder}
         />
     )
 }

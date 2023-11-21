@@ -1,5 +1,4 @@
 import type {Fieldset} from "@conform-to/react";
-import {conform} from "@conform-to/react";
 import {DateField, TextField} from "~/src/forms";
 import type {CreateUser} from "./create-user-schema";
 
@@ -13,30 +12,26 @@ export default function GeneralInformationSection(props: {
                 Інформація про користувача
             </h3>
             <TextField
-                {...conform.input(fields.recoveryEmail)}
                 label="Резервна пошта"
                 placeholder="Введіть резервну пошту користувача"
-                helperText="Пароль буде автоматично надісланий на пошту"
-                errorMessage={fields.recoveryEmail.error}
+                description="Пароль буде автоматично надісланий на пошту"
+                config={fields.recoveryEmail}
             />
             <TextField
-                {...conform.input(fields.recoveryPhone)}
                 label="Резервний телефон"
                 placeholder="Введіть резервний телефон користувача у форматі +380983456789"
-                errorMessage={fields.recoveryPhone.error}
+                config={fields.recoveryPhone}
             />
             <DateField
                 config={fields.birthday}
                 label="Дата народження"
                 placeholder="Введіть дату народження"
-                errorMessage={fields.birthday.error}
             />
             <TextField
-                {...conform.input(fields.studentId)}
                 label="ID ФО"
                 placeholder="Введіть ID ФО"
-                helperText="Введіть ID фізичної особи із ЄДБО"
-                errorMessage={fields.studentId.error}
+                description="Введіть ID фізичної особи із ЄДБО"
+                config={fields.studentId}
             />
         </section>
     )

@@ -27,28 +27,24 @@ export default function PassportForm(props: {
             {/*    required={false}*/}
             {/*/>*/}
             <TextField
-                {...conform.input(series)}
                 label="Серія паспорта"
                 placeholder="Введіть серію паспорта"
-                errorMessage={series.error}
+                config={series}
             />
             <TextField
-                {...conform.input(number)}
                 label="Номер паспорта"
                 placeholder="Введіть номер паспорта"
-                errorMessage={number.error}
+                config={number}
             />
             <TextField
-                {...conform.input(issuedBy)}
                 label="Ким видано"
                 placeholder="Введіть місце видачі паспорта"
-                errorMessage={issuedBy.error}
+                config={issuedBy}
             />
             <DateField
                 config={issuedDate}
                 label="Дата видачі"
                 placeholder="Введіть дату видачі"
-                errorMessage={issuedDate.error}
             />
             <DateField
                 config={validUntil}

@@ -1,6 +1,5 @@
 import type {StudentsPageFilters} from "./filters-schema";
 import type {Fieldset} from "@conform-to/react";
-import {conform} from "@conform-to/react";
 import type {EducationForm, EducationLevel, EducationProgram, FinancialSource, User} from "~/src/entities";
 import {AutocompleteField, CheckboxField, DateField, NumberField} from "~/src/forms";
 import {useLoaderData} from "@remix-run/react";
@@ -39,7 +38,6 @@ export default function FiltersForm(props: {
             <div className="w-full flex flex-col md:flex-row gap-4 items-center">
                 <DateField
                     config={fields.start}
-                    errorMessage={fields.start.error}
                     label={'Дата початку'}
                     placeholder={'Введіть дату початку навчання'}
                 />
@@ -75,8 +73,7 @@ export default function FiltersForm(props: {
                 />
 
                 <NumberField
-                    {...conform.input(fields.year)}
-                    errorMessage={fields.year.error}
+                    config={fields.year}
                     label={'Курс'}
                     placeholder={'Введіть курс'}
                 />

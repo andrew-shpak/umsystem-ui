@@ -4,26 +4,11 @@ import {Input} from "@nextui-org/input";
 import {useIMask} from 'react-imask'
 import type {FactoryOpts} from "imask";
 import {conform, FieldConfig, useInputEvent} from "@conform-to/react";
+import {InputProps} from "@nextui-org/react";
 
-export type DateFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>,
-    "size"
-    | "value"
-    | "color"
-    | "onFocus"
-    | "onBlur"
-    | "isInvalid"
-    | "errorMessage"
-    | "onClear"
-> & {
-    fullWidth?: boolean
-    errorMessage?: string
-    defaultValue?: string
-    helperText?: ReactNode
+export type DateFieldProps =InputProps & {
     onClear?: () => void
-    isClearable?: boolean
-    label: ReactNode
     onSubmit?: (value: Date | null) => void
-    onChange?: (value: Date | null) => void
     fromDate?: Date
     toDate?: Date
     config: FieldConfig<string>
@@ -32,9 +17,7 @@ export type DateFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>,
 export default function DateField(props: DateFieldProps) {
     const {
         fullWidth = true,
-        helperText,
         onChange,
-        className: inputClassName = '',
         onClear,
         isClearable = true,
         config,
@@ -63,13 +46,12 @@ export default function DateField(props: DateFieldProps) {
                 type="text"
                 variant="faded"
                 radius="sm"
-                isInvalid={!!rest.errorMessage}
-                description={helperText}
+                errorMessage={config.error}
+                isInvalid={!!config.error}
                 isClearable={isClearable}
                 isDisabled={!!rest.disabled}
-                className={inputClassName}
                 fullWidth={fullWidth}
-                isRequired={props.required}
+                isRequired={config.required}
                 onClear={() => {
                     if (onClear) onClear();
                     setInputValue('');

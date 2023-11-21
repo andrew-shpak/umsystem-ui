@@ -1,12 +1,4 @@
-import {
-    Form,
-    Link,
-    useActionData,
-    useLocation,
-    useNavigation,
-    useOutletContext,
-    useSearchParams
-} from "@remix-run/react"
+import {Form, Link, useActionData, useLocation, useNavigation, useOutletContext} from "@remix-run/react"
 import {useFieldset, useForm} from "@conform-to/react";
 import type {ContextType} from "~/src/shared/types";
 import Layout from "~/src/layout";
@@ -14,7 +6,8 @@ import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import {endpoints, routes} from "~/src/constants";
 import {
     createUserSchema,
-    DuplicatesSection, EducationSection,
+    DuplicatesSection,
+    EducationSection,
     FullNameSection,
     GeneralInformationSection,
     PassportSection,
@@ -25,10 +18,10 @@ import {
 import styles from "../styles/layout.css";
 import {Button, Spinner} from "@nextui-org/react";
 import type {ActionFunction, LinksFunction, LoaderFunction} from "@remix-run/node";
-import {json, redirect} from "@remix-run/node";
+import {json} from "@remix-run/node";
 import {uk} from "~/src/i18n";
 import {environment} from "~/environment.server";
-import { getZodDefaultValues } from "~/src/shared/helpers";
+import {validateResponseStatusCode} from "~/helpers.server";
 
 const pageTitle = 'Створення користувача'
 export const links: LinksFunction = () => [
@@ -58,13 +51,12 @@ export const loader: LoaderFunction = async ({request}) => {
             credentials: 'include',
         },
     )
-    // if (res.status === 401) {
-    //     return redirect(`${routes.signIn}?redirect=${request.url}`)
-    // }
-    // if (res.status === 403) {
-    //     return redirect(routes.accessDenied)
-    // }
+
+    const validationResult = validateResponseStatusCode(request, res);
+    if (validationResult) return validationResult;
+
     const response = await res.json();
+
     return json({
         ...response,
         cdnUrl: environment().CDN_URL,
@@ -171,16 +163,16 @@ export const action: ActionFunction = async ({request}) => {
     const formData = await request.formData();
     const submission = parse(formData, {schema: createUserSchema});
 
-    if(submission.value?.education && !submission.value?.education?.educationProgramId) {
+    if (submission.value?.education && !submission.value?.education?.educationProgramId) {
         delete submission.value.education
     }
 
-    if (submission.value?.passport &&!submission.value?.passport?.number) {
+    if (submission.value?.passport && !submission.value?.passport?.number) {
         delete submission.value.passport
     }
 
     const url = submission.value?.action === "validate"
-        ?`${environment().USERS_SERVICE_BASE_URL}/${endpoints.students}/validation`
+        ? `${environment().USERS_SERVICE_BASE_URL}/${endpoints.students}/validation`
         : `${environment().USERS_SERVICE_BASE_URL}/${endpoints.users}`
     const response = await fetch(url, {
         method: 'POST',
@@ -192,8 +184,9 @@ export const action: ActionFunction = async ({request}) => {
         credentials: 'include',
         body: JSON.stringify(submission.value),
     })
-    if (response.status === 401) {
-        return redirect(`${routes.signIn}?redirect=${request.url}`)
-    }
+
+    const validationResult = validateResponseStatusCode(request, response);
+    if (validationResult) return validationResult;
+
     return await response.json()
 }

@@ -1,5 +1,4 @@
 import type {Fieldset} from "@conform-to/react";
-import {conform} from "@conform-to/react";
 import {CheckboxField, PasswordField} from "~/src/forms";
 import type {CreateUser} from "./create-user-schema";
 import {useState} from "react";
@@ -22,7 +21,7 @@ export default function PasswordSection(props: {
                 }}
             />
             <PasswordField
-                {...conform.input(fields.password)}
+                config={fields.password}
                 label="Пароль"
                 placeholder="Введіть пароль"
                 disabled={!generatePassword}
