@@ -50,7 +50,13 @@ export default function DataGrid<T extends {
             .filter(f => f.sortable ?? true)
             .map((column) => column.key)
     }, [columns]);
-    const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(keys));
+
+    const dataGridColumns = React.useMemo(() => columns
+        .filter(f => (f.visible ?? true) && f.key !== 'url' && f.key !== 'id'), [columns])
+
+    const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(dataGridColumns
+        .map((column) => column.key)));
+    console.log(visibleColumns, dataGridColumns)
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({});
@@ -83,6 +89,9 @@ export default function DataGrid<T extends {
 
         return sortedItems.slice(start, end);
     }, [page, sortedItems, rowsPerPage]);
+
+    const count = items.length;
+
     const headerColumns = React.useMemo(() => {
         if (columns.length === Array.from(visibleColumns).length) return columns;
         return columns.filter((column) => Array.from(visibleColumns).includes(column.key));
@@ -126,170 +135,180 @@ export default function DataGrid<T extends {
     }, [columns]);
 
     const topContent = React.useMemo(() => {
+        const visibleColumnsSize = Array.from(visibleColumns).length;
+        const hasAllVisibleColumns = visibleColumnsSize === dataGridColumns.length;
         return (<div className="flex flex-col gap-4">
-                <div className="flex justify-between gap-3 items-center">
-                    <div className="flex gap-3">
-                        <Dropdown>
-                            <DropdownTrigger className="hidden sm:flex">
-                                <Button endContent={<ChevronDownIcon className="text-small"/>}
-                                        radius="sm"
-                                        color="primary"
-                                        variant="flat">
-                                    Колонки
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu
-                                disallowEmptySelection
-                                aria-label="Table Columns"
-                                closeOnSelect={false}
-                                selectedKeys={visibleColumns}
-                                selectionMode="multiple"
-                                onSelectionChange={setVisibleColumns}
-                            >
-                                {columns.map((column) => (<DropdownItem key={column.key} textValue={column.key} className="capitalize">
-                                        {column.label}
-                                    </DropdownItem>))}
-                            </DropdownMenu>
-                        </Dropdown>
-                    </div>
-                    <Input
-                        isClearable
-                        className="w-full sm:max-w-[44%]"
-                        placeholder="Введите текст для пошуку"
-                        startContent={<SearchIcon/>}
-                        type="text"
-                        variant="faded"
-                        radius="sm"
-                        size="sm"
-                        value={filterValue}
-                        onClear={() => onClear()}
-                        onValueChange={onSearchChange}
-                    />
-                </div>
-                <div className="flex justify-between items-center">
-                    <span className="text-default-400 text-small">Всього {rows.length} записів</span>
-                    <label className="flex items-center text-default-400 text-small">
-                        Записів на сторінці:
-                        <select
-                            className="bg-transparent outline-none text-default-400 text-small"
-                            onChange={onRowsPerPageChange}
-                            value={rowsPerPage}
+            <div className="flex justify-between gap-3 items-center">
+                <div className="flex gap-3">
+                    <Dropdown>
+                        <DropdownTrigger className="hidden sm:flex">
+
+                            <Button endContent={<ChevronDownIcon className="text-small"/>}
+                                    radius="sm"
+                                    color={hasAllVisibleColumns ? "primary" : "warning"}
+                                    variant="flat">
+                                Колонки
+                            </Button>
+                        </DropdownTrigger>
+                        <DropdownMenu
+                            disallowEmptySelection
+                            aria-label="Table Columns"
+                            closeOnSelect={false}
+                            selectedKeys={visibleColumns}
+                            selectionMode="multiple"
+                            onSelectionChange={setVisibleColumns}
                         >
-                            {[5, 10, 20, 30, 40, 50, 100].map((option) => (
-                                <option key={option} value={option}>{option}</option>))}
-                        </select>
-                    </label>
+                            {dataGridColumns.map((column) => (
+                                <DropdownItem key={column.key} textValue={column.key} className="capitalize">
+                                    {column.label}
+                                </DropdownItem>))}
+                        </DropdownMenu>
+                    </Dropdown>
                 </div>
-            </div>);
+                <Input
+                    isClearable
+                    className="w-full sm:max-w-[44%]"
+                    placeholder="Введите текст для пошуку"
+                    startContent={<SearchIcon/>}
+                    type="text"
+                    variant="faded"
+                    radius="sm"
+                    size="sm"
+                    value={filterValue}
+                    onClear={() => onClear()}
+                    onValueChange={onSearchChange}
+                />
+            </div>
+            <div className="flex justify-between items-center">
+                <span className="text-default-400 text-small">Всього {rows.length} записів</span>
+                <label className="flex items-center text-default-400 text-small">
+                    Записів на сторінці:
+                    <select
+                        className="bg-transparent outline-none text-default-400 text-small"
+                        onChange={onRowsPerPageChange}
+                        value={rowsPerPage}
+                    >
+                        {[5, 10, 20, 30, 40, 50, 100].map((option) => (
+                            <option key={option} value={option}>{option}</option>))}
+                    </select>
+                </label>
+            </div>
+        </div>);
     }, [filterValue, onSearchChange, visibleColumns, columns, rows.length, onRowsPerPageChange, rowsPerPage, onClear]);
 
 
     const bottomContent = React.useMemo(() => {
-        return (<div className="py-2 px-2 flex justify-between items-center">
-                <span className="w-[30%] text-small text-default-400"/>
-                <Pagination
-                    isCompact
-                    showControls
-                    showShadow
-                    color="primary"
-                    page={page}
-                    total={pages}
-                    onChange={setPage}
-                    variant="flat"
-                />
-                <div className="hidden sm:flex w-[30%] justify-end gap-4">
-                    <Button isDisabled={pages === 1} color='primary' size="md" radius="sm" variant="flat"
-                            onPress={onPreviousPage}>
-                        Назад
-                    </Button>
-                    <Button isDisabled={pages === 1} color='primary' size="md" radius="sm" variant="flat"
-                            onPress={onNextPage}>
-                        Вперед
-                    </Button>
-                </div>
-            </div>);
-    }, [page, pages, onPreviousPage, onNextPage]);
+        return (<div className="gap-4 flex flex-col md:flex-row justify-between items-center">
+            <div className="w-[30%] gap-4 flex flex-col md:flex-row text-small text-default-400">
+          <span>{
+              `${page} `} ({rowsPerPage * (page - 1) + 1} -{' '}
+              {count < rowsPerPage ? count : rowsPerPage}){' з '}
+              {pages} ({count})
+          </span>
+            </div>
+            <Pagination
+                isCompact
+                showControls
+                showShadow
+                color="primary"
+                page={page}
+                total={pages}
+                onChange={setPage}
+                variant="flat"
+            />
+            <div className="hidden sm:flex w-[30%] justify-end gap-4">
+                <Button isDisabled={pages === 1} color='primary' size="md" radius="sm" variant="flat"
+                        onPress={onPreviousPage}>
+                    Назад
+                </Button>
+                <Button isDisabled={pages === 1} color='primary' size="md" radius="sm" variant="flat"
+                        onPress={onNextPage}>
+                    Вперед
+                </Button>
+            </div>
+        </div>);
+    }, [page, count, rowsPerPage, pages, onPreviousPage, onNextPage]);
     const renderCell = React.useCallback((entity: any, columnKey: React.Key) => {
         const cellValue = entity[columnKey as keyof T];
         switch (columnKey) {
             case "url":
             case "id":
                 return (<>
-                        <div className="relative md:hidden flex justify-end items-center gap-2">
-                            <Dropdown>
-                                <DropdownTrigger>
-                                    <Button isIconOnly size="sm" variant="light" radius="sm">
-                                        <Tooltip content="Створити">
-                                            <EllipsisVerticalIcon
-                                                className="text-default-300 cursor-pointer w-7 h-7"/>
-                                        </Tooltip>
-                                    </Button>
-                                </DropdownTrigger>
-                                <DropdownMenu>
-                                    {isCopyable ? <DropdownItem startContent={<DocumentDuplicateIcon
-                                        className="h-7 w-7 cursor-pointer"
-                                        aria-hidden="true"
-                                    />}>
-                                        <Link
-                                            to={cellValue + "/copy"}
-                                            prefetch="intent"
-                                        />
-                                        Скопіювати
-                                    </DropdownItem> : <span/>}
-                                    {isEditable ? <DropdownItem startContent={<PencilIcon
-                                        className="h-7 w-7 cursor-pointer text-blue-500"
-                                        aria-hidden="true"
-                                    />}>
-                                        Редагувати
-                                    </DropdownItem> : <span/>}
-                                    {isDeletable ? <DropdownItem startContent={<TrashIcon
-                                        className="h-7 w-7 cursor-pointer text-red-500"
-                                        aria-hidden="true"
-                                    />}>
-                                        Видалити
-                                    </DropdownItem> : <span/>}
-                                </DropdownMenu>
-                            </Dropdown>
-                        </div>
-                        <div className="relative hidden md:flex justify-end items-center gap-2">
-                            {isCopyable ? <Tooltip content="Скопіювати">
-                                <Link
-                                    to={`${cellValue}/copy`}
-                                    prefetch="intent"
-                                >
-                                    <DocumentDuplicateIcon
-                                        className="h-7 w-7 cursor-pointer"
-                                        aria-hidden="true"
+                    <div className="relative md:hidden flex justify-end items-center gap-2">
+                        <Dropdown>
+                            <DropdownTrigger>
+                                <Button isIconOnly size="sm" variant="light" radius="sm">
+                                    <Tooltip content="Створити">
+                                        <EllipsisVerticalIcon
+                                            className="text-default-300 cursor-pointer w-7 h-7"/>
+                                    </Tooltip>
+                                </Button>
+                            </DropdownTrigger>
+                            <DropdownMenu>
+                                {isCopyable ? <DropdownItem startContent={<DocumentDuplicateIcon
+                                    className="h-7 w-7 cursor-pointer"
+                                    aria-hidden="true"
+                                />}>
+                                    <Link
+                                        to={cellValue + "/copy"}
+                                        prefetch="intent"
                                     />
-                                </Link>
-                            </Tooltip> : null}
-                            {isEditable ? <Tooltip content="Редагувати">
-                                <Link
-                                    to={`${cellValue}/edit`}
-                                    prefetch="intent"
-                                >
-                                    <PencilIcon
-                                        className="h-7 w-7 cursor-pointer text-blue-500"
-                                        aria-hidden="true"
-                                    />
-                                </Link>
-                            </Tooltip> : null}
-                            {isDeletable ? <Tooltip content="Видалити">
-                                <Link
-                                    to={`${cellValue}/delete`}
-                                    prefetch="intent"
-                                >
-                                    <TrashIcon
-                                        className="h-7 w-7 cursor-pointer text-red-500"
-                                        aria-hidden="true"
-                                    />
-                                </Link>
-                            </Tooltip> : null}
-                        </div>
-                    </>);
+                                    Скопіювати
+                                </DropdownItem> : <span/>}
+                                {isEditable ? <DropdownItem startContent={<PencilIcon
+                                    className="h-7 w-7 cursor-pointer text-blue-500"
+                                    aria-hidden="true"
+                                />}>
+                                    Редагувати
+                                </DropdownItem> : <span/>}
+                                {isDeletable ? <DropdownItem startContent={<TrashIcon
+                                    className="h-7 w-7 cursor-pointer text-red-500"
+                                    aria-hidden="true"
+                                />}>
+                                    Видалити
+                                </DropdownItem> : <span/>}
+                            </DropdownMenu>
+                        </Dropdown>
+                    </div>
+                    <div className="relative hidden md:flex justify-end items-center gap-2">
+                        {isCopyable ? <Tooltip content="Скопіювати">
+                            <Link
+                                to={`${cellValue}/copy`}
+                                prefetch="intent"
+                            >
+                                <DocumentDuplicateIcon
+                                    className="h-7 w-7 cursor-pointer"
+                                    aria-hidden="true"
+                                />
+                            </Link>
+                        </Tooltip> : null}
+                        {isEditable ? <Tooltip content="Редагувати">
+                            <Link
+                                to={`${cellValue}/edit`}
+                                prefetch="intent"
+                            >
+                                <PencilIcon
+                                    className="h-7 w-7 cursor-pointer text-blue-500"
+                                    aria-hidden="true"
+                                />
+                            </Link>
+                        </Tooltip> : null}
+                        {isDeletable ? <Tooltip content="Видалити">
+                            <Link
+                                to={`${cellValue}/delete`}
+                                prefetch="intent"
+                            >
+                                <TrashIcon
+                                    className="h-7 w-7 cursor-pointer text-red-500"
+                                    aria-hidden="true"
+                                />
+                            </Link>
+                        </Tooltip> : null}
+                    </div>
+                </>);
             default:
                 const column = columnsDictionary[columnKey as keyof T];
-                if(column?.type === 'date') {
+                if (column?.type === 'date') {
                     return formatValue(cellValue);
                 }
                 return cellValue;
@@ -304,37 +323,37 @@ export default function DataGrid<T extends {
                    topContentPlacement="outside"
                    onSelectionChange={setSelectedKeys}
                    onSortChange={setSortDescriptor}
-        >
-            <TableHeader columns={headerColumns}>
-                {(column) => {
-                    if ((column.key === 'url' || column.key === "id") && isCreatable) {
-                        return (<TableColumn
-                                className="w-10"
-                                key={column.key}>
-                                <div className="flex justify-center">
-                                    <Button
-                                        as={Link}
-                                        to="new"
-                                        radius="sm"
-                                        prefetch="intent"
-                                        isIconOnly variant="light" color="success">
-                                        <PlusCircleIcon className="h-7 w-7"/>
-                                    </Button>
-                                </div>
-                            </TableColumn>)
-                    }
+    >
+        <TableHeader columns={headerColumns}>
+            {(column) => {
+                if ((column.key === 'url' || column.key === "id") && isCreatable) {
                     return (<TableColumn
-                            key={column.key}
-                            allowsSorting={column.sortable}
-                        >
-                            {column.label}
-                        </TableColumn>);
-                }}
-            </TableHeader>
-            <TableBody items={items}>
-                {(item) => (<TableRow key={item?.url ?? item?.id ?? ''}>
-                        {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                    </TableRow>)}
-            </TableBody>
-        </Table>)
+                        className="w-10"
+                        key={column.key}>
+                        <div className="flex justify-center">
+                            <Button
+                                as={Link}
+                                to="new"
+                                radius="sm"
+                                prefetch="intent"
+                                isIconOnly variant="light" color="success">
+                                <PlusCircleIcon className="h-7 w-7"/>
+                            </Button>
+                        </div>
+                    </TableColumn>)
+                }
+                return (<TableColumn
+                    key={column.key}
+                    allowsSorting={column.sortable}
+                >
+                    {column.label}
+                </TableColumn>);
+            }}
+        </TableHeader>
+        <TableBody items={items}>
+            {(item) => (<TableRow key={item?.url ?? item?.id ?? ''}>
+                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+            </TableRow>)}
+        </TableBody>
+    </Table>)
 }

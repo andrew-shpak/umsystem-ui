@@ -49,6 +49,7 @@ export default function DuplicatesSection(props: {}) {
                             return (
                                 <AccordionItem key={student.url} aria-label={student.userFullName}
                                                subtitle={student.primaryEmail} title={title}
+                                               isCompact
                                 >
                                     <div className="px-2">
                                         <Card className="mb-4">
