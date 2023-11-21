@@ -9,6 +9,7 @@ import {
     ScrollRestoration,
     useLoaderData,
     useNavigate,
+    useRouteError,
 } from "@remix-run/react";
 import {commitSession, getSession} from "~/message.server";
 import {environment} from "~/environment.server";
@@ -72,4 +73,59 @@ export default function App() {
         </body>
         </html>
     );
+}
+
+export function ErrorBoundary() {
+    const error = useRouteError()
+    // when true, this is what used to go to `CatchBoundary`
+    // if (isRouteErrorResponse(error)) {
+    //     let pageTitle
+    //     switch (error.status) {
+    //         case 404:
+    //             pageTitle = 'Сторінку не знайдено'
+    //             return (
+    //                 <Document title={pageTitle} theme={theme}>
+    //                     <main className="flex h-screen items-center justify-center bg-[#3C3ECF]   p-4">
+    //                         <NotFound />
+    //                     </main>
+    //                 </Document>
+    //             )
+    //         case 500:
+    //             pageTitle = 'Помилка на сторінці'
+    //             return (
+    //                 <Document title={pageTitle} theme={theme}>
+    //                     <main className="flex h-screen items-center justify-center bg-[#3C3ECF] p-4">
+    //                         <ErrorPage />
+    //                     </main>
+    //                 </Document>
+    //             )
+    //         default:
+    //             return (
+    //                 <Document title={`${error.status} ${error.statusText}`} theme={theme}>
+    //                     <main>
+    //                         <h1>
+    //                             {error.status}: {error.statusText}
+    //                         </h1>
+    //                     </main>
+    //                 </Document>
+    //             )
+    //     }
+    // }
+
+    // // Don't forget to typecheck with your own logic.
+    // // Any value can be thrown, not just errors!
+    // let errorMessage = "Unknown error";
+    // if (isDefinitelyAnError(error)) {
+    //   errorMessage = error.message;
+    // }
+
+    return (
+        <main>
+            <main>
+                <h1>
+                    {error.status}: {error.statusText}
+                </h1>
+            </main>
+        </main>
+    )
 }
