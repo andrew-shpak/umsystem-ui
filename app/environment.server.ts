@@ -14,7 +14,7 @@ const environmentSchema = z.object({
     // NOTIFICATIONS_SERVICE_BASE_URL: z.string().url(),
     TARRIFS_SERVICE_BASE_URL: z.string().url(),
     EMAILS_SERVICE_BASE_URL: z.string().url(),
-    // ORGANIZATIONS_SERVICE_BASE_URL: z.string().url(),
+    ORGANIZATIONS_SERVICE_BASE_URL: z.string().url(),
     // CV_SERVICE_BASE_URL: z.string().url(),
     // LESSONS_SERVICE_BASE_URL: z.string().url(),
     // CDN_BASE_URL: z.string().url(),
