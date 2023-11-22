@@ -4,7 +4,7 @@ import {format, formatISO, isAfter, isValid, parse} from "date-fns";
 const dateFormat = "dd.MM.yyyy";
 
 export const minDate = new Date(1940, 0, 1)
-export const formatValue = (date: string, pattern= dateFormat) =>
+export const formatValue = (date: string, pattern = dateFormat) =>
     format(new Date(date), pattern)
 const parseDate = (date: string) => {
     return parse(date, dateFormat, new Date())

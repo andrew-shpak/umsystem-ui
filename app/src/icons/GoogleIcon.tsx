@@ -1,7 +1,7 @@
 import {SvgIconProps} from './types'
 
 export default function GoogleIcon(props: SvgIconProps) {
-    const {size = 16,color="#fcfcfc"} = props
+    const {size = 16, color = "#fcfcfc"} = props
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"

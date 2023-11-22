@@ -1,6 +1,6 @@
 import type {DataGridColumn, UserEducation} from "~/src/shared/types";
 
-const userEducationColumns:DataGridColumn<UserEducation>[]= [
+const userEducationColumns: DataGridColumn<UserEducation>[] = [
     {label: <span>ОПП</span>, key: "educationProgram"},
     {label: <span>Освітній рівень</span>, key: "educationLevel"},
     {label: <span>Форма навчання</span>, key: "educationForm"},

@@ -30,11 +30,9 @@ export const links: LinksFunction = () => [
 
 export function meta() {
     return [
-        {
-            title: pageTitle,
-            description: 'Створення користувача організації',
-        },
-    ]
+        {title: pageTitle},
+        {name: "description", content: 'Створення користувача організації'},
+    ];
 }
 
 export const loader: LoaderFunction = async ({request}) => {

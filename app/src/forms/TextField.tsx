@@ -2,7 +2,7 @@ import type {ReactNode} from 'react';
 import {useState} from "react";
 import {Input} from "@nextui-org/input";
 import type {InputProps} from '@nextui-org/react';
-import type { FieldConfig} from "@conform-to/react";
+import type {FieldConfig} from "@conform-to/react";
 import {conform} from "@conform-to/react";
 
 type TextFieldParams = InputProps & {

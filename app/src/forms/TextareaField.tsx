@@ -2,10 +2,10 @@ import type {ReactNode} from 'react';
 import {useState} from "react";
 import {Textarea} from "@nextui-org/input";
 import type {TextAreaProps} from '@nextui-org/react';
-import type { FieldConfig} from "@conform-to/react";
+import type {FieldConfig} from "@conform-to/react";
 import {conform} from "@conform-to/react";
 
-type TextareaFieldParams =  TextAreaProps & {
+type TextareaFieldParams = TextAreaProps & {
     onClear?: () => void
     label: ReactNode
     config: FieldConfig<string>
@@ -22,7 +22,7 @@ export default function TextareaField(props: TextareaFieldParams) {
     } = props
 
     const [value, setValue] = useState<string | null | undefined>(config?.defaultValue);
-const fieldProps = conform.input(config);
+    const fieldProps = conform.input(config);
     return (
         <Textarea
             {...rest}

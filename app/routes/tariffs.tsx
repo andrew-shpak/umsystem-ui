@@ -2,26 +2,24 @@ import {useLoaderData, useOutletContext} from "@remix-run/react"
 import type {Tariff} from "~/src/entities";
 import type {ContextType} from "~/src/shared/types";
 import Layout from "~/src/layout";
-import {endpoints, routes} from "~/src/constants";
+import {endpoints} from "~/src/constants";
 import styles from "../styles/layout.css";
 import type {LinksFunction, LoaderFunction} from "@remix-run/node";
-import {redirect} from "@remix-run/node";
 import {environment} from "~/environment.server";
 import {DataGrid} from "~/src/data-grid";
 import {tariffsColumns} from "~/src/columns";
+import {validateResponseStatusCode} from "~/helpers.server";
 
-const pageTitle = 'Створення користувача'
+const pageTitle = 'Створення студента'
 export const links: LinksFunction = () => [
     {rel: "stylesheet", href: styles}
 ];
 
 export function meta() {
     return [
-        {
-            title: pageTitle,
-            description: 'Створення користувача організації',
-        },
-    ]
+        {title: pageTitle},
+        {name: "description", content: 'Створення студента'},
+    ];
 }
 
 export const loader: LoaderFunction = async ({request}) => {
@@ -37,12 +35,9 @@ export const loader: LoaderFunction = async ({request}) => {
             credentials: 'include',
         },
     )
-    if (res.status === 401) {
-        return redirect(`${routes.signIn}?redirect=${request.url}`)
-    }
-    if (res.status === 403) {
-        return redirect(routes.accessDenied)
-    }
+    const validationResult = validateResponseStatusCode(request, res);
+    if (validationResult) return validationResult;
+
     return await res.json()
 }
 export const handle = {

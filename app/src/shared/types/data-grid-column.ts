@@ -7,5 +7,5 @@ export interface DataGridColumn<T> {
     searchable?: boolean,
     className?: string
     visible?: boolean,
-    type?: "text" | "number" | "date" | "datetime" | "time" | "currency" | "percentage" | "boolean" ,
+    type?: "text" | "number" | "date" | "datetime" | "time" | "currency" | "percentage" | "boolean",
 }

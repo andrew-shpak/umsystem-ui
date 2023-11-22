@@ -1,13 +1,16 @@
-import type { LoaderFunction} from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { environment } from "~/environment.server";
-import { endpoints } from "~/src/constants";
-import {SignInPage} from "~/src/shared/pages";
+import type {LoaderFunction} from "@remix-run/node";
+import {json} from "@remix-run/node";
+import {environment} from "~/environment.server";
+import {endpoints} from "~/src/constants";
+import {SignIn} from "~/src/shared/pages";
 
 const pageTitle = 'Вхід у систему'
 
 export function meta() {
-    return [{title: pageTitle, description: 'Вхід у систему'}]
+    return [
+        {title: pageTitle},
+        {name: "description", content: pageTitle},
+    ];
 }
 
 export const loader: LoaderFunction = async ({request}) => {
@@ -35,8 +38,8 @@ export const loader: LoaderFunction = async ({request}) => {
     )
 }
 
-export default function SignIn() {
+export default function SignInPage() {
     return (
-        <SignInPage/>
+        <SignIn/>
     )
 }

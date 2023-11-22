@@ -3,7 +3,7 @@ import {Input} from "@nextui-org/input";
 import {useIMask} from "react-imask";
 import type {FactoryOpts} from "imask";
 import type {InputProps} from "@nextui-org/react";
-import type { FieldConfig} from '@conform-to/react';
+import type {FieldConfig} from '@conform-to/react';
 import {conform} from '@conform-to/react';
 
 type NumberFieldParams = InputProps & {

@@ -1,4 +1,3 @@
-import type {InputHTMLAttributes, ReactNode} from 'react';
 import {useRef, useState} from 'react'
 import {Input} from "@nextui-org/input";
 import {useIMask} from 'react-imask'
@@ -6,7 +5,7 @@ import type {FactoryOpts} from "imask";
 import {conform, FieldConfig, useInputEvent} from "@conform-to/react";
 import {InputProps} from "@nextui-org/react";
 
-export type DateFieldProps =InputProps & {
+export type DateFieldProps = InputProps & {
     onClear?: () => void
     onSubmit?: (value: Date | null) => void
     fromDate?: Date

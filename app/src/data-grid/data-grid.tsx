@@ -56,7 +56,6 @@ export default function DataGrid<T extends {
 
     const [visibleColumns, setVisibleColumns] = React.useState<Selection>(new Set(dataGridColumns
         .map((column) => column.key)));
-    console.log(visibleColumns, dataGridColumns)
     const [page, setPage] = React.useState(1);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({});

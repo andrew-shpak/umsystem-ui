@@ -31,8 +31,8 @@ const createUserSchema = z.object({
         .optional(),
 })
     .superRefine((entity, ctx) => {
-        const {studentId, identityNumber, passport,education} = entity;
-        if (education &&!validateDateRange(education.start, education.end)) {
+        const {studentId, identityNumber, passport, education} = entity;
+        if (education && !validateDateRange(education.start, education.end)) {
             ctx.addIssue({
                 code: z.ZodIssueCode.custom,
                 path: ['education', 'end'],

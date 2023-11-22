@@ -4,8 +4,8 @@ const environmentSchema = z.object({
     NODE_ENV: z
         .enum(['development', 'production', 'test'])
         .default('development'),
-    // SUPABASE_URL: z.string().url(),
-    // SUPABASE_ANON_KEY: z.string(),
+    SUPABASE_URL: z.string().url(),
+    SUPABASE_ANON_KEY: z.string(),
     // REDIRECT_URL: z.string().url(),
     // RATING_SERVICE_BASE_URL: z.string().url(),
     // SURVEY_SERVICE_BASE_URL: z.string().url(),

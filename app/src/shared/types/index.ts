@@ -6,5 +6,5 @@ import type {UserEducation} from './user-education'
 import type {FullName} from './user-full-name'
 
 export {ContextType, SubmissionResult, DataGridColumn, Theme}
-export type { UserEducation,FullName}
+export type {UserEducation, FullName}
 

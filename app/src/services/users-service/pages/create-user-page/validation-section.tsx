@@ -12,7 +12,7 @@ export default function ValidationSection(props: {
                 Валідація
             </h3>
             <CheckboxField
-               config={fields.validation}
+                config={fields.validation}
                 label="Перевірка на збіги"
                 color={"danger"}
             />

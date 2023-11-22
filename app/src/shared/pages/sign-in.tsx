@@ -1,8 +1,8 @@
 import {useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
-import type { ContextType } from "../types";
-import { Copyright } from "~/src/components";
-import { GoogleIcon } from "~/src/icons";
-import { Button } from "@nextui-org/react";
+import type {ContextType} from "../types";
+import {Copyright} from "~/src/components";
+import {GoogleIcon} from "~/src/icons";
+import {Button} from "@nextui-org/react";
 
 
 type LoaderData = {
@@ -11,7 +11,7 @@ type LoaderData = {
 }
 
 
-export default function SignInPage() {
+export default function SignIn() {
     const response = useLoaderData<LoaderData>()
     const context = useOutletContext<ContextType>()
     const cdnUrl = context.environment.CDN_URL
@@ -52,10 +52,10 @@ export default function SignInPage() {
                         alt="UMSystem logo"
                         className="mb-10"
                     />
-                    <Button fullWidth  color="danger" variant="solid" startContent={<GoogleIcon size={20} />}>
+                    <Button fullWidth color="danger" variant="solid" startContent={<GoogleIcon size={20}/>}>
                         Увійти
                     </Button>
-                    <Copyright className="mt-10 text-center font-normal" />
+                    <Copyright className="mt-10 text-center font-normal"/>
                 </div>
             </div>
         </main>

@@ -47,7 +47,12 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
         ...rest
     } = props;
     const [selectedKey, setSelectedKey] = useState<Key>(config?.defaultValue?.toString() ?? '');
-    const [inputValue, setInputValue] = useState<string>('');
+    const defaultEntity = useMemo(() => {
+        return options.find(option => getOptionKey(option) === config?.defaultValue?.toString())
+    }, [options, getOptionKey, config?.defaultValue])
+    const [inputValue, setInputValue] = useState<string>(defaultEntity
+        ? getLabel(defaultEntity)
+        : '');
 
     const shadowInputRef = useRef<HTMLInputElement>(null);
     const control = useInputEvent({
