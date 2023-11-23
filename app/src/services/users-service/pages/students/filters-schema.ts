@@ -20,6 +20,7 @@ const studentsFiltersSchema = z.object({
     financialSourceId: z.string().optional(),
     deleted: z.boolean().optional(),
     userId: z.string().optional(),
+    fullName: z.string().optional(),
 }).refine((entity) => validateDateRange(entity.start, entity.end), {
     message: uk.invalidDateRange,
     path: ["end"],

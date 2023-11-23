@@ -22,7 +22,6 @@ export default function FullNameSection(props: {
                 config={fields.name}
             />
             <TextField
-                name="middleName"
                 label="Побатькові"
                 placeholder="Введіть побатькові користувача"
                 config={fields.middleName}

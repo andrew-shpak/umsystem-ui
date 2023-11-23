@@ -1,7 +1,7 @@
 import type {StudentsPageFilters} from "./filters-schema";
 import type {Fieldset} from "@conform-to/react";
 import type {EducationForm, EducationLevel, EducationProgram, FinancialSource, User} from "~/src/entities";
-import {AutocompleteField, CheckboxField, DateField, NumberField} from "~/src/forms";
+import {AutocompleteField, CheckboxField, DateField, NumberField, TextField} from "~/src/forms";
 import {useLoaderData} from "@remix-run/react";
 
 type LoaderData = {
@@ -80,6 +80,18 @@ export default function FiltersForm(props: {
             </div>
 
 
+            <div className="w-full flex flex-col md:flex-row gap-4 items-center lg:col-span-3 md:col-span-2">
+                <TextField
+                    label="ПІП"
+                    placeholder="Введіть ПІП студента"
+                    config={fields.fullName}
+                />
+
+                <CheckboxField
+                    config={fields.deleted}
+                    label="Видалені"
+                />
+            </div>
             <div className="w-full flex flex-col md:flex-row gap-4 items-center lg:col-span-2">
                 <AutocompleteField
                     options={users}
@@ -87,11 +99,6 @@ export default function FiltersForm(props: {
                     label="Користувач"
                     placeholder="Виберіть користувача"
                     config={fields.userId}
-                />
-
-                <CheckboxField
-                    config={fields.deleted}
-                    label="Видалені"
                 />
             </div>
         </>
