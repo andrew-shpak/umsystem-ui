@@ -26,7 +26,9 @@ export default function SignIn() {
         await supabaseClient.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `https://dev.umsys.com.ua/auth/callback${location.search}`,
+                redirectTo: `${
+                    response.host.includes('localhost:') ? 'http://' : 'https://'
+                }${response.host}/auth/callback${location.search}`,
             },
         })
     }

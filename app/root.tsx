@@ -9,6 +9,7 @@ import {
     ScrollRestoration,
     useLoaderData,
     useNavigate,
+    useRevalidator,
 } from "@remix-run/react";
 import {commitSession, getSession} from "~/message.server";
 import {environment} from "~/environment.server";
@@ -16,7 +17,8 @@ import type {ContextType} from "./src/shared/types";
 import {NextUIProvider} from "@nextui-org/react";
 import {getThemeSession} from "./theme.server";
 import styles from "./tailwind.css";
-import {createBrowserClient} from '@supabase/ssr'
+import {createBrowserClient, createServerClient} from '@supabase/ssr'
+import {useEffect, useState } from "react";
 
 export const links: LinksFunction = () => [
     {rel: "stylesheet", href: styles},
@@ -27,10 +29,23 @@ export const loader: LoaderFunction = async ({request}) => {
     const cookieSession = await getSession(cookie)
     const themeSession = await getThemeSession(request);
     const response = new Response()
+    const supabase = createServerClient(
+        environment().SUPABASE_URL,
+        environment().SUPABASE_ANON_KEY,
+        {
+            cookies: {
+                get(name: string) {
+                    return cookie
+                },
+            },
+        }
+    )
+    const session = await supabase.auth.getSession();
     return json(
         {
             environment: environment(),
             theme: themeSession.getTheme(),
+            serverAccessToken: session?.data.session?.access_token,
         },
         {
             headers: {
@@ -44,12 +59,31 @@ export default function App() {
     const {
         environment,
         theme,
+        serverAccessToken
     } = useLoaderData<typeof loader>();
     const navigate = useNavigate();
-    const supabaseClient = createBrowserClient(
-        environment.SUPABASE_URL,
-        environment.SUPABASE_ANON_KEY!
+    const {revalidate} = useRevalidator()
+    const [supabaseClient] = useState(() =>
+        createBrowserClient(environment.SUPABASE_URL, environment.SUPABASE_ANON_KEY),
     )
+
+    useEffect(() => {
+        const {
+            data: {subscription},
+        } = supabaseClient.auth.onAuthStateChange((event: unknown, supabaseSession) => {
+            if (
+                event !== 'INITIAL_SESSION' &&
+                supabaseSession?.access_token !== serverAccessToken
+            ) {
+                // server and client are out of sync.
+                revalidate()
+            }
+        })
+
+        return () => {
+            subscription.unsubscribe()
+        }
+    }, [serverAccessToken, supabaseClient, revalidate])
 
     const context: ContextType = {
         environment,
