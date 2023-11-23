@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {DropEvent} from "@react-types/shared";
 
 let draggingCount = 0;
 type Params = {

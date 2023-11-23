@@ -23,7 +23,6 @@ export default function SignIn() {
     const location = useLocation()
     const {supabaseClient} = useOutletContext<ContextType>()
     const handleGoogleLogin = async () => {
-        console.log('supabaseClient', supabaseClient)
         await supabaseClient.auth.signInWithOAuth({
             provider: 'google',
             options: {
