@@ -21,17 +21,18 @@ export default function SignIn() {
         : `${cdnUrl}/logo-oa.jpg`
     const caver = 'umsystem-logo.svg'
     const location = useLocation()
-    // const {supabase} = useOutletContext<ContextType>()
-    // const handleGoogleLogin = async () => {
-    //     await supabase.auth.signInWithOAuth({
-    //         provider: 'google',
-    //         options: {
-    //             redirectTo: `${
-    //                 response.host.includes('localhost:') ? 'http://' : 'https://'
-    //             }${response.host}/auth/callback${location.search}`,
-    //         },
-    //     })
-    // }
+    const {supabaseClient} = useOutletContext<ContextType>()
+    const handleGoogleLogin = async () => {
+        console.log('supabaseClient', supabaseClient)
+        await supabaseClient.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+                redirectTo: `${
+                    response.host.includes('localhost:') ? 'http://' : 'https://'
+                }${response.host}/auth/callback${location.search}`,
+            },
+        })
+    }
 
 
     return (
@@ -52,7 +53,9 @@ export default function SignIn() {
                         alt="UMSystem logo"
                         className="mb-10"
                     />
-                    <Button fullWidth color="danger" variant="solid" startContent={<GoogleIcon size={20}/>}>
+                    <Button fullWidth color="danger" variant="solid" startContent={<GoogleIcon size={20}/>}
+                            onClick={handleGoogleLogin}
+                    >
                         Увійти
                     </Button>
                     <Copyright className="mt-10 text-center font-normal"/>

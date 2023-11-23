@@ -1,24 +1,36 @@
 import type {LoaderFunction} from '@remix-run/node'
 import {redirect} from '@remix-run/node'
-import {createServerClient} from '@supabase/auth-helpers-remix'
-import {environment} from '~/environment.server'
+import {createServerClient, parse, serialize} from '@supabase/ssr'
 import {routes} from '~/src/constants'
+import {environment} from "~/environment.server";
 
 export const loader: LoaderFunction = async ({request}) => {
-    const response = new Response()
-    const url = new URL(request.url)
-    const code = url.searchParams.get('code')
-    const redirectUrl = url.searchParams.get('redirect')
-    if (code) {
-        const supabaseClient = createServerClient(
-            environment().SUPABASE_URL,
-            environment().SUPABASE_ANON_KEY,
-            {request, response},
-        )
-        await supabaseClient.auth.exchangeCodeForSession(code)
-    }
+    const requestUrl = new URL(request.url)
+    const code = requestUrl.searchParams.get('code')
+    const redirectUrl = requestUrl.searchParams.get('next') ??
+        requestUrl.searchParams.get('redirect') ?? routes.dashboard
 
-    return redirect(redirectUrl ? redirectUrl : routes.dashboard, {
-        headers: response.headers,
-    })
+    if (code) {
+        const cookies = parse(request.headers.get('Cookie') ?? '')
+        const headers = new Headers()
+
+        const supabase = createServerClient(environment().SUPABASE_URL!, environment().SUPABASE_ANON_KEY!, {
+            cookies: {
+                get(key) {
+                    return cookies[key]
+                },
+                set(key, value, options) {
+                    headers.append('Set-Cookie', serialize(key, value, options))
+                },
+                remove(key, options) {
+                    headers.append('Set-Cookie', serialize(key, '', options))
+                },
+            },
+        })
+
+        const {error} = await supabase.auth.exchangeCodeForSession(code)
+        if (!error) {
+            return redirect(redirectUrl ? redirectUrl : routes.dashboard, {headers})
+        }
+    }
 }

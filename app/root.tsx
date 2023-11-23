@@ -9,7 +9,6 @@ import {
     ScrollRestoration,
     useLoaderData,
     useNavigate,
-    useRouteError,
 } from "@remix-run/react";
 import {commitSession, getSession} from "~/message.server";
 import {environment} from "~/environment.server";
@@ -17,16 +16,17 @@ import type {ContextType} from "./src/shared/types";
 import {NextUIProvider} from "@nextui-org/react";
 import {getThemeSession} from "./theme.server";
 import styles from "./tailwind.css";
+import {createBrowserClient} from '@supabase/ssr'
 
 export const links: LinksFunction = () => [
     {rel: "stylesheet", href: styles},
 ];
 export const loader: LoaderFunction = async ({request}) => {
     const {headers} = request
-    const cookieSession = await getSession(request.headers.get('cookie'))
+    const cookie = headers.get('cookie')
+    const cookieSession = await getSession(cookie)
     const themeSession = await getThemeSession(request);
     const response = new Response()
-
     return json(
         {
             environment: environment(),
@@ -43,13 +43,19 @@ export const loader: LoaderFunction = async ({request}) => {
 export default function App() {
     const {
         environment,
-        theme
+        theme,
     } = useLoaderData<typeof loader>();
+    const navigate = useNavigate();
+    const supabaseClient = createBrowserClient(
+        environment.SUPABASE_URL,
+        environment.SUPABASE_ANON_KEY!
+    )
+
     const context: ContextType = {
         environment,
-        theme
+        theme,
+        supabaseClient
     }
-    const navigate = useNavigate();
     return (
         <html lang="en">
         <head>
@@ -76,7 +82,7 @@ export default function App() {
 }
 
 export function ErrorBoundary() {
-    const error = useRouteError()
+    // const error = useRouteError()
     // when true, this is what used to go to `CatchBoundary`
     // if (isRouteErrorResponse(error)) {
     //     let pageTitle
