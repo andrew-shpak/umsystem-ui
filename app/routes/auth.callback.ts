@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({request}) => {
         const cookies = parse(request.headers.get('cookie') ?? '')
         const headers = new Headers()
 
-        const supabase = createServerClient(environment().SUPABASE_URL!, environment().SUPABASE_ANON_KEY!, {
+        const supabase = createServerClient(environment().SUPABASE_URL, environment().SUPABASE_ANON_KEY, {
             cookies: {
                 get(key) {
                     return cookies[key]

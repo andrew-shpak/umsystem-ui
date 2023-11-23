@@ -44,8 +44,8 @@ export const loader: LoaderFunction = async ({request}) => {
             credentials: 'include',
         },
     )
-    const validationResult = validateResponseStatusCode(request, res);
-    if (validationResult) return validationResult;
+    // const validationResult = validateResponseStatusCode(request, res);
+    // if (validationResult) return validationResult;
 
     const response = await res.json();
     return json({
