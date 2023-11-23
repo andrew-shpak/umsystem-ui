@@ -6,7 +6,6 @@ import TextareaField from './TextareaField'
 import TextField from './TextField'
 import UploadField from './UploadField'
 import CheckboxField from './CheckboxField'
-import ColorPickerField from './ColorPickerField'
 
 export {
     NumberField,
@@ -17,5 +16,4 @@ export {
     DateField,
     TextareaField,
     CheckboxField,
-    ColorPickerField,
 }

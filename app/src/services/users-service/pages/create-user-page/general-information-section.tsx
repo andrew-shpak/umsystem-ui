@@ -1,42 +1,38 @@
-import {conform, Fieldset} from "@conform-to/react";
+import type {Fieldset} from "@conform-to/react";
 import {DateField, TextField} from "~/src/forms";
 import type {CreateUser} from "./create-user-schema";
 
-export default function CreateUserInformationForm(props: {
+export default function GeneralInformationSection(props: {
     fields: Fieldset<CreateUser>
 }) {
     const {fields} = props;
     return (
-        <div className="w-full flex flex-col gap-4">
-            <div className="divider mb-4 text-center text-lg font-medium">
+        <section className="w-full flex flex-col gap-4">
+            <h3 className="divider text-center text-lg font-medium">
                 Інформація про користувача
-            </div>
+            </h3>
             <TextField
-                {...conform.input(fields.recoveryEmail)}
                 label="Резервна пошта"
                 placeholder="Введіть резервну пошту користувача"
-                helperText="Пароль буде автоматично надісланий на пошту"
-                errorMessage={fields.recoveryEmail.error}
+                description="Пароль буде автоматично надісланий на пошту"
+                config={fields.recoveryEmail}
             />
             <TextField
-                {...conform.input(fields.recoveryPhone)}
                 label="Резервний телефон"
                 placeholder="Введіть резервний телефон користувача у форматі +380983456789"
-                errorMessage={fields.recoveryPhone.error}
+                config={fields.recoveryPhone}
             />
             <DateField
-                {...conform.input(fields.birthday)}
+                config={fields.birthday}
                 label="Дата народження"
                 placeholder="Введіть дату народження"
-                errorMessage={fields.birthday.error}
             />
             <TextField
-                {...conform.input(fields.studentId)}
                 label="ID ФО"
                 placeholder="Введіть ID ФО"
-                helperText="Введіть ID фізичної особи із ЄДБО"
-                errorMessage={fields.studentId.error}
+                description="Введіть ID фізичної особи із ЄДБО"
+                config={fields.studentId}
             />
-        </div>
+        </section>
     )
 }

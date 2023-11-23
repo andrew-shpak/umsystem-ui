@@ -83,5 +83,6 @@ export enum routes {
     additionalCourses = '/courses/additional',
     bookingClassrooms = '/booking/classrooms',
     signTimetable = '/sign/timetable',
-    main = "/"
+    main = "/",
+    students = "/students"
 }

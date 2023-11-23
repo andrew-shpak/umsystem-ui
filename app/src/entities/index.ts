@@ -58,7 +58,7 @@ import type Week from './week'
 import type TeacherConsultation from './teacher-consultation'
 import type LessonsScheduleRecord from './lessons-schedule'
 import type UserPositionRecord from './user-position-record'
-import type UserFullName from './user-full-name'
+import type {UserFullName} from './user-full-name'
 import type Workplace from './workplace'
 import type {AdditionalLesson} from './additional-lesson'
 import type {TimetableLesson} from './timetable-lesson'
@@ -73,7 +73,7 @@ import {educationFormSchema} from './education/education-form'
 import type {EducationLevel} from './education/education-levels';
 import {educationLevelSchema} from './education/education-levels'
 import type {FinancialSource} from './education/financial-source'
-import type {EducationRecord} from './education/education-record'
+import type {EducationRecord, educationRecordSchema} from './education/education-record'
 import type {EducationProgram} from './education/education-programs'
 
 export type {
@@ -156,5 +156,6 @@ export {
     tariffSchema,
     educationFormSchema,
     educationLevelSchema,
-    facultySchema
+    facultySchema,
+    educationRecordSchema
 }

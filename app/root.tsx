@@ -1,4 +1,4 @@
-import type {LoaderFunction} from "@remix-run/node";
+import type {LinksFunction, LoaderFunction} from "@remix-run/node";
 import {json} from "@remix-run/node";
 import {
     Links,
@@ -10,19 +10,23 @@ import {
     useLoaderData,
     useNavigate,
 } from "@remix-run/react";
-import "./tailwind.css"
 import {commitSession, getSession} from "~/message.server";
 import {environment} from "~/environment.server";
 import type {ContextType} from "./src/shared/types";
 import {NextUIProvider} from "@nextui-org/react";
 import {getThemeSession} from "./theme.server";
+import styles from "./tailwind.css";
+import {createBrowserClient} from '@supabase/ssr'
 
+export const links: LinksFunction = () => [
+    {rel: "stylesheet", href: styles},
+];
 export const loader: LoaderFunction = async ({request}) => {
     const {headers} = request
-    const cookieSession = await getSession(request.headers.get('cookie'))
+    const cookie = headers.get('cookie')
+    const cookieSession = await getSession(cookie)
     const themeSession = await getThemeSession(request);
     const response = new Response()
-
     return json(
         {
             environment: environment(),
@@ -39,13 +43,19 @@ export const loader: LoaderFunction = async ({request}) => {
 export default function App() {
     const {
         environment,
-        theme
+        theme,
     } = useLoaderData<typeof loader>();
+    const navigate = useNavigate();
+    const supabaseClient = createBrowserClient(
+        environment.SUPABASE_URL,
+        environment.SUPABASE_ANON_KEY!
+    )
+
     const context: ContextType = {
         environment,
-        theme
+        theme,
+        supabaseClient
     }
-    const navigate = useNavigate();
     return (
         <html lang="en">
         <head>
@@ -69,4 +79,53 @@ export default function App() {
         </body>
         </html>
     );
+}
+
+export function ErrorBoundary() {
+    // const error = useRouteError()
+    // when true, this is what used to go to `CatchBoundary`
+    // if (isRouteErrorResponse(error)) {
+    //     let pageTitle
+    //     switch (error.status) {
+    //         case 404:
+    //             pageTitle = 'Сторінку не знайдено'
+    //             return (
+    //                 <Document title={pageTitle} theme={theme}>
+    //                     <main className="flex h-screen items-center justify-center bg-[#3C3ECF]   p-4">
+    //                         <NotFound />
+    //                     </main>
+    //                 </Document>
+    //             )
+    //         case 500:
+    //             pageTitle = 'Помилка на сторінці'
+    //             return (
+    //                 <Document title={pageTitle} theme={theme}>
+    //                     <main className="flex h-screen items-center justify-center bg-[#3C3ECF] p-4">
+    //                         <ErrorPage />
+    //                     </main>
+    //                 </Document>
+    //             )
+    //         default:
+    //             return (
+    //                 <Document title={`${error.status} ${error.statusText}`} theme={theme}>
+    //                     <main>
+    //                         <h1>
+    //                             {error.status}: {error.statusText}
+    //                         </h1>
+    //                     </main>
+    //                 </Document>
+    //             )
+    //     }
+    // }
+
+    // // Don't forget to typecheck with your own logic.
+    // // Any value can be thrown, not just errors!
+    // let errorMessage = "Unknown error";
+    // if (isDefinitelyAnError(error)) {
+    //   errorMessage = error.message;
+    // }
+
+    return (
+        <main/>
+    )
 }

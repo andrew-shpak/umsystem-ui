@@ -1,38 +1,41 @@
-import {Checkbox} from '@nextui-org/react'
-import {InputHTMLAttributes, ReactNode} from 'react'
+import {Checkbox, CheckboxProps} from '@nextui-org/react'
+import type {ReactNode} from "react";
+import {useRef} from "react";
+import type {FieldConfig} from "@conform-to/react";
+import {conform, useInputEvent} from "@conform-to/react";
 
-type CheckboxFieldProps = Omit<InputHTMLAttributes<HTMLInputElement>,
-    "size"
-    | "value"
-    | "color"
-    | "onFocus"
-    | "onChange"
-    | "onBlur"
-    | "isInvalid"
-    | "errorMessage"
-    | "onClear"
-> & {
+type CheckboxFieldProps = CheckboxProps & {
     label?: ReactNode
-    name: string
-    defaultChecked?: boolean
-    onChange?: (value: boolean) => void
+    config: FieldConfig<string>
 }
 
 export default function CheckboxField(props: CheckboxFieldProps) {
     const {
         label,
-        name,
-        defaultChecked = false,
-        onChange,
-        disabled,
-        className,
+        color = "success",
+        config,
         ...rest
-    } = props
+    } = props;
+    const shadowInputRef = useRef<HTMLInputElement>(null);
+    const control = useInputEvent({
+        ref: shadowInputRef,
+    });
     return (
-        <Checkbox {...rest}
-                  radius="sm"
-                  color="success"
-                  defaultSelected={defaultChecked}
-        >{label}</Checkbox>
+        <>
+            <input ref={shadowInputRef}
+                   {...conform.input(config, {hidden: true, type: 'checkbox'})}/>
+            <Checkbox
+                {...rest}
+                radius="sm"
+                isDisabled={rest.disabled}
+                isRequired={config.required}
+                color={color}
+                defaultSelected={Boolean(config.defaultValue)}
+                onValueChange={(checked) => {
+                    control.change(checked)
+                    props.onValueChange?.(checked)
+                }}
+            >{label}</Checkbox>
+        </>
     )
 }

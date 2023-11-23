@@ -1,6 +1,5 @@
 import {NavLink, useLocation} from '@remix-run/react'
 import {ReactElement, useEffect, useMemo, useState} from 'react'
-import TextField from '~/src/forms/TextField'
 import {
     MdExpandLess,
     MdExpandMore,
@@ -144,17 +143,17 @@ export default function Sidebar(props: {
     return (
         <>
             <div className={`flex items-center justify-center px-4 ${display}`}>
-                <TextField
-                    name="page"
-                    required={false}
-                    label="Пошук сторінки"
-                    placeholder="Введіть фрагмент назви"
-                    onChange={event => {
-                        setQuery(event.target.value)
-                    }}
-                    fullWidth
-                    onClear={() => setQuery('')}
-                />
+                {/*<TextField*/}
+                {/*    name="page"*/}
+                {/*    required={false}*/}
+                {/*    label="Пошук сторінки"*/}
+                {/*    placeholder="Введіть фрагмент назви"*/}
+                {/*    onChange={event => {*/}
+                {/*        setQuery(event.target.value)*/}
+                {/*    }}*/}
+                {/*    fullWidth*/}
+                {/*    onClear={() => setQuery('')}*/}
+                {/*/>*/}
             </div>
             <ul
                 className={`scrollbar-thumb-rounded-full w-full space-y-2 overflow-y-auto px-4 scrollbar scrollbar-track-inherit scrollbar-thumb-slate-300  ${display}`}

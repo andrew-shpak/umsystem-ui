@@ -1,53 +1,60 @@
-import {ReactNode} from 'react'
-import {NumericFormat, NumericFormatProps} from 'react-number-format'
+import {useState} from 'react'
 import {Input} from "@nextui-org/input";
+import {useIMask} from "react-imask";
+import type {FactoryOpts} from "imask";
+import type {InputProps} from "@nextui-org/react";
+import type {FieldConfig} from '@conform-to/react';
+import {conform} from '@conform-to/react';
 
-type NumberFieldParams = Omit<NumericFormatProps, 'onChange'
-    | 'customInput'> & {
-    fullWidth?: boolean
-    helperText?: ReactNode
-    errorMessage?: string
-    label?: string
-    onChange?: (value: string | number, isValidNumber: boolean) => void
-    onClear?: () => void
-    isClearable?: boolean
+type NumberFieldParams = InputProps & {
+    mapToRadix?: string[]
+    config: FieldConfig<string>
 }
 
 export default function NumberField(props: NumberFieldParams) {
     const {
         fullWidth = true,
-        helperText,
-        className: inputClassName = '',
         onClear,
+        mapToRadix = [',', '.'],
         isClearable = true,
-        allowedDecimalSeparators = [',', '.'],
-        allowNegative = false,
-        errorMessage,
-        defaultValue,
-        required,
-        name,
+        config,
+        ...rest
     } = props
+    const fieldProps = conform.input(config);
+    const [value, setValue] = useState<string | null | undefined>(config?.toString() ?? '');
+
+    const [opts] = useState<FactoryOpts>({
+        mask: Number,
+        mapToRadix,
+        radix: '.',
+        thousandsSeparator: ',',
+    })
+    const {ref} = useIMask<HTMLInputElement, FactoryOpts>(opts, {
+        onAccept: newValue => setValue(newValue)
+    })
     return (
         <Input
-            as={NumericFormat}
-            allowNegative={allowNegative}
-            allowedDecimalSeparators={allowedDecimalSeparators}
+            {...rest}
+            {...fieldProps}
+            ref={ref}
             type="text"
-            name={name}
             variant="faded"
             radius="sm"
-            displayType="input"
-            thousandSeparator
-            isInvalid={!!errorMessage}
-            errorMessage={errorMessage}
-            description={helperText}
+            errorMessage={config.error}
+            isInvalid={!!config.error}
             isClearable={isClearable}
-            className={inputClassName}
-            onClear={onClear}
+            isDisabled={rest.disabled}
+            onClear={() => {
+                if (onClear) onClear();
+                setValue('');
+            }}
             fullWidth={fullWidth}
-            isRequired={required}
-            defaultValue={defaultValue?.toString()}
-            required={required}
+            isRequired={config.required}
+            value={value?.toString() ?? ''}
+            onChange={event => {
+                if (rest.onChange) rest?.onChange(event);
+                setValue(event.target.value);
+            }}
         />
     )
 }

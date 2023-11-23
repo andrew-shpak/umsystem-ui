@@ -1,51 +1,45 @@
 import {EyeIcon, EyeSlashIcon} from '@heroicons/react/24/outline'
-import type {InputHTMLAttributes, ReactNode} from 'react';
+import type {ReactNode} from 'react';
 import {useState} from "react";
 import {Input} from "@nextui-org/input";
+import type {InputProps} from "@nextui-org/react";
+import type {FieldConfig} from "@conform-to/react";
+import {conform} from "@conform-to/react";
 
-type TextFieldParams = Omit<InputHTMLAttributes<HTMLInputElement>,
-    "size"
-    | "value"
-    | "color"
-    | "onFocus"
-    | "onBlur"
-    | "isInvalid"
-    | "errorMessage"
-    | "onClear"
-> & {
-    fullWidth?: boolean
-    helperText?: ReactNode
-    errorMessage?: string
-    defaultValue?: string
-    onClear?: () => void
-    isClearable?: boolean
+type TextFieldParams = InputProps & {
     label: ReactNode
+    config: FieldConfig<string>
 }
 export default function PasswordField(props: TextFieldParams) {
     const {
         fullWidth = true,
-        helperText,
         onChange,
-        className: inputClassName = '',
         onClear,
-        isClearable = true,
+        isClearable = false,
+        config,
         ...rest
     } = props
+    const fieldProps = conform.input(config);
     const [isVisible, setIsVisible] = useState(false);
+    const [value, setValue] = useState<string | null | undefined>(config?.defaultValue);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
     return (
         <Input
             {...rest}
+            {...fieldProps}
             type={isVisible ? 'text' : 'password'}
             variant="faded"
             radius="sm"
-            isInvalid={!!rest.errorMessage}
-            description={helperText}
+            isInvalid={!!config.error}
+            errorMessage={config.error}
             isClearable={isClearable}
-            className={inputClassName}
-            isRequired={props.required}
-            onClear={onClear}
+            isDisabled={!!rest.disabled}
+            isRequired={fieldProps.required}
+            onClear={() => {
+                if (onClear) onClear();
+                setValue('')
+            }}
             fullWidth={fullWidth}
             endContent={
                 <button className="focus:outline-none cursor-pointer" type="button" onClick={toggleVisibility}>
@@ -62,6 +56,11 @@ export default function PasswordField(props: TextFieldParams) {
                     )}
                 </button>
             }
+            value={value?.toString() ?? ''}
+            onChange={event => {
+                if (onChange) onChange(event);
+                setValue(event.target.value);
+            }}
         />
     )
 }

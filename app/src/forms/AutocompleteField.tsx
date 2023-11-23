@@ -1,6 +1,6 @@
-import {Autocomplete, AutocompleteItem} from "@nextui-org/react";
+import {Autocomplete, AutocompleteItem, Tooltip} from "@nextui-org/react";
 import type {InputHTMLAttributes, ReactNode} from "react";
-import {useRef, useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import type {FieldConfig} from "@conform-to/react";
 import {conform, useInputEvent} from "@conform-to/react";
 
@@ -29,7 +29,7 @@ type Fields = object & {
     url?: string
     id?: string
 }
-type Key = string | number | bigint;
+type Key = string | number | null | undefined;
 
 export default function AutocompleteField<T extends Fields>(props: AutocompleteFieldProps<T>) {
     const {
@@ -46,38 +46,57 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
         config,
         ...rest
     } = props;
-    const [selectedKey, setSelectedKey] = useState<Key>(config?.defaultValue ?? '');
-
+    const [selectedKey, setSelectedKey] = useState<Key>(config?.defaultValue?.toString() ?? '');
+    const defaultEntity = useMemo(() => {
+        return options.find(option => getOptionKey(option) === config?.defaultValue?.toString())
+    }, [options, getOptionKey, config?.defaultValue])
+    const [inputValue, setInputValue] = useState<string>(defaultEntity
+        ? getLabel(defaultEntity)
+        : '');
 
     const shadowInputRef = useRef<HTMLInputElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
     const control = useInputEvent({
         ref: shadowInputRef,
-        onReset: () => setSelectedKey(config?.defaultValue ?? ''),
+        onReset: () => setSelectedKey(config?.defaultValue?.toString() ?? ''),
     });
     const onSelectionChange = (id: Key) => {
         setSelectedKey(id);
+        const option = options.find(option => getOptionKey(option) === id);
+        setInputValue(option ? getLabel(option) : '');
         control.change(id?.toString() ?? '');
     };
+
+    const items = useMemo(() => {
+        if (selectedKey) return options;
+        return options.filter(option => {
+            const optionLabel = getLabel(option)
+            return optionLabel.toLowerCase().includes(inputValue.toLowerCase())
+        })
+    }, [selectedKey, options, getLabel, inputValue])
     return (
         <>
             <input ref={shadowInputRef}
                    {...conform.input(config, {hidden: true})}/>
             <Autocomplete
                 {...rest}
-                ref={inputRef}
                 variant="faded"
                 radius="sm"
+                inputValue={inputValue}
+                onInputChange={setInputValue}
                 description={helperText}
                 fullWidth={fullWidth}
                 isRequired={config.required}
+                isDisabled={!!rest.disabled}
                 isClearable={isClearable}
-                onClear={onClear}
+                onClear={() => {
+                    if (onClear) onClear();
+                    setSelectedKey('');
+                }}
                 errorMessage={config.error}
                 className={inputClassName}
                 isInvalid={!!config.error}
                 minLength={minLength}
-                items={options}
+                items={items.slice(0, 50)}
                 onSelectionChange={onSelectionChange}
                 selectedKey={selectedKey}
                 onBlur={control.blur}
@@ -86,7 +105,13 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
                 {(option: T) => {
                     const key = getOptionKey(option)
                     const optionLabel = getLabel(option)
-                    return <AutocompleteItem key={key}>{optionLabel}</AutocompleteItem>;
+                    return (<AutocompleteItem key={key} textValue={optionLabel} as="div">
+                        <Tooltip content={optionLabel}>
+                            <div>
+                                {optionLabel}
+                            </div>
+                        </Tooltip>
+                    </AutocompleteItem>);
                 }}
             </Autocomplete>
         </>
