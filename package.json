@@ -19,7 +19,11 @@
     "@remix-run/node": "^2.2.0",
     "@remix-run/react": "^2.2.0",
     "@remix-run/serve": "^2.2.0",
+<<<<<<< Updated upstream
     "@supabase/auth-helpers-remix": "^0.2.6",
+=======
+    "@supabase/ssr": "^0.0.10",
+>>>>>>> Stashed changes
     "@tiptap/core": "^2.1.12",
     "@tiptap/extension-code": "^2.1.12",
     "@tiptap/extension-link": "^2.1.12",
@@ -27,7 +31,12 @@
     "@tiptap/pm": "^2.1.12",
     "@tiptap/react": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
+<<<<<<< Updated upstream
     "dayjs": "^1.11.10",
+=======
+    "attr-accept": "^2.2.2",
+    "date-fns": "^2.30.0",
+>>>>>>> Stashed changes
     "framer-motion": "^10.16.4",
     "html-react-parser": "^5.0.6",
     "isbot": "^3.6.8",
