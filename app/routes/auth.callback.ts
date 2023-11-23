@@ -11,7 +11,7 @@ export const loader: LoaderFunction = async ({request}) => {
         requestUrl.searchParams.get('redirect') ?? routes.dashboard
 
     if (code) {
-        const cookies = parse(request.headers.get('Cookie') ?? '')
+        const cookies = parse(request.headers.get('cookie') ?? '')
         const headers = new Headers()
 
         const supabase = createServerClient(environment().SUPABASE_URL!, environment().SUPABASE_ANON_KEY!, {
