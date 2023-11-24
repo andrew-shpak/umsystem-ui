@@ -22,6 +22,7 @@ import {json} from "@remix-run/node";
 import {uk} from "~/src/i18n";
 import {environment} from "~/environment.server";
 import {validateResponseStatusCode} from "~/helpers.server";
+import {auth} from "~/auth.server";
 
 const pageTitle = 'Створення користувача'
 export const links: LinksFunction = () => [
@@ -36,17 +37,17 @@ export function meta() {
 }
 
 export const loader: LoaderFunction = async ({request}) => {
-    const {headers} = request
-    const cookie = headers.get('cookie') as string
+    const { extraParams} = await auth.isAuthenticated(request, {
+        failureRedirect: routes.signIn,
+    });
     const url = new URL(request.url)
     const res = await fetch(
         `${environment().USERS_SERVICE_BASE_URL}/${endpoints.students}/data${url.search}`,
         {
             headers: {
                 Accept: 'application/json',
-                cookie,
+                Authorization: `Bearer ${extraParams.id_token} `,
             },
-            credentials: 'include',
         },
     )
 

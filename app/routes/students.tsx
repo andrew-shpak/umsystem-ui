@@ -16,6 +16,7 @@ import {studentsFiltersSchema} from "~/src/services/users-service/pages/students
 import {uk} from "~/src/i18n";
 import {cn} from "~/src/shared/utils";
 import {auth} from "~/auth.server";
+import {validateResponseStatusCode} from "~/helpers.server";
 
 const pageTitle = 'Список студентів'
 
@@ -45,8 +46,8 @@ export const loader: LoaderFunction = async ({request}) => {
         },
     )
 
-    // const validationResult = validateResponseStatusCode(request, res);
-    // if (validationResult) return validationResult;
+    const validationResult = validateResponseStatusCode(request, res);
+    if (validationResult) return validationResult;
 
     const response = await res.json();
     return json({
