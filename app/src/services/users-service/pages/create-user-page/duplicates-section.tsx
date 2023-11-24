@@ -2,7 +2,7 @@ import {useActionData} from "@remix-run/react";
 import {Accordion, AccordionItem, Card, CardBody, Divider} from "@nextui-org/react";
 import {Chip} from "@nextui-org/chip";
 import UserFullNamesTable from "~/src/shared/tables/user-full-names-table";
-import {FullName, UserEducation} from "~/src/shared/types";
+import type {FullName, UserEducation} from "~/src/shared/types";
 import {UserEducationTable} from "~/src/shared/tables";
 
 type Student = {

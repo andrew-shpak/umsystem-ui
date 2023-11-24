@@ -10,12 +10,13 @@ import type {EducationForm, EducationLevel, EducationProgram, User,} from "~/src
 import type {LinksFunction, LoaderFunction} from "@remix-run/node";
 import {json} from "@remix-run/node";
 import {environment} from "~/environment.server";
-import {endpoints} from "~/src/constants";
+import {endpoints, routes} from "~/src/constants";
 import {FiltersForm} from "~/src/services/users-service/pages";
 import {studentsFiltersSchema} from "~/src/services/users-service/pages/students";
 import {uk} from "~/src/i18n";
 import {cn} from "~/src/shared/utils";
 import {validateResponseStatusCode} from "~/helpers.server";
+import { auth } from "~/auth.server";
 
 const pageTitle = 'Список студентів'
 
@@ -31,21 +32,22 @@ export function meta() {
 }
 
 export const loader: LoaderFunction = async ({request}) => {
-    const {headers} = request
-    const cookie = headers.get('cookie') as string
     const url = new URL(request.url)
+    const { extraParams} = await auth.isAuthenticated(request, {
+        failureRedirect: routes.signIn,
+    });
     const res = await fetch(
         `${environment().USERS_SERVICE_BASE_URL}/${endpoints.students}${url.search}`,
         {
             headers: {
                 Accept: 'application/json',
-                cookie,
+                Authorization: `Bearer ${extraParams.id_token} `,
             },
-            credentials: 'include',
         },
     )
-    const validationResult = validateResponseStatusCode(request, res);
-    if (validationResult) return validationResult;
+
+    // const validationResult = validateResponseStatusCode(request, res);
+    // if (validationResult) return validationResult;
 
     const response = await res.json();
     return json({

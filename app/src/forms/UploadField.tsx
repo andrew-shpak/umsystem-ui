@@ -18,7 +18,6 @@ export default function UploadField(props: UploadFieldProps) {
     } = useFileUploader({
         ...fileInputProps
     });
-     console.log(Array.isArray(files))
     return (
         <div
             {...containerProps}
