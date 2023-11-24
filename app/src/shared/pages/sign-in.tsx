@@ -3,9 +3,9 @@ import type {ContextType} from "../types";
 import {Copyright} from "~/src/components";
 import {GoogleIcon} from "~/src/icons";
 import {Button} from "@nextui-org/react";
-import {ActionFunctionArgs, LoaderFunctionArgs, json} from "@remix-run/node";
-import { auth } from "~/auth.server";
-import { routes } from "~/src/constants";
+import {json, LoaderFunctionArgs} from "@remix-run/node";
+import {auth} from "~/auth.server";
+import {routes} from "~/src/constants";
 
 
 type LoaderData = {

@@ -15,8 +15,7 @@ import {FiltersForm} from "~/src/services/users-service/pages";
 import {studentsFiltersSchema} from "~/src/services/users-service/pages/students";
 import {uk} from "~/src/i18n";
 import {cn} from "~/src/shared/utils";
-import {validateResponseStatusCode} from "~/helpers.server";
-import { auth } from "~/auth.server";
+import {auth} from "~/auth.server";
 
 const pageTitle = 'Список студентів'
 

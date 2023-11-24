@@ -1,5 +1,5 @@
-import { auth } from "~/auth.server";
-import { routes } from "~/src/constants";
+import {auth} from "~/auth.server";
+import {routes} from "~/src/constants";
 import {ActionFunctionArgs} from "@remix-run/node";
 
 export const action = async ({ request }: ActionFunctionArgs) => {

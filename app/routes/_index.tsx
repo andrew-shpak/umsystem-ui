@@ -21,6 +21,7 @@ import {environment} from "~/environment.server";
 import {endpoints, routes} from "~/src/constants";
 import styles from "../styles/landing.css";
 import {commitSession, getSession, setSuccessMessage} from "~/message.server";
+import {auth} from "~/auth.server";
 
 const pageTitle = uk.mainPageTitle;
 export const meta: MetaFunction = () => {
@@ -33,16 +34,16 @@ export const links: LinksFunction = () => [
     {rel: "stylesheet", href: styles}
 ];
 export const loader: LoaderFunction = async ({request}) => {
-    const {headers} = request
-    const cookie = headers.get('cookie') as string
+    const { extraParams} = await auth.isAuthenticated(request, {
+        failureRedirect: routes.signIn,
+    });
     const res = await fetch(
         `${environment().TARRIFS_SERVICE_BASE_URL}/${endpoints.tariffs}`,
         {
             headers: {
                 Accept: 'application/json',
-                cookie,
+                Authorization: `Bearer ${extraParams.id_token} `,
             },
-            credentials: 'include',
         },
     )
     if (res.status === 401) {

@@ -17,8 +17,6 @@ import type {ContextType} from "./src/shared/types";
 import {NextUIProvider} from "@nextui-org/react";
 import {getThemeSession} from "./theme.server";
 import styles from "./tailwind.css";
-import {createBrowserClient} from '@supabase/ssr'
-import {useState} from "react";
 
 export const links: LinksFunction = () => [
     {rel: "stylesheet", href: styles},
