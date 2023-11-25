@@ -17,7 +17,8 @@
 .rdp {
     margin: 0 !important;
 }
+
 .required:after {
-    content:" *";
+    content: " *";
     color: red;
 }

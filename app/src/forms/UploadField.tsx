@@ -1,4 +1,3 @@
-import type {FieldConfig} from "@conform-to/react";
 import {conform, Field, useField} from "@conform-to/react";
 import {useFileUploader} from "~/src/hooks";
 import type {ReactNode} from "react";
@@ -10,9 +9,9 @@ type UploadFieldProps = {
     placeholder?: string
 } & Field<string>
 export default function UploadField(props: UploadFieldProps) {
-    const {name,formId, label, placeholder} = props;
-    const field = useField({ name, formId });
-    const fieldProps= conform.input(field);
+    const {name, formId, label, placeholder} = props;
+    const field = useField({name, formId});
+    const fieldProps = conform.input(field);
     const {
         inputProps,
         containerProps,
@@ -37,10 +36,10 @@ export default function UploadField(props: UploadFieldProps) {
                     {...inputProps}
                 />
                 <label className={cn("", {
-                    required:fieldProps.required,
+                    required: fieldProps.required,
                 })}>{label}</label>
                 <div className="text-gray-400 text-sm">{placeholder}</div>
-                <div className="text-red-400">{field.errors?.length ? field.errors[0] :'' } </div>
+                <div className="text-red-400">{field.errors?.length ? field.errors[0] : ''} </div>
             </div>
             <div className=" mt-2">
                 {Array.isArray(files) && (

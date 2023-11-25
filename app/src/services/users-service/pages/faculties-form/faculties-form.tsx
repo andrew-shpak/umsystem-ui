@@ -7,7 +7,7 @@ export default function FacultiesForm(props: {
     fields: Fieldset<Faculty>
     formId: string
 }) {
-    const {fields,formId} = props;
+    const {fields, formId} = props;
     return (
         <>
             <input  {...conform.input(fields.url, {hidden: true})} />

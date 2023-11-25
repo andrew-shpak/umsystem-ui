@@ -3,7 +3,7 @@ import type {ReactNode} from 'react';
 import {useState} from "react";
 import {Input} from "@nextui-org/input";
 import type {InputProps} from "@nextui-org/react";
-import type {FieldConfig, Field} from "@conform-to/react";
+import type {Field} from "@conform-to/react";
 import {conform, useField} from "@conform-to/react";
 
 type TextFieldParams = InputProps & Field<string> & {
@@ -19,8 +19,8 @@ export default function PasswordField(props: TextFieldParams) {
         formId,
         ...rest
     } = props
-    const field = useField({ name, formId });
-    const fieldProps= conform.input(field);
+    const field = useField({name, formId});
+    const fieldProps = conform.input(field);
     const [isVisible, setIsVisible] = useState(false);
     const [value, setValue] = useState<string | null | undefined>(fieldProps?.defaultValue);
 
@@ -33,7 +33,7 @@ export default function PasswordField(props: TextFieldParams) {
             variant="faded"
             radius="sm"
             isInvalid={!!field.errors}
-            errorMessage={field.errors?.length ? field.errors[0] :undefined}
+            errorMessage={field.errors?.length ? field.errors[0] : undefined}
             isClearable={isClearable}
             isDisabled={!!rest.disabled}
             isRequired={fieldProps.required}

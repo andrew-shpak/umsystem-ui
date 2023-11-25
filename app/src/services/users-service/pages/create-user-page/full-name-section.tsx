@@ -6,7 +6,7 @@ export default function FullNameSection(props: {
     fields: Fieldset<CreateUser>
     formId: string
 }) {
-    const {fields,formId} = props;
+    const {fields, formId} = props;
     return (
         <section className="w-full flex flex-col gap-4">
             <h3 className="divider text-center text-lg font-medium">

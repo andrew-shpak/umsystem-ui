@@ -2,7 +2,7 @@ import type {ReactNode} from 'react';
 import {useState} from "react";
 import {Input} from "@nextui-org/input";
 import type {InputProps} from '@nextui-org/react';
-import type {Field, FieldConfig} from "@conform-to/react";
+import type {Field} from "@conform-to/react";
 import {conform, useField} from "@conform-to/react";
 
 type TextFieldParams = InputProps & Field<string> & {
@@ -19,8 +19,8 @@ export default function TextField(props: TextFieldParams) {
         formId,
         ...rest
     } = props
-    const field = useField({ name, formId });
-    const fieldProps= conform.input(field);
+    const field = useField({name, formId});
+    const fieldProps = conform.input(field);
     const [value, setValue] = useState<string | null | undefined>(fieldProps?.defaultValue);
     return (
         <Input
@@ -32,7 +32,7 @@ export default function TextField(props: TextFieldParams) {
             isInvalid={!!field.errors}
             isClearable={isClearable}
             isDisabled={!!rest.disabled}
-            errorMessage={field.errors?.length ? field.errors[0] :undefined}
+            errorMessage={field.errors?.length ? field.errors[0] : undefined}
             onClear={() => {
                 if (onClear) onClear();
                 setValue('')

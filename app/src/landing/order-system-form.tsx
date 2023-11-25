@@ -1,5 +1,5 @@
 import type {Fieldset} from '@conform-to/react';
-import {AutocompleteField, TextField, TextareaField} from "~/src/forms";
+import {AutocompleteField, TextareaField, TextField} from "~/src/forms";
 import type {Order, Tariff} from "~/src/entities";
 
 export default function OrderSystemForm(props: {
@@ -17,14 +17,14 @@ export default function OrderSystemForm(props: {
                     label="Ім'я"
                     placeholder="Введіть ім'я"
                 />
-              <TextField
+                <TextField
                     label="Прізвище"
                     placeholder="Введіть прізвище"
-                     name = {fields.lastName.name}
+                    name={fields.lastName.name}
                     formId={formId}
                 />
                 <TextField
-                   name={fields.phone.name}
+                    name={fields.phone.name}
                     label="Телефон"
                     placeholder="Введіть номер телефону"
                     description={"Наприклад: +380123456789"}

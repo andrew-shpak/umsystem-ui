@@ -45,8 +45,8 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
         formId,
         ...rest
     } = props;
-    const field = useField({ name, formId });
-    const fieldProps= conform.input(field);
+    const field = useField({name, formId});
+    const fieldProps = conform.input(field);
     const [selectedKey, setSelectedKey] = useState<Key>(fieldProps?.defaultValue?.toString() ?? '');
     const defaultEntity = useMemo(() => {
         return options.find(option => getOptionKey(option) === fieldProps?.defaultValue?.toString())
@@ -77,7 +77,7 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
     return (
         <>
             <input ref={shadowInputRef}
-                     type="hidden"
+                   type="hidden"
                    {...fieldProps}/>
             <Autocomplete
                 {...rest}
@@ -95,9 +95,9 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
                     if (onClear) onClear();
                     setSelectedKey('');
                 }}
-                errorMessage={field.errors?.length ? field.errors[0] :undefined}
+                errorMessage={field.errors?.length ? field.errors[0] : undefined}
                 className={inputClassName}
-                 isInvalid={!!field.errors}
+                isInvalid={!!field.errors}
                 minLength={minLength}
                 items={items.slice(0, 50)}
                 onSelectionChange={onSelectionChange}

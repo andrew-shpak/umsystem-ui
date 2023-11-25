@@ -8,19 +8,20 @@ type Params = {
     handleChanges: (arg: Array<File>) => boolean;
     onDrop?: (arg: Array<File>) => void;
 };
-export  function useDragging({
-                                        containerRef,
-                                        inputRef,
-                                        multiple,
-                                        handleChanges,
-                                        onDrop
-                                    }: Params): boolean {
+
+export function useDragging({
+                                containerRef,
+                                inputRef,
+                                multiple,
+                                handleChanges,
+                                onDrop
+                            }: Params): boolean {
     const [dragging, setDragging] = React.useState(false);
     const handleClick = React.useCallback(() => {
         inputRef.current?.click();
     }, [inputRef]);
 
-    const handleDragIn = React.useCallback((ev:DragEvent) => {
+    const handleDragIn = React.useCallback((ev: DragEvent) => {
         ev.preventDefault();
         ev.stopPropagation();
         draggingCount++;
@@ -28,19 +29,19 @@ export  function useDragging({
             setDragging(true);
         }
     }, []);
-    const handleDragOut = React.useCallback((ev:React.SyntheticEvent) => {
+    const handleDragOut = React.useCallback((ev: React.SyntheticEvent) => {
         ev.preventDefault();
         ev.stopPropagation();
         draggingCount--;
         if (draggingCount > 0) return;
         setDragging(false);
     }, []);
-    const handleDrag = React.useCallback((ev:React.SyntheticEvent) => {
+    const handleDrag = React.useCallback((ev: React.SyntheticEvent) => {
         ev.preventDefault();
         ev.stopPropagation();
     }, []);
     const handleDrop = React.useCallback(
-        (ev:DragEvent) => {
+        (ev: DragEvent) => {
             ev.preventDefault();
             ev.stopPropagation();
             setDragging(false);

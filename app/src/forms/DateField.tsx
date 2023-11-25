@@ -2,7 +2,7 @@ import {useRef, useState} from 'react'
 import {Input} from "@nextui-org/input";
 import {useIMask} from 'react-imask'
 import type {FactoryOpts} from "imask";
-import {conform, Field, FieldConfig, useField, useInputEvent} from "@conform-to/react";
+import {conform, Field, useField, useInputEvent} from "@conform-to/react";
 import {InputProps} from "@nextui-org/react";
 
 export type DateFieldProps = InputProps & {
@@ -10,7 +10,7 @@ export type DateFieldProps = InputProps & {
     onSubmit?: (value: Date | null) => void
     fromDate?: Date
     toDate?: Date
-}& Field<string>
+} & Field<string>
 
 export default function DateField(props: DateFieldProps) {
     const {
@@ -18,12 +18,12 @@ export default function DateField(props: DateFieldProps) {
         onChange,
         onClear,
         isClearable = true,
-       name,
+        name,
         formId,
         ...rest
     } = props
-    const field = useField({ name, formId });
-    const fieldProps= conform.input(field);
+    const field = useField({name, formId});
+    const fieldProps = conform.input(field);
     const [inputValue, setInputValue] = useState<string | undefined>(
         props.defaultValue ?? ''
     )
@@ -39,9 +39,9 @@ export default function DateField(props: DateFieldProps) {
     return (
         <>
             <input ref={shadowInputRef}
-                     type="hidden"
+                   type="hidden"
                    {...fieldProps}
-                   />
+            />
             <Input
                 {...rest}
                 {...control}
@@ -49,8 +49,8 @@ export default function DateField(props: DateFieldProps) {
                 type="text"
                 variant="faded"
                 radius="sm"
-                errorMessage={field.errors?.length ? field.errors[0] :undefined}
-                 isInvalid={!!field.errors}
+                errorMessage={field.errors?.length ? field.errors[0] : undefined}
+                isInvalid={!!field.errors}
                 isClearable={isClearable}
                 isDisabled={!!rest.disabled}
                 fullWidth={fullWidth}

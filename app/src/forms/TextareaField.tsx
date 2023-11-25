@@ -2,10 +2,9 @@ import type {ReactNode} from 'react';
 import {useState} from "react";
 import {Textarea} from "@nextui-org/input";
 import type {TextAreaProps} from '@nextui-org/react';
-import type {FieldConfig} from "@conform-to/react";
 import {conform, Field, useField} from "@conform-to/react";
 
-type TextareaFieldParams = TextAreaProps & Field<string>& {
+type TextareaFieldParams = TextAreaProps & Field<string> & {
     onClear?: () => void
     label: ReactNode
 }
@@ -16,12 +15,12 @@ export default function TextareaField(props: TextareaFieldParams) {
         onChange,
         onClear,
         isMultiline = true,
-       name,
+        name,
         formId,
         ...rest
     } = props
-    const field = useField({ name, formId });
-    const fieldProps= conform.input(field);
+    const field = useField({name, formId});
+    const fieldProps = conform.input(field);
     const [value, setValue] = useState<string | null | undefined>(fieldProps?.defaultValue);
     return (
         <Textarea
@@ -30,7 +29,7 @@ export default function TextareaField(props: TextareaFieldParams) {
             type="text"
             variant="faded"
             radius="sm"
-            errorMessage={field.errors?.length ? field.errors[0] :undefined}
+            errorMessage={field.errors?.length ? field.errors[0] : undefined}
             isInvalid={!!field.errors}
             isMultiline={isMultiline}
             onClear={() => {

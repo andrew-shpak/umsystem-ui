@@ -1,8 +1,7 @@
-import type {Field, Fieldset} from "@conform-to/react";
+import type {Field} from "@conform-to/react";
+import {useFieldset} from "@conform-to/react";
 import {DateField, TextField} from "~/src/forms";
 import type {Passport} from "./passport-schema";
-import {useFieldset} from "@conform-to/react";
-import {Education} from "~/src/services/users-service/pages/create-user-page/education-schema";
 
 export default function PassportForm(props: Field<Passport>) {
     const {formId, name} = props

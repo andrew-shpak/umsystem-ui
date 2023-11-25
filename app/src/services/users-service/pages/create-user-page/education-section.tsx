@@ -2,8 +2,8 @@ import {AutocompleteField, DateField} from "~/src/forms";
 import {useLoaderData} from "@remix-run/react";
 import type {EducationForm, EducationLevel, EducationProgram, FinancialSource} from "~/src/entities";
 import type {Field} from "@conform-to/react";
-import { useFieldset} from "@conform-to/react";
-import type { Education } from "./education-schema";
+import {useFieldset} from "@conform-to/react";
+import type {Education} from "./education-schema";
 
 type LoaderData = {
     educationPrograms: EducationProgram[]
@@ -11,7 +11,7 @@ type LoaderData = {
     educationLevels: EducationLevel[]
     financialSources: FinancialSource[]
 }
-export default function EducationSection(props:  Field<Education>) {
+export default function EducationSection(props: Field<Education>) {
     const {formId, name} = props
     const fields = useFieldset({
         formId: formId,

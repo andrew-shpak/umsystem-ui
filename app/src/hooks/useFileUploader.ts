@@ -13,7 +13,7 @@ type FileUploaderProps = {
     onTypeError?: (arg0: string) => void;
     onDrop?: (arg0: File | Array<File>) => void;
     onSelect?: (arg0: File | Array<File>) => void;
-    handleChange?: (arg0:  Array<File> | File) => void;
+    handleChange?: (arg0: Array<File> | File) => void;
     onDraggingStateChange?: (dragging: boolean) => void;
 };
 export const getFileSizeMB = (size: number): number => {
@@ -66,7 +66,7 @@ export function useFileUploader({
         if (onSelect && success) onSelect(files);
     };
     const dragging = useDragging({
-        containerRef:containerRef,
+        containerRef: containerRef,
         inputRef,
         multiple,
         handleChanges,
@@ -97,12 +97,12 @@ export function useFileUploader({
         style: {display: 'none'},
     };
     const containerProps = {
-        ref:containerRef,
+        ref: containerRef,
     };
     return {
         inputProps,
         containerProps,
         files,
-        isDragging:dragging,
+        isDragging: dragging,
     }
 }

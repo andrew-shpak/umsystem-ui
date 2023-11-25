@@ -1,10 +1,9 @@
 import {Checkbox, CheckboxProps} from '@nextui-org/react'
 import type {ReactNode} from "react";
 import {useRef} from "react";
-import type {FieldConfig} from "@conform-to/react";
 import {conform, Field, useField, useInputEvent} from "@conform-to/react";
 
-type CheckboxFieldProps = CheckboxProps& Field<string> & {
+type CheckboxFieldProps = CheckboxProps & Field<string> & {
     label?: ReactNode
 }
 
@@ -12,12 +11,12 @@ export default function CheckboxField(props: CheckboxFieldProps) {
     const {
         label,
         color = "success",
-       name,
+        name,
         formId,
         ...rest
     } = props;
-    const field = useField({ name, formId });
-    const fieldProps= conform.input(field);
+    const field = useField({name, formId});
+    const fieldProps = conform.input(field);
     const shadowInputRef = useRef<HTMLInputElement>(null);
     const control = useInputEvent({
         ref: shadowInputRef,
