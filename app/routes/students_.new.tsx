@@ -22,6 +22,7 @@ import {uk} from "~/src/i18n";
 import {environment} from "~/environment.server";
 import {validateResponseStatusCode} from "~/helpers.server";
 import {auth} from "~/auth.server";
+import {CreateUser} from "~/src/services/users-service/pages/create-user-page/create-user-schema";
 
 const pageTitle = 'Створення користувача'
 export const links: LinksFunction = () => [
@@ -72,7 +73,7 @@ export default function CreateNewUserPage() {
     //   SELECT_USER_ORGANIZATION,
     // )
     const location = useLocation()
-    const {form, fields, context} = useForm({
+    const {form, fields, context} = useForm<CreateUser>({
         defaultValue: {
             validation: true,
         },
@@ -82,7 +83,6 @@ export default function CreateNewUserPage() {
         },
         shouldValidate: "onBlur",
     });
-
     const navigation = useNavigation();
     return (
         <Layout title="Створення нового користувача">

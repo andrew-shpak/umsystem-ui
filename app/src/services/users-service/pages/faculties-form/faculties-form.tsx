@@ -1,10 +1,10 @@
-import type {Fieldset} from "@conform-to/react";
 import {conform} from "@conform-to/react";
 import type {Faculty} from "~/src/entities";
 import {DateField, TextField} from "~/src/forms";
+import type {FieldsetMetadata, Pretty} from "~/src/shared/types";
 
 export default function FacultiesForm(props: {
-    fields: Fieldset<Faculty>
+    fields: Pretty<FieldsetMetadata<Faculty>>
     formId: string
 }) {
     const {fields, formId} = props;

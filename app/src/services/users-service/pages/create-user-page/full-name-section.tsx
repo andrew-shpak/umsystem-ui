@@ -1,12 +1,12 @@
 import {TextField} from "~/src/forms";
-import {type Fieldset} from "@conform-to/react";
 import type {CreateUser} from "./create-user-schema";
+import type {FieldsetMetadata, Pretty} from "~/src/shared/types";
 
 export default function FullNameSection(props: {
-    fields: Fieldset<CreateUser>
+    fields: Pretty<FieldsetMetadata<CreateUser>>
     formId: string
-}) {
-    const {fields, formId} = props;
+} & CreateUser) {
+    const {formId, fields} = props;
     return (
         <section className="w-full flex flex-col gap-4">
             <h3 className="divider text-center text-lg font-medium">

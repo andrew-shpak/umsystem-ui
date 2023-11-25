@@ -99,7 +99,7 @@ export default function CreateNewUserPage() {
                     className="gap-2"
                 >
                     <div className="w-full flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 items-center">
-                        <FiltersForm fields={fields}/>
+                        <FiltersForm fields={fields} formId={form.id}/>
                         <Button
                             type="submit"
                             variant="flat"

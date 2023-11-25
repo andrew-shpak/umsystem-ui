@@ -1,9 +1,9 @@
-import type {Fieldset} from '@conform-to/react';
+import type {FieldsetMetadata, Pretty} from "~/src/shared/types";
 import {AutocompleteField, TextareaField, TextField} from "~/src/forms";
 import type {Order, Tariff} from "~/src/entities";
 
 export default function OrderSystemForm(props: {
-    fields: Fieldset<Order>
+    fields: Pretty<FieldsetMetadata<Order>>
     tariffs: Tariff[]
     formId: string
 }) {

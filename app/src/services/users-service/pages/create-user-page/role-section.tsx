@@ -1,14 +1,14 @@
-import type {Fieldset} from "@conform-to/react";
 import {AutocompleteField} from "~/src/forms";
 import type {CreateUser} from "./create-user-schema";
 import {useLoaderData} from "@remix-run/react";
 import type {Role} from "~/src/entities";
+import type {FieldsetMetadata, Pretty} from "~/src/shared/types";
 
 type LoaderData = {
     roles: Role[]
 }
 export default function RoleSection(props: {
-    fields: Fieldset<CreateUser>
+    fields: Pretty<FieldsetMetadata<CreateUser>>
     formId: string
 }) {
     const {fields, formId} = props;

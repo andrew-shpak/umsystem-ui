@@ -1,9 +1,9 @@
-import type {Fieldset} from "@conform-to/react";
 import {CheckboxField} from "~/src/forms";
 import type {CreateUser} from "./create-user-schema";
+import type {FieldsetMetadata, Pretty} from "~/src/shared/types";
 
 export default function ValidationSection(props: {
-    fields: Fieldset<CreateUser>
+    fields: Pretty<FieldsetMetadata<CreateUser>>
     formId: string
 }) {
     const {fields} = props;

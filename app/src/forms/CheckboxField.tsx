@@ -1,9 +1,11 @@
-import {Checkbox, CheckboxProps} from '@nextui-org/react'
+import type {CheckboxProps} from '@nextui-org/react';
+import {Checkbox} from '@nextui-org/react'
 import type {ReactNode} from "react";
 import {useRef} from "react";
-import {conform, Field, useField, useInputEvent} from "@conform-to/react";
+import type {Field} from "@conform-to/react";
+import {conform, useField, useInputEvent} from "@conform-to/react";
 
-type CheckboxFieldProps = CheckboxProps & Field<string> & {
+type CheckboxFieldProps = Omit<CheckboxProps, "name" | "formId"> & Field<boolean> & {
     label?: ReactNode
 }
 

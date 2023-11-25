@@ -1,9 +1,9 @@
-import type {Fieldset} from "@conform-to/react";
 import {DateField, TextField} from "~/src/forms";
+import type {FieldsetMetadata, Pretty} from "~/src/shared/types";
 import type {CreateUser} from "./create-user-schema";
 
 export default function GeneralInformationSection(props: {
-    fields: Fieldset<CreateUser>
+    fields: Pretty<FieldsetMetadata<CreateUser>>
     formId: string
 }) {
     const {fields, formId} = props;

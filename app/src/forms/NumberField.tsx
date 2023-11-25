@@ -5,7 +5,7 @@ import type {FactoryOpts} from "imask";
 import type {InputProps} from "@nextui-org/react";
 import {conform, Field, useField} from '@conform-to/react';
 
-type NumberFieldParams = InputProps & Field<string> & {
+type NumberFieldParams = InputProps & Field<number> & {
     mapToRadix?: string[]
 }
 
