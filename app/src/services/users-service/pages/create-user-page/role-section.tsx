@@ -9,8 +9,9 @@ type LoaderData = {
 }
 export default function RoleSection(props: {
     fields: Fieldset<CreateUser>
+    formId: string
 }) {
-    const {fields} = props;
+    const {fields,formId} = props;
     const {
         roles
     } = useLoaderData<LoaderData>();
@@ -24,7 +25,8 @@ export default function RoleSection(props: {
                 getLabel={item => item.name}
                 label="Роль"
                 placeholder="Виберіть роль"
-                config={fields.roleId}
+                name={fields.roleId.name}
+                formId={formId}
             />
         </section>
     )

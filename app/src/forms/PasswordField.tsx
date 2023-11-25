@@ -3,12 +3,11 @@ import type {ReactNode} from 'react';
 import {useState} from "react";
 import {Input} from "@nextui-org/input";
 import type {InputProps} from "@nextui-org/react";
-import type {FieldConfig} from "@conform-to/react";
-import {conform} from "@conform-to/react";
+import type {FieldConfig, Field} from "@conform-to/react";
+import {conform, useField} from "@conform-to/react";
 
-type TextFieldParams = InputProps & {
+type TextFieldParams = InputProps & Field<string> & {
     label: ReactNode
-    config: FieldConfig<string>
 }
 export default function PasswordField(props: TextFieldParams) {
     const {
@@ -16,12 +15,14 @@ export default function PasswordField(props: TextFieldParams) {
         onChange,
         onClear,
         isClearable = false,
-        config,
+        name,
+        formId,
         ...rest
     } = props
-    const fieldProps = conform.input(config);
+    const field = useField({ name, formId });
+    const fieldProps= conform.input(field);
     const [isVisible, setIsVisible] = useState(false);
-    const [value, setValue] = useState<string | null | undefined>(config?.defaultValue);
+    const [value, setValue] = useState<string | null | undefined>(fieldProps?.defaultValue);
 
     const toggleVisibility = () => setIsVisible(!isVisible);
     return (
@@ -31,8 +32,8 @@ export default function PasswordField(props: TextFieldParams) {
             type={isVisible ? 'text' : 'password'}
             variant="faded"
             radius="sm"
-            isInvalid={!!config.error}
-            errorMessage={config.error}
+            isInvalid={!!field.errors}
+            errorMessage={field.errors?.length ? field.errors[0] :undefined}
             isClearable={isClearable}
             isDisabled={!!rest.disabled}
             isRequired={fieldProps.required}

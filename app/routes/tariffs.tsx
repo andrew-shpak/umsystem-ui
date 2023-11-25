@@ -1,6 +1,5 @@
-import {useLoaderData, useOutletContext} from "@remix-run/react"
+import {useLoaderData} from "@remix-run/react"
 import type {Tariff} from "~/src/entities";
-import type {ContextType} from "~/src/shared/types";
 import Layout from "~/src/layout";
 import {endpoints} from "~/src/constants";
 import styles from "../styles/layout.css";
@@ -49,10 +48,9 @@ type LoaderData = {
 }
 // eslint-disable-next-line complexity
 export default function CreateNewUserPage() {
-    const context = useOutletContext<ContextType>()
     const response = useLoaderData<LoaderData>()
     return (
-        <Layout title={pageTitle} {...context}>
+        <Layout title={pageTitle}>
             <DataGrid rows={response.tariffs} columns={tariffsColumns}/>
         </Layout>
     )

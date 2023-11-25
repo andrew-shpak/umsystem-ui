@@ -19,7 +19,7 @@ export const handle = {
 export default function AccessDeniedPage() {
     const context = useOutletContext<ContextType>()
     return (
-        <Layout title={pageTitle} {...context}>
+        <Layout title={pageTitle}>
             <AccessDenied/>
         </Layout>
     )

@@ -18,7 +18,7 @@ export const links: LinksFunction = () => [
 export default function Dashboard() {
     const context = useOutletContext<ContextType>();
     return (
-        <Layout title={pageTitle} {...context}>
+        <Layout title={pageTitle}>
             Так має бути!!! Це не помилка!!!
         </Layout>
     );

@@ -1,8 +1,9 @@
-import type {Fieldset} from "@conform-to/react";
 import {AutocompleteField, DateField} from "~/src/forms";
-import type {Education} from "~/src/services/users-service/pages/create-user-page/education-schema";
 import {useLoaderData} from "@remix-run/react";
 import type {EducationForm, EducationLevel, EducationProgram, FinancialSource} from "~/src/entities";
+import type {Field} from "@conform-to/react";
+import { useFieldset} from "@conform-to/react";
+import type { Education } from "./education-schema";
 
 type LoaderData = {
     educationPrograms: EducationProgram[]
@@ -10,10 +11,12 @@ type LoaderData = {
     educationLevels: EducationLevel[]
     financialSources: FinancialSource[]
 }
-export default function EducationSection(props: {
-    fields: Fieldset<Education>
-}) {
-    const {fields} = props;
+export default function EducationSection(props:  Field<Education>) {
+    const {formId, name} = props
+    const fields = useFieldset({
+        formId: formId,
+        name
+    });
     const {
         start,
         educationFormId,
@@ -38,37 +41,43 @@ export default function EducationSection(props: {
                 getLabel={item => item.name}
                 label="Освітня програма"
                 placeholder="Виберіть освітню програму"
-                config={educationProgramId}
+                name={educationProgramId.name}
+                formId={formId}
             />
             <AutocompleteField
                 options={educationForms}
                 getLabel={item => item.name}
                 label="Форма навчання"
                 placeholder="Виберіть форму навчання"
-                config={educationFormId}
+                name={educationFormId.name}
+                formId={formId}
             />
             <AutocompleteField
                 options={educationLevels}
                 getLabel={item => item.name}
                 label="Освітній рівень"
                 placeholder="Виберіть освітній рівень"
-                config={educationLevelId}
+                name={educationLevelId.name}
+                formId={formId}
             />
             <AutocompleteField
                 options={financialSources}
                 getLabel={item => item.name}
                 label="Джерело фінансування"
                 placeholder="Виберіть джерело фінансування"
-                config={financialSourceId}
+                name={financialSourceId.name}
+                formId={formId}
             />
 
             <DateField
-                config={start}
+                name={start.name}
+                formId={formId}
                 label="Початок навчання"
                 placeholder="Введіть дату початку навчання"
             />
             <DateField
-                config={end}
+                name={end.name}
+                formId={formId}
                 label="Завершення навчання"
                 placeholder="Введіть дату завершення навчання"
             />

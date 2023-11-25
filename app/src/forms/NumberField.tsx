@@ -4,11 +4,10 @@ import {useIMask} from "react-imask";
 import type {FactoryOpts} from "imask";
 import type {InputProps} from "@nextui-org/react";
 import type {FieldConfig} from '@conform-to/react';
-import {conform} from '@conform-to/react';
+import {conform, Field, useField} from '@conform-to/react';
 
-type NumberFieldParams = InputProps & {
+type NumberFieldParams = InputProps & Field<string>& {
     mapToRadix?: string[]
-    config: FieldConfig<string>
 }
 
 export default function NumberField(props: NumberFieldParams) {
@@ -17,11 +16,13 @@ export default function NumberField(props: NumberFieldParams) {
         onClear,
         mapToRadix = [',', '.'],
         isClearable = true,
-        config,
+       name,
+        formId,
         ...rest
     } = props
-    const fieldProps = conform.input(config);
-    const [value, setValue] = useState<string | null | undefined>(config?.toString() ?? '');
+    const field = useField({ name, formId });
+    const fieldProps= conform.input(field);
+    const [value, setValue] = useState<string | null | undefined>(fieldProps?.toString() ?? '');
 
     const [opts] = useState<FactoryOpts>({
         mask: Number,
@@ -40,8 +41,8 @@ export default function NumberField(props: NumberFieldParams) {
             type="text"
             variant="faded"
             radius="sm"
-            errorMessage={config.error}
-            isInvalid={!!config.error}
+            errorMessage={field.errors?.length ? field.errors[0] :undefined}
+             isInvalid={!!field.errors}
             isClearable={isClearable}
             isDisabled={rest.disabled}
             onClear={() => {
@@ -49,7 +50,7 @@ export default function NumberField(props: NumberFieldParams) {
                 setValue('');
             }}
             fullWidth={fullWidth}
-            isRequired={config.required}
+            isRequired={fieldProps.required}
             value={value?.toString() ?? ''}
             onChange={event => {
                 if (rest.onChange) rest?.onChange(event);

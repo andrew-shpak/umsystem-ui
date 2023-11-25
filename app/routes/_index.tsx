@@ -16,7 +16,7 @@ import type {ContextType} from "~/src/shared/types";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import type {Tariff} from "~/src/entities";
 import {orderSchema} from "~/src/entities";
-import {conform, useForm} from "@conform-to/react";
+import {conform, FormProvider, useForm} from "@conform-to/react";
 import {environment} from "~/environment.server";
 import {endpoints, routes} from "~/src/constants";
 import styles from "../styles/landing.css";
@@ -60,9 +60,9 @@ type LoaderData = {
 }
 export default function LandingPage() {
     const response = useLoaderData<LoaderData>()
-    const context = useOutletContext<ContextType>()
-    const cdnUrl = context.environment.CDN_URL;
-    const {form, fields} = useForm({
+    const {environment} = useOutletContext<ContextType>()
+    const cdnUrl = environment.CDN_URL;
+    const {form, fields, context} = useForm({
         constraint: getFieldsetConstraint(orderSchema),
         onValidate({formData}) {
             return parse(formData, {schema: orderSchema});
@@ -82,22 +82,25 @@ export default function LandingPage() {
                     <h2 className="py-12 text-center text-5xl font-medium text-[#484BF2]">
                         Оформіть заявку
                     </h2>
-
-                    <Form
-                        method="post"
-                        {...conform.form(form)}
-                        className="mb-10 mt-4 flex flex-col items-center justify-center gap-2"
-                    >
-                        <OrderSystemForm fields={fields} tariffs={response.tariffs}/>
-                        <div className="flex w-full flex-col items-center justify-center">
-                            <button
-                                type="submit"
-                                className="order-btn w-full transition duration-300 ease-in-out"
-                            >
-                                Оформити
-                            </button>
-                        </div>
-                    </Form>
+                    <FormProvider context={context}>
+                        <Form
+                            method="post"
+                            {...conform.form(form)}
+                            className="mb-10 mt-4 flex flex-col items-center justify-center gap-2"
+                        >
+                            <OrderSystemForm
+                                formId={form.id}
+                                fields={fields} tariffs={response.tariffs}/>
+                            <div className="flex w-full flex-col items-center justify-center">
+                                <button
+                                    type="submit"
+                                    className="order-btn w-full transition duration-300 ease-in-out"
+                                >
+                                    Оформити
+                                </button>
+                            </div>
+                        </Form>
+                    </FormProvider>
                 </div>
             </section>
             <Footer cdnUrl={cdnUrl}/>

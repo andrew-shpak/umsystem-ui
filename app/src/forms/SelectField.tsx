@@ -1,35 +1,39 @@
 import type {SelectProps} from "@nextui-org/react";
 import {Select, SelectItem} from "@nextui-org/react"
-import type {FieldConfig} from "@conform-to/react";
-import {conform, useInputEvent} from "@conform-to/react";
+import type {Field} from "@conform-to/react";
+import {conform, useField, useFormMetadata, useInputEvent} from "@conform-to/react";
 import {useRef, useState} from "react";
 import type {Key} from "@react-types/shared";
 
 type SelectFieldProps = {
     options: { label: string, value: string }[]
-    config: FieldConfig<string>
-} & Omit<SelectProps, "children" | "selectedKeys" | "onSelectionChange">
+} &Field<string> & Omit<SelectProps, "children" | "selectedKeys" | "onSelectionChange">
 
 export default function SelectField(props: SelectFieldProps) {
-    const {options, config, ...rest} = props
-    const [value, setValue] = useState<'all' | Iterable<Key>>(new Set(config.defaultValue ? [config.defaultValue] : []));
+    const {options, name,formId, ...rest} = props
+    const field = useField({ name, formId });
+    const fieldProps= conform.input(field);
+    const [value, setValue] = useState<'all' | Iterable<Key>>(new Set(fieldProps.defaultValue ? [fieldProps.defaultValue] : []));
     const shadowInputRef = useRef<HTMLInputElement>(null);
     const control = useInputEvent({
         ref: shadowInputRef,
-        onReset: () => setValue(config?.defaultValue ?? []),
+        onReset: () => setValue(fieldProps?.defaultValue ?? []),
     });
     return (
         <>
             <input ref={shadowInputRef}
-                   {...conform.input(config, {hidden: true})}/>
+                   type="hidden"
+                   {...fieldProps}
+            />
             <Select
                 {...rest}
+                {...control}
                 variant="faded"
                 radius="sm"
-                isInvalid={!!config.error}
+                isInvalid={!!field.errors}
                 isDisabled={!!rest.disabled}
-                isRequired={config.required}
-                errorMessage={config.error}
+                isRequired={fieldProps.required}
+                errorMessage={field.errors?.length ? field.errors[0] :undefined}
                 selectedKeys={value}
                 onSelectionChange={setValue}
                 onChange={(event) => {

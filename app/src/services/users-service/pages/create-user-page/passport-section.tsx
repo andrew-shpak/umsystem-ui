@@ -1,11 +1,15 @@
-import type {Fieldset} from "@conform-to/react";
+import type {Field, Fieldset} from "@conform-to/react";
 import {DateField, TextField} from "~/src/forms";
 import type {Passport} from "./passport-schema";
+import {useFieldset} from "@conform-to/react";
+import {Education} from "~/src/services/users-service/pages/create-user-page/education-schema";
 
-export default function PassportForm(props: {
-    fields: Fieldset<Passport>
-}) {
-    const {fields} = props;
+export default function PassportForm(props: Field<Passport>) {
+    const {formId, name} = props
+    const fields = useFieldset({
+        formId: formId,
+        name
+    });
     const {
         series, number,
         validUntil, issuedBy,
@@ -28,28 +32,32 @@ export default function PassportForm(props: {
             <TextField
                 label="Серія паспорта"
                 placeholder="Введіть серію паспорта"
-                config={series}
+                name={series.name}
+                formId={formId}
             />
             <TextField
                 label="Номер паспорта"
                 placeholder="Введіть номер паспорта"
-                config={number}
+                name={number.name}
+                formId={formId}
             />
             <TextField
                 label="Ким видано"
                 placeholder="Введіть місце видачі паспорта"
-                config={issuedBy}
+                name={issuedBy.name}
+                formId={formId}
             />
             <DateField
-                config={issuedDate}
+                name={issuedDate.name}
+                formId={formId}
                 label="Дата видачі"
                 placeholder="Введіть дату видачі"
             />
             <DateField
-                config={validUntil}
+                name={validUntil.name}
+                formId={formId}
                 label="Дійсний до"
                 placeholder="Введіть дату закінчення строку дії паспорта"
-                errorMessage={validUntil.error}
             />
         </section>
     )

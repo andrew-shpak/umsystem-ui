@@ -1,11 +1,10 @@
 import type {LinksFunction} from "@remix-run/node";
 import {ActionFunction} from "@remix-run/node";
 import styles from "~/styles/layout.css";
-import {Form, useLocation, useOutletContext} from "@remix-run/react";
-import type {ContextType} from "~/src/shared/types";
+import {Form, useLocation} from "@remix-run/react";
 import Layout from "~/src/layout";
 import {SelectField, UploadField} from "~/src/forms";
-import {conform, useForm} from "@conform-to/react";
+import {conform, FormProvider, useForm} from "@conform-to/react";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import * as z from "zod";
 import {endpoints, routes} from "~/src/constants";
@@ -29,7 +28,7 @@ export function meta() {
 }
 
 const uploadEdboFileSchema = z.object({
-    file: z.instanceof(File),
+    file: z.any(),
     // .refine((file) => file?.size <= MAX_FILE_SIZE, `Max image size is 5MB.`)
     // .refine(
     //     (file) => ACCEPTED_IMAGE_TYPES.includes(file?.type),
@@ -51,9 +50,8 @@ const edboFileTypes = [
     {value: 'requests', label: 'Заяви абітурієнтів'},
 ]
 export default function UploadEdboStudents() {
-    const context = useOutletContext<ContextType>()
     const location = useLocation()
-    const {form, fields} = useForm({
+    const {form, fields, context} = useForm({
         defaultValue: {
             separator: separators[0].value,
             fileType: edboFileTypes[0].value,
@@ -65,46 +63,55 @@ export default function UploadEdboStudents() {
         shouldValidate: "onBlur",
     });
     return (
-        <Layout title={pageTitle} {...context}>
-            <Form
-                method="post"
-               {...conform.form(form)}
-                encType="multipart/form-data"
-                action={`${routes.edboStudents}/upload${location.search}`}
-                className="mb-10 mt-4 flex flex-col items-center justify-center gap-2"
-            >
-                <SelectField options={separators}
-                             config={fields.separator}
-                             label="Розділювач"
-                             placeholder="Виберіть розділювач файлу"/>
+        <Layout title={pageTitle}>
+            <FormProvider context={context}>
+                <Form
+                    method="post"
+                    {...conform.form(form)}
+                    encType="multipart/form-data"
+                    action={`${routes.edboStudents}/upload${location.search}`}
+                    className="mb-10 mt-4 flex flex-col items-center justify-center gap-2"
+                >
+                    <SelectField
+                        options={separators}
+                        name={fields.separator.name}
+                        formId={form.id}
+                        label="Розділювач"
+                        placeholder="Виберіть розділювач файлу"/>
 
-                <div className="my-4 w-full">
-                    <UploadField config={fields.file} label="Виберіть файл у UTF-8 кодуванні" placeholder="Виберіть файл ЄДБО у UTF-8 кодуванні"/>
-                </div>
+                    <div className="my-4 w-full">
+                        <UploadField
+                            name={fields.file.name}
+                            formId={form.id}
 
-                <SelectField options={edboFileTypes}
-                             config={fields.fileType}
-                             label="Тип документу"
-                             placeholder="Виберіть тип ЄДБО документу"/>
+                            label="Виберіть файл у UTF-8 кодуванні" placeholder="Виберіть файл ЄДБО у UTF-8 кодуванні"/>
+                    </div>
 
-                <div className="w-full flex mt-4 justify-center">
-                    <Button
-                        type="submit"
-                        variant="flat"
-                        color='primary'
-                        radius="sm"
-                        className="w-full md:w-2/4"
-                    >
-                        {uk.upload}
-                    </Button>
-                </div>
-            </Form>
+                    <SelectField options={edboFileTypes}
+                                 name={fields.fileType.name}
+                                 formId={form.id}
+                                 label="Тип документу"
+                                 placeholder="Виберіть тип ЄДБО документу"/>
+
+                    <div className="w-full flex mt-4 justify-center">
+                        <Button
+                            type="submit"
+                            variant="flat"
+                            color='primary'
+                            radius="sm"
+                            className="w-full md:w-2/4"
+                        >
+                            {uk.upload}
+                        </Button>
+                    </div>
+                </Form>
+            </FormProvider>
         </Layout>
     )
 }
 export const action: ActionFunction = async ({request}) => {
     const formData = await request.formData();
-    const { extraParams} = await auth.isAuthenticated(request, {
+    const {extraParams} = await auth.isAuthenticated(request, {
         failureRedirect: routes.signIn,
     });
     const response = await fetch(`${environment().USERS_SERVICE_BASE_URL}/${endpoints.students}/edbo/upload`, {

@@ -2,20 +2,22 @@ import {Checkbox, CheckboxProps} from '@nextui-org/react'
 import type {ReactNode} from "react";
 import {useRef} from "react";
 import type {FieldConfig} from "@conform-to/react";
-import {conform, useInputEvent} from "@conform-to/react";
+import {conform, Field, useField, useInputEvent} from "@conform-to/react";
 
-type CheckboxFieldProps = CheckboxProps & {
+type CheckboxFieldProps = CheckboxProps& Field<string> & {
     label?: ReactNode
-    config: FieldConfig<string>
 }
 
 export default function CheckboxField(props: CheckboxFieldProps) {
     const {
         label,
         color = "success",
-        config,
+       name,
+        formId,
         ...rest
     } = props;
+    const field = useField({ name, formId });
+    const fieldProps= conform.input(field);
     const shadowInputRef = useRef<HTMLInputElement>(null);
     const control = useInputEvent({
         ref: shadowInputRef,
@@ -23,14 +25,16 @@ export default function CheckboxField(props: CheckboxFieldProps) {
     return (
         <>
             <input ref={shadowInputRef}
-                   {...conform.input(config, {hidden: true, type: 'checkbox'})}/>
+                   type="checkbox"
+                   {...fieldProps}/>
             <Checkbox
                 {...rest}
+                {...control}
                 radius="sm"
                 isDisabled={rest.disabled}
-                isRequired={config.required}
+                isRequired={fieldProps.required}
                 color={color}
-                defaultSelected={Boolean(config.defaultValue)}
+                defaultSelected={Boolean(fieldProps.defaultValue)}
                 onValueChange={(checked) => {
                     control.change(checked)
                     props.onValueChange?.(checked)

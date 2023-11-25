@@ -1,6 +1,5 @@
-import {Form, Link, useActionData, useLocation, useNavigation, useOutletContext} from "@remix-run/react"
-import {conform, useFieldset, useForm} from "@conform-to/react";
-import type {ContextType} from "~/src/shared/types";
+import {Form, Link, useActionData, useLocation, useNavigation} from "@remix-run/react"
+import {conform, FormProvider, useForm} from "@conform-to/react";
 import Layout from "~/src/layout";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import {endpoints, routes} from "~/src/constants";
@@ -37,7 +36,7 @@ export function meta() {
 }
 
 export const loader: LoaderFunction = async ({request}) => {
-    const { extraParams} = await auth.isAuthenticated(request, {
+    const {extraParams} = await auth.isAuthenticated(request, {
         failureRedirect: routes.signIn,
     });
     const url = new URL(request.url)
@@ -65,7 +64,6 @@ export const handle = {
     breadcrumb: () => <span>{pageTitle}</span>,
 }
 export default function CreateNewUserPage() {
-    const context = useOutletContext<ContextType>()
     const actionData = useActionData<typeof action>()
     // const canDisableUserValidation = context.permissions.includes(
     //   DISABLE_USERS_VALIDATION,
@@ -74,7 +72,7 @@ export default function CreateNewUserPage() {
     //   SELECT_USER_ORGANIZATION,
     // )
     const location = useLocation()
-    const  {form, fields,context:FormContext}= useForm({
+    const {form, fields, context} = useForm({
         defaultValue: {
             validation: true,
         },
@@ -84,83 +82,76 @@ export default function CreateNewUserPage() {
         },
         shouldValidate: "onBlur",
     });
-    const passportFields = useFieldset({
-        context:FormContext,
-        formId: form.id,
-        name: fields.passport.name
-    });
-    const educationFields = useFieldset({
-        context:FormContext,
-        formId: form.id,
-        name: fields.education.name
-    });
+
     const navigation = useNavigation();
     return (
-        <Layout title="Створення нового користувача" {...context}>
-            <Form
-                method="post"
-               {...conform.form(form)}
-                action={`${routes.students}/new${location.search}`}
-                className="mb-10 mt-4 flex flex-col items-center justify-center gap-2"
-            >
-                <div className="md:grid md:grid-cols-2 md:gap-7 w-full">
-                    <FullNameSection fields={fields}/>
-                    <GeneralInformationSection fields={fields}/>
-                    <EducationSection fields={educationFields}/>
-                    <PassportSection fields={passportFields}/>
-                    <RoleSection fields={fields}/>
-                    <PasswordSection fields={fields}/>
-                    <ValidationSection fields={fields}/>
-                </div>
+        <Layout title="Створення нового користувача">
+            <FormProvider context={context}>
+                <Form
+                    method="post"
+                    {...conform.form(form)}
+                    action={`${routes.students}/new${location.search}`}
+                    className="mb-10 mt-4 flex flex-col items-center justify-center gap-2"
+                >
+                    <div className="md:grid md:grid-cols-2 md:gap-7 w-full">
+                        <FullNameSection fields={fields} formId={form.id}/>
+                        <GeneralInformationSection fields={fields} formId={form.id}/>
+                        <EducationSection name={fields.education.name} formId={form.id}/>
+                        <PassportSection name={fields.passport.name} formId={form.id}/>
+                        <RoleSection fields={fields} formId={form.id}/>
+                        <PasswordSection fields={fields} formId={form.id}/>
+                        <ValidationSection fields={fields} formId={form.id}/>
+                    </div>
 
-                <Spinner label="Перевірка на збіги" className={navigation.state === "idle" ? "hidden" : ""}/>
+                    <Spinner label="Перевірка на збіги" className={navigation.state === "idle" ? "hidden" : ""}/>
 
-                <DuplicatesSection/>
+                    <DuplicatesSection/>
 
-                <div
-                    className={`w-full text-center text-2xl font-semibold  ${actionData?.students || !actionData ? "hidden" : "block"}`}>
-                    Валідація пройшла успішно - збігів не знайдено
-                </div>
-                <div className="flex w-full mt-7 md:flex-row flex-col items-center justify-center gap-4">
-                    <Button
-                        as={Link}
-                        to={`${routes.users}${location.search}`}
-                        prefetch="intent"
-                        color="danger"
-                        variant="flat"
-                        radius="sm"
-                        className="md:w-1/4"
-                        fullWidth
-                    >
-                        {uk.close}
-                    </Button>
-                    <Button
-                        type="submit"
-                        className="md:w-1/4"
-                        name="action"
-                        color="primary"
-                        variant="flat"
-                        radius="sm"
-                        value="validate"
-                        fullWidth
-                    >
-                        {uk.validate}
-                    </Button>
-                    <Button
-                        type="submit"
-                        value="save"
-                        name="action"
-                        variant="flat"
-                        radius="sm"
-                        color={"success"}
-                        className={"md:w-1/4"}
-                        fullWidth
-                        isDisabled={!actionData}
-                    >
-                        {uk.save}
-                    </Button>
-                </div>
-            </Form>
+                    <div
+                        className={`w-full text-center text-2xl font-semibold  ${actionData?.students || !actionData ? "hidden" : "block"}`}>
+                        Валідація пройшла успішно - збігів не знайдено
+                    </div>
+                    <div className="flex w-full mt-7 md:flex-row flex-col items-center justify-center gap-4">
+                        <Button
+                            as={Link}
+                            to={`${routes.users}${location.search}`}
+                            prefetch="intent"
+                            color="danger"
+                            variant="flat"
+                            radius="sm"
+                            className="md:w-1/4"
+                            fullWidth
+                        >
+                            {uk.close}
+                        </Button>
+                        <Button
+                            type="submit"
+                            className="md:w-1/4"
+                            name="action"
+                            color="primary"
+                            variant="flat"
+                            radius="sm"
+                            value="validate"
+                            fullWidth
+                        >
+                            {uk.validate}
+                        </Button>
+                        <Button
+                            type="submit"
+                            value="save"
+                            name="action"
+                            variant="flat"
+                            radius="sm"
+                            color={"success"}
+                            className={"md:w-1/4"}
+                            fullWidth
+                            isDisabled={!actionData}
+                        >
+                            {uk.save}
+                        </Button>
+                    </div>
+                </Form>
+            </FormProvider>
         </Layout>
     )
 }

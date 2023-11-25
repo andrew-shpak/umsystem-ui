@@ -5,8 +5,9 @@ import {useState} from "react";
 
 export default function PasswordSection(props: {
     fields: Fieldset<CreateUser>
+    formId: string
 }) {
-    const {fields} = props;
+    const {fields,formId} = props;
     const [generatePassword, setGeneratePassword] = useState(false)
     return (
         <section className="w-full flex flex-col gap-4">
@@ -14,14 +15,16 @@ export default function PasswordSection(props: {
                 Пароль
             </h3>
             <CheckboxField
-                config={fields.generatePassword}
+                name={fields.generatePassword.name}
+                formId={formId}
                 label="Згенерувати пароль"
                 onValueChange={(checked) => {
                     setGeneratePassword(checked)
                 }}
             />
             <PasswordField
-                config={fields.password}
+                name={fields.password.name}
+                formId={formId}
                 label="Пароль"
                 placeholder="Введіть пароль"
                 disabled={!generatePassword}

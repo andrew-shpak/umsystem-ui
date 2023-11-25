@@ -2,7 +2,7 @@ import {useRef, useState} from 'react'
 import {Input} from "@nextui-org/input";
 import {useIMask} from 'react-imask'
 import type {FactoryOpts} from "imask";
-import {conform, FieldConfig, useInputEvent} from "@conform-to/react";
+import {conform, Field, FieldConfig, useField, useInputEvent} from "@conform-to/react";
 import {InputProps} from "@nextui-org/react";
 
 export type DateFieldProps = InputProps & {
@@ -10,8 +10,7 @@ export type DateFieldProps = InputProps & {
     onSubmit?: (value: Date | null) => void
     fromDate?: Date
     toDate?: Date
-    config: FieldConfig<string>
-}
+}& Field<string>
 
 export default function DateField(props: DateFieldProps) {
     const {
@@ -19,10 +18,12 @@ export default function DateField(props: DateFieldProps) {
         onChange,
         onClear,
         isClearable = true,
-        config,
+       name,
+        formId,
         ...rest
     } = props
-
+    const field = useField({ name, formId });
+    const fieldProps= conform.input(field);
     const [inputValue, setInputValue] = useState<string | undefined>(
         props.defaultValue ?? ''
     )
@@ -38,26 +39,27 @@ export default function DateField(props: DateFieldProps) {
     return (
         <>
             <input ref={shadowInputRef}
-                   {...conform.input(config, {hidden: true})}/>
+                     type="hidden"
+                   {...fieldProps}
+                   />
             <Input
                 {...rest}
+                {...control}
                 ref={ref}
                 type="text"
                 variant="faded"
                 radius="sm"
-                errorMessage={config.error}
-                isInvalid={!!config.error}
+                errorMessage={field.errors?.length ? field.errors[0] :undefined}
+                 isInvalid={!!field.errors}
                 isClearable={isClearable}
                 isDisabled={!!rest.disabled}
                 fullWidth={fullWidth}
-                isRequired={config.required}
+                isRequired={fieldProps.required}
                 onClear={() => {
                     if (onClear) onClear();
                     setInputValue('');
                 }}
                 value={inputValue}
-                onBlur={control.blur}
-                onFocus={control.focus}
                 onChange={event => {
                     if (onChange) onChange(event);
                     setInputValue(event.target.value);

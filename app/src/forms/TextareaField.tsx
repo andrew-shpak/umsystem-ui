@@ -3,12 +3,11 @@ import {useState} from "react";
 import {Textarea} from "@nextui-org/input";
 import type {TextAreaProps} from '@nextui-org/react';
 import type {FieldConfig} from "@conform-to/react";
-import {conform} from "@conform-to/react";
+import {conform, Field, useField} from "@conform-to/react";
 
-type TextareaFieldParams = TextAreaProps & {
+type TextareaFieldParams = TextAreaProps & Field<string>& {
     onClear?: () => void
     label: ReactNode
-    config: FieldConfig<string>
 }
 
 export default function TextareaField(props: TextareaFieldParams) {
@@ -17,12 +16,13 @@ export default function TextareaField(props: TextareaFieldParams) {
         onChange,
         onClear,
         isMultiline = true,
-        config,
+       name,
+        formId,
         ...rest
     } = props
-
-    const [value, setValue] = useState<string | null | undefined>(config?.defaultValue);
-    const fieldProps = conform.input(config);
+    const field = useField({ name, formId });
+    const fieldProps= conform.input(field);
+    const [value, setValue] = useState<string | null | undefined>(fieldProps?.defaultValue);
     return (
         <Textarea
             {...rest}
@@ -30,8 +30,8 @@ export default function TextareaField(props: TextareaFieldParams) {
             type="text"
             variant="faded"
             radius="sm"
-            errorMessage={config.error}
-            isInvalid={!!config.error}
+            errorMessage={field.errors?.length ? field.errors[0] :undefined}
+            isInvalid={!!field.errors}
             isMultiline={isMultiline}
             onClear={() => {
                 if (onClear) onClear();
@@ -39,7 +39,7 @@ export default function TextareaField(props: TextareaFieldParams) {
             }}
             isDisabled={!!rest.disabled}
             fullWidth={fullWidth}
-            isRequired={config.required}
+            isRequired={fieldProps.required}
             value={value?.toString() ?? ''}
             onChange={event => {
                 if (onChange) onChange(event);

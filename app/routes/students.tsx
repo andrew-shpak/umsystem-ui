@@ -1,10 +1,9 @@
-import {Form, useLoaderData, useNavigation, useOutletContext, useSearchParams} from "@remix-run/react"
-import type {ContextType} from "~/src/shared/types";
+import {Form, useLoaderData, useNavigation, useSearchParams} from "@remix-run/react"
 import Layout from "~/src/layout";
 import styles from "../styles/layout.css";
 import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Pagination, Spinner} from "@nextui-org/react";
 import *as  React from "react";
-import {useForm} from "@conform-to/react";
+import {conform, FormProvider, useForm} from "@conform-to/react";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import type {EducationForm, EducationLevel, EducationProgram, User,} from "~/src/entities";
 import type {LinksFunction, LoaderFunction} from "@remix-run/node";
@@ -33,7 +32,7 @@ export function meta() {
 
 export const loader: LoaderFunction = async ({request}) => {
     const url = new URL(request.url)
-    const { extraParams} = await auth.isAuthenticated(request, {
+    const {extraParams} = await auth.isAuthenticated(request, {
         failureRedirect: routes.signIn,
     });
     const res = await fetch(
@@ -64,11 +63,12 @@ type LoaderData = {
     cdnUrl: string
 }
 export default function CreateNewUserPage() {
-    const context = useOutletContext<ContextType>()
     const response = useLoaderData<LoaderData>();
     const [searchParams] = useSearchParams()
-    const  {form, fields}= useForm({
-        defaultValue: Object.fromEntries(searchParams),
+    const {form, fields, context} = useForm({
+        defaultValue: {
+            ...Object.fromEntries(searchParams)
+        },
         constraint: getFieldsetConstraint(studentsFiltersSchema),
         onValidate({formData}) {
             return parse(formData, {schema: studentsFiltersSchema});
@@ -91,24 +91,26 @@ export default function CreateNewUserPage() {
     }, [currentPage]);
     const navigation = useNavigation();
     return (
-        <Layout title={pageTitle} {...context}>
-            <Form
-               {...conform.form(form)}
-                method="get"
-                className="gap-2"
-            >
-                <div className="w-full flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 items-center">
-                    <FiltersForm fields={fields}/>
-                    <Button
-                        type="submit"
-                        variant="flat"
-                        color='primary'
-                        radius="sm"
-                    >
-                        {uk.search}
-                    </Button>
-                </div>
-            </Form>
+        <Layout title={pageTitle}>
+            <FormProvider context={context}>
+                <Form
+                    {...conform.form(form)}
+                    method="get"
+                    className="gap-2"
+                >
+                    <div className="w-full flex flex-col md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 items-center">
+                        <FiltersForm fields={fields}/>
+                        <Button
+                            type="submit"
+                            variant="flat"
+                            color='primary'
+                            radius="sm"
+                        >
+                            {uk.search}
+                        </Button>
+                    </div>
+                </Form>
+            </FormProvider>
             <div
                 className={cn("flex justify-center my-4", {
                     "hidden": navigation.state === "idle"

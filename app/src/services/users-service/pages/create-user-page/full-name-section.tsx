@@ -4,8 +4,9 @@ import type {CreateUser} from "./create-user-schema";
 
 export default function FullNameSection(props: {
     fields: Fieldset<CreateUser>
+    formId: string
 }) {
-    const {fields} = props;
+    const {fields,formId} = props;
     return (
         <section className="w-full flex flex-col gap-4">
             <h3 className="divider text-center text-lg font-medium">
@@ -14,23 +15,27 @@ export default function FullNameSection(props: {
             <TextField
                 label="Прізвище"
                 placeholder="Введіть прізвище користувача"
-                config={fields.lastName}
+                name={fields.lastName.name}
+                formId={formId}
             />
             <TextField
                 label="Ім'я"
                 placeholder="Введіть ім'я користувача"
-                config={fields.name}
+                name={fields.name.name}
+                formId={formId}
             />
             <TextField
                 label="Побатькові"
                 placeholder="Введіть побатькові користувача"
-                config={fields.middleName}
+                name={fields.middleName.name}
+                formId={formId}
             />
             <TextField
                 label="РНОКПП"
                 placeholder="Введіть РНОКПП користувача"
                 description="Реєстраційний номер облікової картки платника податків"
-                config={fields.identityNumber}
+                name={fields.identityNumber.name}
+                formId={formId}
             />
         </section>
     )

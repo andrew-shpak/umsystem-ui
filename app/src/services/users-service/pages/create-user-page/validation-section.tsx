@@ -4,6 +4,7 @@ import type {CreateUser} from "./create-user-schema";
 
 export default function ValidationSection(props: {
     fields: Fieldset<CreateUser>
+    formId: string
 }) {
     const {fields} = props;
     return (
@@ -12,7 +13,8 @@ export default function ValidationSection(props: {
                 Валідація
             </h3>
             <CheckboxField
-                config={fields.validation}
+                name={fields.validation.name}
+                formId={props.formId}
                 label="Перевірка на збіги"
                 color={"danger"}
             />

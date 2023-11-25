@@ -1,8 +1,7 @@
 import {Autocomplete, AutocompleteItem, Tooltip} from "@nextui-org/react";
 import type {InputHTMLAttributes, ReactNode} from "react";
 import {useMemo, useRef, useState} from "react";
-import type {FieldConfig} from "@conform-to/react";
-import {conform, useInputEvent} from "@conform-to/react";
+import {conform, Field, useField, useInputEvent} from "@conform-to/react";
 
 export type AutocompleteFieldProps<T> = Omit<InputHTMLAttributes<HTMLInputElement>,
     "size"
@@ -23,8 +22,7 @@ export type AutocompleteFieldProps<T> = Omit<InputHTMLAttributes<HTMLInputElemen
     options: NonNullable<T[]>
     getLabel: (option: T) => string
     getOptionKey?: (option: T) => string
-    config: FieldConfig<string>
-}
+} & Field<string>
 type Fields = object & {
     url?: string
     id?: string
@@ -43,13 +41,16 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
         getLabel,
         getOptionKey = option => option.url ?? option.id ?? '',
         minLength = 2,
-        config,
+        name,
+        formId,
         ...rest
     } = props;
-    const [selectedKey, setSelectedKey] = useState<Key>(config?.defaultValue?.toString() ?? '');
+    const field = useField({ name, formId });
+    const fieldProps= conform.input(field);
+    const [selectedKey, setSelectedKey] = useState<Key>(fieldProps?.defaultValue?.toString() ?? '');
     const defaultEntity = useMemo(() => {
-        return options.find(option => getOptionKey(option) === config?.defaultValue?.toString())
-    }, [options, getOptionKey, config?.defaultValue])
+        return options.find(option => getOptionKey(option) === fieldProps?.defaultValue?.toString())
+    }, [options, getOptionKey, fieldProps?.defaultValue])
     const [inputValue, setInputValue] = useState<string>(defaultEntity
         ? getLabel(defaultEntity)
         : '');
@@ -57,7 +58,7 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
     const shadowInputRef = useRef<HTMLInputElement>(null);
     const control = useInputEvent({
         ref: shadowInputRef,
-        onReset: () => setSelectedKey(config?.defaultValue?.toString() ?? ''),
+        onReset: () => setSelectedKey(fieldProps?.defaultValue?.toString() ?? ''),
     });
     const onSelectionChange = (id: Key) => {
         setSelectedKey(id);
@@ -76,31 +77,31 @@ export default function AutocompleteField<T extends Fields>(props: AutocompleteF
     return (
         <>
             <input ref={shadowInputRef}
-                   {...conform.input(config, {hidden: true})}/>
+                     type="hidden"
+                   {...fieldProps}/>
             <Autocomplete
                 {...rest}
+                {...control}
                 variant="faded"
                 radius="sm"
                 inputValue={inputValue}
                 onInputChange={setInputValue}
                 description={helperText}
                 fullWidth={fullWidth}
-                isRequired={config.required}
+                isRequired={fieldProps.required}
                 isDisabled={!!rest.disabled}
                 isClearable={isClearable}
                 onClear={() => {
                     if (onClear) onClear();
                     setSelectedKey('');
                 }}
-                errorMessage={config.error}
+                errorMessage={field.errors?.length ? field.errors[0] :undefined}
                 className={inputClassName}
-                isInvalid={!!config.error}
+                 isInvalid={!!field.errors}
                 minLength={minLength}
                 items={items.slice(0, 50)}
                 onSelectionChange={onSelectionChange}
                 selectedKey={selectedKey}
-                onBlur={control.blur}
-                onFocus={control.focus}
             >
                 {(option: T) => {
                     const key = getOptionKey(option)

@@ -13,6 +13,7 @@ type LoaderData = {
 }
 export default function FiltersForm(props: {
     fields: Fieldset<StudentsPageFilters>
+    formId: string
 }) {
     const {
         fields,
@@ -32,19 +33,22 @@ export default function FiltersForm(props: {
                     getLabel={item => item.name}
                     label="Освітня програма"
                     placeholder="Виберіть освітню програму"
-                    config={fields.educationProgramId}
+                    name={fields.educationProgramId.name}
+                    formId={props.formId}
                 />
             </div>
             <div className="w-full flex flex-col md:flex-row gap-4 items-center">
                 <DateField
-                    config={fields.start}
                     label={'Дата початку'}
                     placeholder={'Введіть дату початку навчання'}
+                    name={fields.start.name}
+                    formId={props.formId}
                 />
                 <DateField
-                    config={fields.end}
                     label={'Дата завершення'}
                     placeholder={'Введіть дату завершення навчання'}
+                    name={fields.end.name}
+                    formId={props.formId}
                 />
             </div>
             <div className="w-full flex flex-col md:flex-row gap-4 items-center  lg:col-span-2">
@@ -53,14 +57,16 @@ export default function FiltersForm(props: {
                     getLabel={item => item.name}
                     label="Форма навчання"
                     placeholder="Виберіть форму навчання"
-                    config={fields.educationFormId}
+                    name={fields.educationFormId.name}
+                    formId={props.formId}
                 />
                 <AutocompleteField
                     options={educationLevels}
                     getLabel={item => item.name}
                     label="Освітній рівень"
                     placeholder="Виберіть освітній рівень"
-                    config={fields.educationLevelId}
+                    name={fields.educationLevelId.name}
+                    formId={props.formId}
                 />
             </div>
             <div className="w-full flex flex-col md:flex-row gap-4 items-center">
@@ -69,11 +75,13 @@ export default function FiltersForm(props: {
                     getLabel={item => item.name}
                     label="Джерело фінансування"
                     placeholder="Виберіть джерело фінансування"
-                    config={fields.financialSourceId}
+                    name={fields.financialSourceId.name}
+                    formId={props.formId}
                 />
 
                 <NumberField
-                    config={fields.year}
+                    name={fields.course.name}
+                    formId={props.formId}
                     label={'Курс'}
                     placeholder={'Введіть курс'}
                 />
@@ -84,11 +92,13 @@ export default function FiltersForm(props: {
                 <TextField
                     label="ПІП"
                     placeholder="Введіть ПІП студента"
-                    config={fields.fullName}
+                    name={fields.fullName.name}
+                    formId={props.formId}
                 />
 
                 <CheckboxField
-                    config={fields.deleted}
+                    name={fields.deleted.name}
+                    formId={props.formId}
                     label="Видалені"
                 />
             </div>
@@ -98,7 +108,8 @@ export default function FiltersForm(props: {
                     getLabel={item => `${item.userFullName} (${item.primaryEmail}) ${(item.deleted ? " (Видалений)" : "")}`}
                     label="Користувач"
                     placeholder="Виберіть користувача"
-                    config={fields.userId}
+                    name={fields.userId.name}
+                    formId={props.formId}
                 />
             </div>
         </>

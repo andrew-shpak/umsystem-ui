@@ -9,7 +9,7 @@ import {useOutletContext} from "@remix-run/react";
 export type LayoutProps = {
     title: NonNullable<string>
     children: NonNullable<ReactNode>
-} & ContextType
+}
 
 export default function Layout(props: LayoutProps) {
     // const width = useWindowWidth()

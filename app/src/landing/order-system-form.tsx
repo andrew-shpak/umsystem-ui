@@ -1,35 +1,40 @@
 import type {Fieldset} from '@conform-to/react';
-import {AutocompleteField, TextareaField, TextField} from "~/src/forms";
+import {AutocompleteField, TextField, TextareaField} from "~/src/forms";
 import type {Order, Tariff} from "~/src/entities";
 
 export default function OrderSystemForm(props: {
     fields: Fieldset<Order>
     tariffs: Tariff[]
+    formId: string
 }) {
-    const {fields, tariffs} = props;
+    const {fields, tariffs, formId} = props;
     return (
         <>
             <div className="w-full flex flex-col md:grid md:grid-cols-2 gap-4">
                 <TextField
-                    config={fields.name}
+                    name={fields.name.name}
+                    formId={formId}
                     label="Ім'я"
                     placeholder="Введіть ім'я"
                 />
-                <TextField
+              <TextField
                     label="Прізвище"
                     placeholder="Введіть прізвище"
-                    config={fields.lastName}
+                     name = {fields.lastName.name}
+                    formId={formId}
                 />
                 <TextField
-                    config={fields.phone}
+                   name={fields.phone.name}
                     label="Телефон"
                     placeholder="Введіть номер телефону"
                     description={"Наприклад: +380123456789"}
+                    formId={formId}
                 />
                 <TextField
                     label="Пошта"
                     placeholder="Введіть ел. пошту"
-                    config={fields.email}
+                    name={fields.email.name}
+                    formId={formId}
                 />
             </div>
             <div className="w-full mt-4">
@@ -38,7 +43,8 @@ export default function OrderSystemForm(props: {
                     getLabel={item => item.name}
                     label="Тариф"
                     placeholder="Виберіть тариф"
-                    config={fields.tariffId}
+                    name={fields.tariffId.name}
+                    formId={formId}
                 />
             </div>
             <div className="w-full my-4">
@@ -46,7 +52,8 @@ export default function OrderSystemForm(props: {
                     label="Повідомлення"
                     placeholder="Введіть опис вашої задачі"
                     minRows={3}
-                    config={fields.message}
+                    formId={formId}
+                    name={fields.message.name}
                 />
             </div>
 

@@ -2,12 +2,11 @@ import type {ReactNode} from 'react';
 import {useState} from "react";
 import {Input} from "@nextui-org/input";
 import type {InputProps} from '@nextui-org/react';
-import type {FieldConfig} from "@conform-to/react";
-import {conform} from "@conform-to/react";
+import type {Field, FieldConfig} from "@conform-to/react";
+import {conform, useField} from "@conform-to/react";
 
-type TextFieldParams = InputProps & {
+type TextFieldParams = InputProps & Field<string> & {
     label: ReactNode
-    config: FieldConfig<string>
 }
 
 export default function TextField(props: TextFieldParams) {
@@ -16,11 +15,13 @@ export default function TextField(props: TextFieldParams) {
         onChange,
         onClear,
         isClearable = true,
-        config,
+        name,
+        formId,
         ...rest
     } = props
-    const fieldProps = conform.input(config);
-    const [value, setValue] = useState<string | null | undefined>(config?.defaultValue);
+    const field = useField({ name, formId });
+    const fieldProps= conform.input(field);
+    const [value, setValue] = useState<string | null | undefined>(fieldProps?.defaultValue);
     return (
         <Input
             {...rest}
@@ -28,17 +29,16 @@ export default function TextField(props: TextFieldParams) {
             type="text"
             variant="faded"
             radius="sm"
-            erorMessage={config.error}
-            isInvalid={!!config.error}
+            isInvalid={!!field.errors}
             isClearable={isClearable}
             isDisabled={!!rest.disabled}
-            errorMessage={config.error}
+            errorMessage={field.errors?.length ? field.errors[0] :undefined}
             onClear={() => {
                 if (onClear) onClear();
                 setValue('')
             }}
             fullWidth={fullWidth}
-            isRequired={config.required}
+            isRequired={fieldProps.required}
             value={value?.toString() ?? ''}
             onChange={event => {
                 if (onChange) onChange(event);
