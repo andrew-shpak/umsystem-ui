@@ -67,7 +67,7 @@ export default function CreateNewUserPage() {
     const context = useOutletContext<ContextType>()
     const response = useLoaderData<LoaderData>();
     const [searchParams] = useSearchParams()
-    const [form, fields] = useForm({
+    const  {form, fields}= useForm({
         defaultValue: Object.fromEntries(searchParams),
         constraint: getFieldsetConstraint(studentsFiltersSchema),
         onValidate({formData}) {
@@ -93,7 +93,7 @@ export default function CreateNewUserPage() {
     return (
         <Layout title={pageTitle} {...context}>
             <Form
-                {...form.props}
+               {...conform.form(form)}
                 method="get"
                 className="gap-2"
             >

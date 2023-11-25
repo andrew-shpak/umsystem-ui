@@ -74,7 +74,7 @@ export enum routes {
     workplaces = '/workplaces',
     selectiveCoursesGroups = '/selective/courses/groups',
     coursesGroups = '/courses/groups',
-    edboUsers = '/users/edbo',
+    edboStudents = '/edbo/students',
     usersLessons = '/lessons/users',
     facultiesLessons = '/lessons/faculties',
     additionalLessons = '/lessons/additional',

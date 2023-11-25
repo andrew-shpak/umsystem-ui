@@ -16,7 +16,7 @@ import type {ContextType} from "~/src/shared/types";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import type {Tariff} from "~/src/entities";
 import {orderSchema} from "~/src/entities";
-import {useForm} from "@conform-to/react";
+import {conform, useForm} from "@conform-to/react";
 import {environment} from "~/environment.server";
 import {endpoints, routes} from "~/src/constants";
 import styles from "../styles/landing.css";
@@ -34,7 +34,7 @@ export const links: LinksFunction = () => [
     {rel: "stylesheet", href: styles}
 ];
 export const loader: LoaderFunction = async ({request}) => {
-    const { extraParams} = await auth.isAuthenticated(request, {
+    const {extraParams} = await auth.isAuthenticated(request, {
         failureRedirect: routes.signIn,
     });
     const res = await fetch(
@@ -62,7 +62,7 @@ export default function LandingPage() {
     const response = useLoaderData<LoaderData>()
     const context = useOutletContext<ContextType>()
     const cdnUrl = context.environment.CDN_URL;
-    const [form, fields] = useForm({
+    const {form, fields} = useForm({
         constraint: getFieldsetConstraint(orderSchema),
         onValidate({formData}) {
             return parse(formData, {schema: orderSchema});
@@ -85,7 +85,7 @@ export default function LandingPage() {
 
                     <Form
                         method="post"
-                        {...form.props}
+                        {...conform.form(form)}
                         className="mb-10 mt-4 flex flex-col items-center justify-center gap-2"
                     >
                         <OrderSystemForm fields={fields} tariffs={response.tariffs}/>

@@ -13,7 +13,7 @@ const uk = {
     invalidDateRange: "Дата закінчення повинна бути пізнішою за дату початку",
     validate: "Перевірити",
     cancel: "Скасувати",
-
+    upload: "Завантажити",
 
 }
 export default uk;

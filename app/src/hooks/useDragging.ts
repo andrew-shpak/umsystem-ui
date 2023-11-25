@@ -2,14 +2,14 @@ import * as React from 'react';
 
 let draggingCount = 0;
 type Params = {
-    labelRef: any;
-    inputRef: any;
+    containerRef: any;
+    inputRef: React.RefObject<HTMLInputElement>;
     multiple?: boolean | false;
     handleChanges: (arg: Array<File>) => boolean;
     onDrop?: (arg: Array<File>) => void;
 };
 export  function useDragging({
-                                        labelRef,
+                                        containerRef,
                                         inputRef,
                                         multiple,
                                         handleChanges,
@@ -17,7 +17,7 @@ export  function useDragging({
                                     }: Params): boolean {
     const [dragging, setDragging] = React.useState(false);
     const handleClick = React.useCallback(() => {
-        inputRef.current.click();
+        inputRef.current?.click();
     }, [inputRef]);
 
     const handleDragIn = React.useCallback((ev:DragEvent) => {
@@ -56,7 +56,7 @@ export  function useDragging({
         [handleChanges]
     );
     React.useEffect(() => {
-        const ele = labelRef.current;
+        const ele = containerRef.current;
         ele.addEventListener('click', handleClick);
         ele.addEventListener('dragenter', handleDragIn);
         ele.addEventListener('dragleave', handleDragOut);
@@ -75,7 +75,7 @@ export  function useDragging({
         handleDragOut,
         handleDrag,
         handleDrop,
-        labelRef
+        containerRef
     ]);
 
     return dragging;

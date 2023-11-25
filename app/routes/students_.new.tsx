@@ -1,5 +1,5 @@
 import {Form, Link, useActionData, useLocation, useNavigation, useOutletContext} from "@remix-run/react"
-import {useFieldset, useForm} from "@conform-to/react";
+import {conform, useFieldset, useForm} from "@conform-to/react";
 import type {ContextType} from "~/src/shared/types";
 import Layout from "~/src/layout";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
@@ -74,7 +74,7 @@ export default function CreateNewUserPage() {
     //   SELECT_USER_ORGANIZATION,
     // )
     const location = useLocation()
-    const [form, fields] = useForm({
+    const  {form, fields,context:FormContext}= useForm({
         defaultValue: {
             validation: true,
         },
@@ -84,14 +84,22 @@ export default function CreateNewUserPage() {
         },
         shouldValidate: "onBlur",
     });
-    const passportFields = useFieldset(form.ref, fields.passport);
-    const educationFields = useFieldset(form.ref, fields.education);
+    const passportFields = useFieldset({
+        context:FormContext,
+        formId: form.id,
+        name: fields.passport.name
+    });
+    const educationFields = useFieldset({
+        context:FormContext,
+        formId: form.id,
+        name: fields.education.name
+    });
     const navigation = useNavigation();
     return (
         <Layout title="Створення нового користувача" {...context}>
             <Form
                 method="post"
-                {...form.props}
+               {...conform.form(form)}
                 action={`${routes.students}/new${location.search}`}
                 className="mb-10 mt-4 flex flex-col items-center justify-center gap-2"
             >

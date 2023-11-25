@@ -1,4 +1,4 @@
-import {Form, useLoaderData, useLocation, useOutletContext} from "@remix-run/react";
+import {Form, useLoaderData, useOutletContext} from "@remix-run/react";
 import type {ContextType} from "../types";
 import {Copyright} from "~/src/components";
 import {GoogleIcon} from "~/src/icons";
@@ -14,13 +14,13 @@ type LoaderData = {
 }
 
 type LoaderError = { message: string } | null;
-export const loader = async ({ request }:LoaderFunctionArgs) => {
-    await auth.isAuthenticated(request, { successRedirect: routes.dashboard });
+export const loader = async ({request}: LoaderFunctionArgs) => {
+    await auth.isAuthenticated(request, {successRedirect: routes.dashboard});
     const session = await sessionStorage.getSession(
         request.headers.get("Cookie"),
     );
     const error = session.get(auth.sessionErrorKey) as LoaderError;
-    return json({ error });
+    return json({error});
 };
 export default function SignIn() {
     const response = useLoaderData<LoaderData>()
@@ -31,19 +31,20 @@ export default function SignIn() {
         ? `${cdnUrl}/organizations/${image}`
         : `${cdnUrl}/logo-oa.jpg`
     const caver = 'umsystem-logo.svg'
-    const location = useLocation()
 
 
     return (
         <main className="h-screen w-screen flex-wrap items-center justify-between md:flex">
-            <img
-                loading="lazy"
-                decoding="async"
-                src={logo}
-                alt="UMSystem logo"
-                className="bg-cover bg-center bg-no-repeat bg-fafafa box-border m-0 md:flex hidden flex-row flex-wrap h-screen md:w-3/5"
-            />
-            <Form method="post" action={routes.googleAuth}  className="bg-white drop-shadow sm:w-full md:w-2/5">
+            <div  className="bg-cover bg-center bg-no-repeat bg-fafafa box-border m-0 md:flex hidden flex-row flex-wrap  md:w-3/5">
+                <img
+                    loading="lazy"
+                    decoding="async"
+                    src={logo}
+                    alt="UMSystem logo"
+                    className="h-screen w-full"
+                />
+            </div>
+            <Form method="post" action={routes.googleAuth} className="bg-white drop-shadow sm:w-full md:w-2/5">
                 <div className="container m-auto flex h-screen w-3/5 flex-col flex-wrap items-center justify-center">
                     <img
                         loading="lazy"
@@ -51,7 +52,8 @@ export default function SignIn() {
                         src={`${cdnUrl}/${caver}`}
                         alt="UMSystem logo"
                     />
-                    <Button fullWidth color="danger"  type="submit"variant="solid" startContent={<GoogleIcon size={20}/>}
+                    <Button fullWidth color="danger" type="submit" variant="solid"
+                            startContent={<GoogleIcon size={20}/>}
                     >
                         Увійти
                     </Button>

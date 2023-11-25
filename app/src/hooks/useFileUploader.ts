@@ -4,9 +4,6 @@ import {useDragging} from './useDragging';
 type FileUploaderProps = {
     name: string;
     types?: Array<string>;
-    children?: JSX.Element;
-    maxSize?: number;
-    minSize?: number;
     fileOrFiles?: Array<File> | File | null;
     disabled?: boolean | false;
     label?: string | undefined;
@@ -38,11 +35,7 @@ export function useFileUploader({
                                     name,
                                     types,
                                     handleChange,
-                                    maxSize,
-                                    minSize,
                                     fileOrFiles,
-                                    onSizeError,
-                                    onTypeError,
                                     onSelect,
                                     onDrop,
                                     multiple,
@@ -53,64 +46,18 @@ export function useFileUploader({
 
     const containerRef = React.useRef<HTMLDivElement>(null);
     const inputRef = React.useRef<HTMLInputElement>(null);
-    const [uploaded, setUploaded] = React.useState(false);
     const [files, setFile] = React.useState<Array<File> | File | null>(null);
-    const [error, setError] = React.useState(false);
 
-    const validateFile = (file: File) => {
-        if (types && !checkType(file, types)) {
-            // types included and type not in them
-            setError(true);
-            if (onTypeError) onTypeError('File type is not supported');
-            return false;
-        }
-        if (maxSize && getFileSizeMB(file.size) > maxSize) {
-            setError(true);
-            if (onSizeError) onSizeError('File size is too big');
-            return false;
-        }
-        if (minSize && getFileSizeMB(file.size) < minSize) {
-            setError(true);
-            if (onSizeError) onSizeError('File size is too small');
-            return false;
-        }
-        return true;
-    };
 
     const handleChanges = (files: File | Array<File>): boolean => {
-        let checkError = false;
         if (files) {
-            if (files instanceof File) {
-                checkError = !validateFile(files);
-            } else {
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    checkError = !validateFile(file) || checkError;
-                }
-            }
-            if (checkError) return false;
             if (handleChange) handleChange(files);
             setFile(files);
-
-            setUploaded(true);
-            setError(false);
             return true;
         }
         return false;
     };
 
-    const blockEvent = (ev: any) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-    };
-    const handleClick = (ev: any) => {
-        ev.stopPropagation();
-        // eslint-disable-next-line no-param-reassign
-        if (inputRef && inputRef.current) {
-            inputRef.current.value = '';
-            inputRef.current.click();
-        }
-    };
 
     const handleInputChange = (ev: any) => {
         const allFiles = ev.target.files;
@@ -119,7 +66,7 @@ export function useFileUploader({
         if (onSelect && success) onSelect(files);
     };
     const dragging = useDragging({
-        labelRef:containerRef,
+        containerRef:containerRef,
         inputRef,
         multiple,
         handleChanges,
@@ -132,11 +79,9 @@ export function useFileUploader({
 
     React.useEffect(() => {
         if (fileOrFiles) {
-            setUploaded(true);
             setFile(fileOrFiles);
         } else {
             if (inputRef.current) inputRef.current.value = '';
-            setUploaded(false);
             setFile(null);
         }
     }, [fileOrFiles]);
@@ -152,11 +97,12 @@ export function useFileUploader({
         style: {display: 'none'},
     };
     const containerProps = {
-        ref:containerRef
+        ref:containerRef,
     };
     return {
         inputProps,
         containerProps,
-        files
+        files,
+        isDragging:dragging,
     }
 }
