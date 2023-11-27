@@ -52,7 +52,7 @@ export default function App() {
         theme,
     }
     return (
-        <html lang="en">
+        <html lang="uk-UA">
         <head>
             <meta charSet="utf-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1"/>

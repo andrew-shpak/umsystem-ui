@@ -25,7 +25,7 @@ export default function DateField(props: DateFieldProps) {
     const field = useField({name, formId});
     const fieldProps = conform.input(field);
     const [inputValue, setInputValue] = useState<string | undefined>(
-        props.defaultValue ?? ''
+        fieldProps.defaultValue ?? ''
     )
     const [opts] = useState({mask: Date, radix: '.'})
     const {ref} = useIMask<HTMLInputElement, FactoryOpts>(opts, {
