@@ -4,6 +4,7 @@ import {useIMask} from 'react-imask'
 import type {FactoryOpts} from "imask";
 import {conform, Field, useField, useInputEvent} from "@conform-to/react";
 import {InputProps} from "@nextui-org/react";
+import {convertToISOString} from "~/src/constants";
 
 export type DateFieldProps = InputProps & {
     onClear?: () => void
@@ -34,13 +35,14 @@ export default function DateField(props: DateFieldProps) {
     const shadowInputRef = useRef<HTMLInputElement>(null);
     const control = useInputEvent({
         ref: shadowInputRef,
-        onReset: () => setInputValue(rest?.defaultValue ?? ''),
+        onReset: () => setInputValue(fieldProps?.defaultValue ?? ''),
     });
     return (
         <>
             <input ref={shadowInputRef}
                    type="hidden"
                    {...fieldProps}
+                   value={inputValue ? convertToISOString(inputValue) : ''}
             />
             <Input
                 {...rest}
@@ -58,11 +60,13 @@ export default function DateField(props: DateFieldProps) {
                 onClear={() => {
                     if (onClear) onClear();
                     setInputValue('');
+                    control.change('');
                 }}
                 value={inputValue}
                 onChange={event => {
                     if (onChange) onChange(event);
                     setInputValue(event.target.value);
+                    control.change(event);
                 }}
             />
         </>

@@ -30,7 +30,6 @@ export default function CheckboxField(props: CheckboxFieldProps) {
                    {...fieldProps}/>
             <Checkbox
                 {...rest}
-                {...control}
                 radius="sm"
                 isDisabled={rest.disabled}
                 isRequired={fieldProps.required}
