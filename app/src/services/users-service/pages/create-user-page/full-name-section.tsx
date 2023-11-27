@@ -5,7 +5,7 @@ import type {FieldsetMetadata, Pretty} from "~/src/shared/types";
 export default function FullNameSection(props: {
     fields: Pretty<FieldsetMetadata<CreateUser>>
     formId: string
-} & CreateUser) {
+}) {
     const {formId, fields} = props;
     return (
         <section className="w-full flex flex-col gap-4">
