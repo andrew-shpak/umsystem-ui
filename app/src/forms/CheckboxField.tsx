@@ -26,7 +26,7 @@ export default function CheckboxField(props: CheckboxFieldProps) {
     return (
         <>
             <input ref={shadowInputRef}
-                   type="checkbox"
+                   type="hidden"
                    {...fieldProps}/>
             <Checkbox
                 {...rest}
