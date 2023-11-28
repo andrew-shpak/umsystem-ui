@@ -117,6 +117,9 @@ export default function CreateNewUserPage() {
                 })}>
                 <Spinner label="Завантаження списку користувачів"/>
             </div>
+            {response.students.length === 0 && navigation.state === "idle" &&<div>
+                <h1 className="text-center text-2xl font-semibold mt-4">Записів не знайдено</h1>
+            </div>}
             <div className={cn("grid lg:grid-cols-3 md:grid-cols-2 gap-4 mt-4", {
                 "hidden": response.students.length === 0
             })}>
