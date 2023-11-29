@@ -161,7 +161,7 @@ export const action: ActionFunction = async ({request}) => {
     const cookie = headers.get('cookie') as string
     const formData = await request.formData();
     const submission = parse(formData, {schema: createUserSchema});
-    console.log(submission,"test");
+
     if (submission.value?.education && !submission.value?.education?.educationProgramId) {
         delete submission.value.education
     }
