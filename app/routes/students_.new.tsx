@@ -163,7 +163,9 @@ export const action: ActionFunction = async ({request}) => {
     const cookie = headers.get('cookie') as string
     const formData = await request.formData();
     const submission = parse(formData, {schema: createUserSchema});
-
+    const {extraParams} = await auth.isAuthenticated(request, {
+        failureRedirect: routes.signIn,
+    });
     if (submission.value?.education && !submission.value?.education?.educationProgramId) {
         delete submission.value.education
     }
@@ -180,9 +182,8 @@ export const action: ActionFunction = async ({request}) => {
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
-            cookie,
+            Authorization: `Bearer ${extraParams.id_token} `,
         },
-        credentials: 'include',
         body: JSON.stringify(submission.value),
     })
 
