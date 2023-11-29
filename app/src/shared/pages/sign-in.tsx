@@ -45,7 +45,7 @@ export default function SignIn() {
                     className="w-full"
                 />
             </div>
-            <Form method="post" action={routes.googleAuth} className="bg-white drop-shadow sm:w-full md:w-2/5">
+            <Form method="post" action={routes.googleAuth} className="bg-white  sm:w-full md:w-2/5">
                 <div className="container m-auto flex h-screen w-3/5 flex-col flex-wrap items-center justify-center">
                     <img
                         loading="lazy"
