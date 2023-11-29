@@ -79,7 +79,6 @@ export default function CreateNewUserPage() {
         },
         constraint: getFieldsetConstraint(createUserSchema),
         onValidate({formData}) {
-            console.log( parse(formData, {schema: createUserSchema}))
             return parse(formData, {schema: createUserSchema});
         },
         shouldValidate: "onBlur",
