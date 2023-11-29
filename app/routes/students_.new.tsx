@@ -23,6 +23,7 @@ import {environment} from "~/environment.server";
 import {validateResponseStatusCode} from "~/helpers.server";
 import {auth} from "~/auth.server";
 import {CreateUser} from "~/src/services/users-service/pages/create-user-page/create-user-schema";
+import { cn } from "~/src/shared/utils";
 
 const pageTitle = 'Створення користувача'
 export const links: LinksFunction = () => [
@@ -108,7 +109,9 @@ export default function CreateNewUserPage() {
                     <DuplicatesSection/>
 
                     <div
-                        className={`w-full text-center text-2xl font-semibold  ${actionData?.students || !actionData ? "hidden" : "block"}`}>
+                        className={cn("w-full text-center text-2xl font-semibold block",{
+                            hidden: actionData?.students || !actionData,
+                        })}>
                         Валідація пройшла успішно - збігів не знайдено
                     </div>
                     <div className="flex w-full mt-7 md:flex-row flex-col items-center justify-center gap-4">
