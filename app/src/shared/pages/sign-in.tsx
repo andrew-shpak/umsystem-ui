@@ -46,7 +46,7 @@ export default function SignIn() {
                 />
             </div>
             <Form method="post" action={routes.googleAuth} className="bg-white  sm:w-full md:w-2/5">
-                <div className="container m-auto flex h-screen w-3/5 flex-col flex-wrap items-center justify-center">
+                <div className="container m-auto flex h-screen w-3/5 flex-col flex-wrap items-center justify-center content-center">
                     <img
                         loading="lazy"
                         decoding="async"
