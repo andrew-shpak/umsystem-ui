@@ -27,6 +27,7 @@ export default function CheckboxField(props: CheckboxFieldProps) {
         <>
             <input ref={shadowInputRef}
                    type="hidden"
+                   name={name}
                    value={fieldProps?.defaultValue ? 'on' : ''}
                    onChange={() => {
                    }}

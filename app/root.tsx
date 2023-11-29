@@ -11,31 +11,32 @@ import {
     useNavigate,
     useRouteError,
 } from "@remix-run/react";
-import {commitSession, getSession} from "~/message.server";
 import {environment} from "~/environment.server";
 import type {ContextType} from "./src/shared/types";
 import {NextUIProvider} from "@nextui-org/react";
 import {getThemeSession} from "./theme.server";
 import styles from "./tailwind.css";
+import {getToast} from "remix-toast";
+import {useEffect} from "react";
+import {Toaster, toast as notify} from "sonner";
 
 export const links: LinksFunction = () => [
     {rel: "stylesheet", href: styles},
 ];
 export const loader: LoaderFunction = async ({request}) => {
-    const {headers} = request
-    const cookie = headers.get('cookie')
-    const cookieSession = await getSession(cookie)
+    const {toast, headers} = await getToast(request);
     const themeSession = await getThemeSession(request);
     const response = new Response()
     return json(
         {
             environment: environment(),
             theme: themeSession.getTheme(),
+            toast,
         },
         {
             headers: {
                 ...response.headers,
-                'Set-Cookie': await commitSession(cookieSession),
+                ...headers
             },
         },
     )
@@ -44,7 +45,17 @@ export default function App() {
     const {
         environment,
         theme,
+        toast,
     } = useLoaderData<typeof loader>();
+    // Hook to show the toasts
+    useEffect(() => {
+        if (toast?.type === "error") {
+            notify.error(toast.message);
+        }
+        if (toast?.type === "success") {
+            notify.success(toast.message);
+        }
+    }, [toast]);
     const navigate = useNavigate();
 
     const context: ContextType = {
@@ -71,6 +82,7 @@ export default function App() {
             <LiveReload/>
             <Scripts/>
         </NextUIProvider>
+        <Toaster richColors theme={theme}/>
         </body>
         </html>
     );
