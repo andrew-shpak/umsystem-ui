@@ -34,15 +34,15 @@ export default function SignIn() {
 
 
     return (
-        <main className="h-screen w-screen flex-wrap items-center justify-between md:flex">
+        <main className=" w-screen flex-wrap items-center justify-between md:flex">
             <div
-                className="bg-cover bg-center bg-no-repeat bg-fafafa box-border m-0 md:flex hidden flex-row flex-wrap  md:w-3/5">
+                className="bg-cover h-screen items-center justify-between overflow-hidden bg-center bg-no-repeat bg-fafafa box-border m-0 md:flex hidden flex-row flex-wrap  md:w-3/5">
                 <img
                     loading="lazy"
                     decoding="async"
                     src={logo}
                     alt="UMSystem logo"
-                    className="h-screen w-full"
+                    className="w-full"
                 />
             </div>
             <Form method="post" action={routes.googleAuth} className="bg-white drop-shadow sm:w-full md:w-2/5">
