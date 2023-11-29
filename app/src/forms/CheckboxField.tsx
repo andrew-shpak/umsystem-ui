@@ -27,7 +27,10 @@ export default function CheckboxField(props: CheckboxFieldProps) {
         <>
             <input ref={shadowInputRef}
                    type="hidden"
-                   {...fieldProps}/>
+                   value={fieldProps?.defaultValue ? 'on' : ''}
+                   onChange={() => {
+                   }}
+            />
             <Checkbox
                 {...rest}
                 radius="sm"
