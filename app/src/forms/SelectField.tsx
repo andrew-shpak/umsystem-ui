@@ -23,11 +23,11 @@ export default function SelectField(props: SelectFieldProps) {
         <>
             <input ref={shadowInputRef}
                    type="hidden"
-                   {...fieldProps}
+                   name={name}
+                   value={Array.from(value).join(',')}
             />
             <Select
                 {...rest}
-                {...control}
                 variant="faded"
                 radius="sm"
                 isInvalid={!!field.errors}
@@ -35,12 +35,12 @@ export default function SelectField(props: SelectFieldProps) {
                 isRequired={fieldProps.required}
                 errorMessage={field.errors?.length ? field.errors[0] : undefined}
                 selectedKeys={value}
-                onSelectionChange={setValue}
-                onChange={(event) => {
-                    control.change(event.target.value)
+                onSelectionChange={(value) => {
+                    setValue(value)
                 }}
-                onBlur={control.blur}
+                onChange={control.change}
                 onFocus={control.focus}
+                onBlur={control.blur}
             >
                 {options.map((option) => (
                     <SelectItem key={option.value} value={option.value} textValue={option.label}>

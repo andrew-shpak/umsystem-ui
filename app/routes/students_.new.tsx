@@ -24,6 +24,7 @@ import {validateResponseStatusCode} from "~/helpers.server";
 import {auth} from "~/auth.server";
 import {CreateUser} from "~/src/services/users-service/pages/create-user-page/create-user-schema";
 import { cn } from "~/src/shared/utils";
+import * as React from "react";
 
 const pageTitle = 'Створення користувача'
 export const links: LinksFunction = () => [
@@ -104,8 +105,9 @@ export default function CreateNewUserPage() {
                         <ValidationSection fields={fields} formId={form.id}/>
                     </div>
 
-                    <Spinner label="Перевірка на збіги" className={navigation.state === "idle" ? "hidden" : ""}/>
-
+                    <Spinner label="Перевірка на збіги"  className={cn("", {
+                        hidden : navigation.state === "idle"
+                    })}/>
                     <DuplicatesSection/>
 
                     <div

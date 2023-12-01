@@ -1,19 +1,21 @@
 import type {LinksFunction} from "@remix-run/node";
 import {ActionFunction} from "@remix-run/node";
 import styles from "~/styles/layout.css";
-import {Form, useLocation} from "@remix-run/react";
+import {Form, useActionData, useLocation, useNavigation} from "@remix-run/react";
 import Layout from "~/src/layout";
 import {SelectField, UploadField} from "~/src/forms";
 import {conform, FormProvider, useForm} from "@conform-to/react";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import * as z from "zod";
 import {endpoints, routes} from "~/src/constants";
-import {Button} from "@nextui-org/react";
+import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Spinner} from "@nextui-org/react";
 import {uk} from "~/src/i18n";
 import * as React from "react";
 import {environment} from "~/environment.server";
 import {validateResponseStatusCode} from "~/helpers.server";
 import {auth} from "~/auth.server";
+import { cn } from "~/src/shared/utils";
+import {User} from "~/src/entities";
 
 const pageTitle = 'Завантаження студентів з ЕДБО'
 export const links: LinksFunction = () => [
@@ -50,6 +52,8 @@ const edboFileTypes = [
     {value: 'requests', label: 'Заяви абітурієнтів'},
 ]
 export default function UploadEdboStudents() {
+    const actionData = useActionData<ActionData>();
+    console.log(actionData)
     const location = useLocation()
     const {form, fields, context} = useForm({
         defaultValue: {
@@ -62,6 +66,21 @@ export default function UploadEdboStudents() {
         },
         shouldValidate: "onBlur",
     });
+    const navigation = useNavigation();
+    const [currentPage, setCurrentPage] = React.useState(1);
+    const rowsPerPage = 12;
+    const pages = Math.ceil(actionData.students.length / rowsPerPage);
+    const onNextPage = React.useCallback(() => {
+        if (currentPage < pages) {
+            setCurrentPage(currentPage + 1);
+        }
+    }, [currentPage, pages]);
+
+    const onPreviousPage = React.useCallback(() => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    }, [currentPage]);
     return (
         <Layout title={pageTitle}>
             <FormProvider context={context}>
@@ -106,8 +125,48 @@ export default function UploadEdboStudents() {
                     </div>
                 </Form>
             </FormProvider>
+
+            <Spinner label="Завантаження файлу" className={cn("flex justify-center",{
+                hidden : navigation.state === "idle"
+            })}/>
+            <div className={cn("grid lg:grid-cols-3 md:grid-cols-2 gap-4 mt-4", {
+                "hidden": actionData?.students.length === 0
+            })}>
+                {actionData?.students
+                    .sort((a, b) => a.userFullName.localeCompare(b.userFullName))
+                    .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
+                    .map((user: User) => {
+                        return (
+                            <Card className="max-w-[450px]" key={user.url}>
+                                <CardHeader className="justify-between">
+                                    <div className="flex gap-5">
+                                        <div className="flex flex-col gap-1 items-start justify-center">
+                                            <h4 className="text-small font-semibold leading-none text-default-600">{user.userFullName}</h4>
+                                            <h5 className="text-small tracking-tight text-default-400">{user.primaryEmail}</h5>
+                                        </div>
+                                    </div>
+
+                                </CardHeader>
+                                <CardBody className="px-3 py-0 text-small text-default-400">
+                                    {/*<p>*/}
+                                    {/*    Frontend developer and UI/UX enthusiast. Join me on this coding adventure!*/}
+                                    {/*</p>*/}
+                                </CardBody>
+                            </Card>
+                        );
+                    })}
+            </div>
+
         </Layout>
     )
+}
+type ActionData={
+    students: Student[]
+}
+type Student = User&{
+    errors:string[]
+    created:boolean
+    updated:boolean
 }
 export const action: ActionFunction = async ({request}) => {
     const formData = await request.formData();

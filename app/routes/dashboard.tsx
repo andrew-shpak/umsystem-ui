@@ -16,7 +16,6 @@ export const links: LinksFunction = () => [
     {rel: "stylesheet", href: styles}
 ];
 export default function Dashboard() {
-    const context = useOutletContext<ContextType>();
     return (
         <Layout title={pageTitle}>
             Так має бути!!! Це не помилка!!!

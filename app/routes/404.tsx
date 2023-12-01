@@ -17,7 +17,6 @@ export const handle = {
     breadcrumb: () => <span>{pageTitle}</span>,
 }
 export default function AccessDeniedPage() {
-    const context = useOutletContext<ContextType>()
     return (
         <Layout title={pageTitle}>
             <AccessDenied/>
