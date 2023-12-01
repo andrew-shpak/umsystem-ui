@@ -81,6 +81,7 @@ export default function UploadEdboStudents() {
             setCurrentPage(currentPage - 1);
         }
     }, [currentPage]);
+    console.log(actionData)
     return (
         <Layout title={pageTitle}>
             <FormProvider context={context}>
@@ -157,7 +158,7 @@ export default function UploadEdboStudents() {
                     })}
             </div>
             <div className={cn("py-2 px-2 flex justify-between items-center", {
-                "hidden": actionData?.students.length === 0
+                "hidden": actionData == undefined || actionData?.students.length === 0
             })}>
                 <span className="w-[30%] text-small text-default-400"/>
                 <Pagination
