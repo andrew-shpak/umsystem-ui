@@ -8,7 +8,7 @@ import {conform, FormProvider, useForm} from "@conform-to/react";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import * as z from "zod";
 import {endpoints, routes} from "~/src/constants";
-import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Spinner} from "@nextui-org/react";
+import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Pagination, Spinner} from "@nextui-org/react";
 import {uk} from "~/src/i18n";
 import * as React from "react";
 import {environment} from "~/environment.server";
@@ -69,7 +69,7 @@ export default function UploadEdboStudents() {
     const navigation = useNavigation();
     const [currentPage, setCurrentPage] = React.useState(1);
     const rowsPerPage = 12;
-    const pages = Math.ceil(actionData.students.length / rowsPerPage);
+    const pages = actionData ?  Math.ceil(actionData?.students.length / rowsPerPage) : 0;
     const onNextPage = React.useCallback(() => {
         if (currentPage < pages) {
             setCurrentPage(currentPage + 1);
@@ -156,7 +156,31 @@ export default function UploadEdboStudents() {
                         );
                     })}
             </div>
-
+            <div className={cn("py-2 px-2 flex justify-between items-center", {
+                "hidden": actionData?.students.length === 0
+            })}>
+                <span className="w-[30%] text-small text-default-400"/>
+                <Pagination
+                    isCompact
+                    showControls
+                    showShadow
+                    color="primary"
+                    page={currentPage}
+                    total={pages}
+                    onChange={setCurrentPage}
+                    variant="flat"
+                />
+                <div className="hidden sm:flex w-[30%] justify-end gap-4">
+                    <Button isDisabled={currentPage === 1} color='primary' size="md" variant="flat"
+                            onPress={onPreviousPage}>
+                        Назад
+                    </Button>
+                    <Button isDisabled={pages === currentPage} color='primary' size="md" variant="flat"
+                            onPress={onNextPage}>
+                        Вперед
+                    </Button>
+                </div>
+            </div>
         </Layout>
     )
 }
