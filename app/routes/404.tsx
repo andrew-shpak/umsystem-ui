@@ -1,5 +1,3 @@
-import {useOutletContext} from '@remix-run/react'
-import type {ContextType} from '~/src/shared/types'
 import {AccessDenied} from "~/src/shared/pages";
 import Layout from '~/src/layout';
 import {uk} from "~/src/i18n";

@@ -145,9 +145,6 @@ export default function CreateNewUserPage() {
 
                                 </CardHeader>
                                 <CardBody className="px-3 py-0 text-small text-default-400">
-                                    {/*<p>*/}
-                                    {/*    Frontend developer and UI/UX enthusiast. Join me on this coding adventure!*/}
-                                    {/*</p>*/}
                                 </CardBody>
                                 <Divider/>
                                 <CardFooter className="gap-3 justify-end w-full">

@@ -8,13 +8,13 @@ import {conform, FormProvider, useForm} from "@conform-to/react";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import * as z from "zod";
 import {endpoints, routes} from "~/src/constants";
-import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Pagination, Spinner} from "@nextui-org/react";
+import {Button, Card, CardBody, CardHeader, Pagination, Spinner} from "@nextui-org/react";
 import {uk} from "~/src/i18n";
 import * as React from "react";
 import {environment} from "~/environment.server";
 import {validateResponseStatusCode} from "~/helpers.server";
 import {auth} from "~/auth.server";
-import { cn } from "~/src/shared/utils";
+import {cn} from "~/src/shared/utils";
 import {User} from "~/src/entities";
 
 const pageTitle = 'Завантаження студентів з ЕДБО'

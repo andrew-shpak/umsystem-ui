@@ -1,6 +1,7 @@
 import {convertToISOString, formatValue, validateDate, validateDateRange} from "./date";
 import endpoints from "./endpoints";
 import {routes} from './routes'
+import {years} from "./years";
 
 export {
     endpoints,
@@ -8,5 +9,6 @@ export {
     validateDate,
     validateDateRange,
     convertToISOString,
-    formatValue
+    formatValue,
+    years
 }

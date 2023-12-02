@@ -1,8 +1,9 @@
 import type {StudentsPageFilters} from "./filters-schema";
 import type {EducationForm, EducationLevel, EducationProgram, FinancialSource, User} from "~/src/entities";
-import {AutocompleteField, CheckboxField, DateField, NumberField, TextField} from "~/src/forms";
+import {AutocompleteField, CheckboxField, DateField, SelectField, TextField} from "~/src/forms";
 import {useLoaderData} from "@remix-run/react";
 import type {FieldsetMetadata, Pretty} from "~/src/shared/types";
+import {years} from "~/src/constants";
 
 type LoaderData = {
     educationPrograms: EducationProgram[]
@@ -79,7 +80,8 @@ export default function FiltersForm(props: {
                     formId={props.formId}
                 />
 
-                <NumberField
+                <SelectField
+                    options={years}
                     name={fields.year.name}
                     formId={props.formId}
                     label={'Курс'}

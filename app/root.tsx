@@ -18,7 +18,7 @@ import {getThemeSession} from "./theme.server";
 import styles from "./tailwind.css";
 import {getToast} from "remix-toast";
 import {useEffect} from "react";
-import {Toaster, toast as notify} from "sonner";
+import {toast as notify, Toaster} from "sonner";
 
 export const links: LinksFunction = () => [
     {rel: "stylesheet", href: styles},

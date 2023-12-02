@@ -1,7 +1,5 @@
 import type {LinksFunction, MetaFunction} from "@remix-run/node";
-import {useOutletContext} from "@remix-run/react";
 import {uk} from "~/src/i18n";
-import type {ContextType} from "~/src/shared/types";
 import styles from "../styles/landing.css";
 import Layout from "~/src/layout";
 

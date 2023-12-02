@@ -11,8 +11,7 @@ import {
     GeneralInformationSection,
     PassportSection,
     PasswordSection,
-    RoleSection,
-    ValidationSection
+    RoleSection
 } from "~/src/services/users-service/pages/create-user-page";
 import styles from "../styles/layout.css";
 import {Button, Spinner} from "@nextui-org/react";
@@ -22,8 +21,8 @@ import {uk} from "~/src/i18n";
 import {environment} from "~/environment.server";
 import {validateResponseStatusCode} from "~/helpers.server";
 import {auth} from "~/auth.server";
-import {CreateUser} from "~/src/services/users-service/pages/create-user-page/create-user-schema";
-import { cn } from "~/src/shared/utils";
+import type {CreateUser} from "~/src/services/users-service/pages/create-user-page/create-user-schema";
+import {cn} from "~/src/shared/utils";
 import * as React from "react";
 
 const pageTitle = 'Створення користувача'
@@ -68,12 +67,6 @@ export const handle = {
 }
 export default function CreateNewUserPage() {
     const actionData = useActionData<typeof action>()
-    // const canDisableUserValidation = context.permissions.includes(
-    //   DISABLE_USERS_VALIDATION,
-    // )
-    // const canSelectUserOrganization = context.permissions.includes(
-    //   SELECT_USER_ORGANIZATION,
-    // )
     const location = useLocation()
     const {form, fields, context} = useForm<CreateUser>({
         defaultValue: {
@@ -102,17 +95,16 @@ export default function CreateNewUserPage() {
                         <PassportSection name={fields.passport.name} formId={form.id}/>
                         <RoleSection fields={fields} formId={form.id}/>
                         <PasswordSection fields={fields} formId={form.id}/>
-                        <ValidationSection fields={fields} formId={form.id}/>
                     </div>
 
-                    <Spinner label="Перевірка на збіги"  className={cn("", {
-                        hidden : navigation.state === "idle"
+                    <Spinner label="Перевірка на збіги" className={cn("", {
+                        hidden: navigation.state === "idle"
                     })}/>
                     <DuplicatesSection/>
 
                     <div
-                        className={cn("w-full text-center text-2xl font-semibold block",{
-                            hidden: actionData?.students || !actionData,
+                        className={cn("w-full text-center text-2xl font-semibold block", {
+                            hidden: actionData?.students.length === 0 || !actionData,
                         })}>
                         Валідація пройшла успішно - збігів не знайдено
                     </div>
@@ -161,8 +153,6 @@ export default function CreateNewUserPage() {
     )
 }
 export const action: ActionFunction = async ({request}) => {
-    const {headers} = request
-    const cookie = headers.get('cookie') as string
     const formData = await request.formData();
     const submission = parse(formData, {schema: createUserSchema});
     const {extraParams} = await auth.isAuthenticated(request, {
