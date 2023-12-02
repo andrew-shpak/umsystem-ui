@@ -117,7 +117,7 @@ export default function CreateNewUserPage() {
                 })}>
                 <Spinner label="Завантаження списку користувачів"/>
             </div>
-            {response.students.length === 0 && searchParams.size != 0 && navigation.state === "idle" &&<div>
+            {response.students.length === 0 && searchParams.size != 0 && navigation.state === "idle" && <div>
                 <h1 className="text-center text-2xl font-semibold mt-4">Записів не знайдено</h1>
             </div>}
             <div className={cn("grid lg:grid-cols-3 md:grid-cols-2 gap-4 mt-4", {
@@ -174,7 +174,12 @@ export default function CreateNewUserPage() {
             <div className={cn("py-2 px-2 flex justify-between items-center", {
                 "hidden": response.students.length === 0
             })}>
-                <span className="w-[30%] text-small text-default-400"/>
+                <span className="w-[30%] text-small text-default-400">
+                    Студентів на сторінці: { response.students.length > (rowsPerPage * currentPage) ?
+                    rowsPerPage * currentPage
+                    : response.students.length
+                }/{response.students.length}
+                </span>
                 <Pagination
                     isCompact
                     showControls
