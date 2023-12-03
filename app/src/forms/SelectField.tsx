@@ -7,7 +7,7 @@ import type {Key} from "@react-types/shared";
 
 type SelectFieldProps = {
     options: { label: string, value: string }[]
-} & Field<string> & Omit<SelectProps, "children" | "selectedKeys" | "onSelectionChange">
+} & Field<string | number> & Omit<SelectProps, "children" | "selectedKeys" | "onSelectionChange">
 
 export default function SelectField(props: SelectFieldProps) {
     const {options, name, formId, ...rest} = props
