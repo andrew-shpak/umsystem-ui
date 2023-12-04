@@ -4,16 +4,15 @@ import Layout from "~/src/layout";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import {endpoints, routes} from "~/src/constants";
 import {
-    createUserSchema,
     DuplicatesSection,
     EducationSection,
     FullNameSection,
     GeneralInformationSection,
     PassportSection,
     PasswordSection,
-    RoleSection
+    RoleSection,
+    createUserSchema
 } from "~/src/services/users-service/pages/create-user-page";
-import styles from "../styles/layout.css";
 import {Button, Spinner} from "@nextui-org/react";
 import type {ActionFunction, LinksFunction, LoaderFunction} from "@remix-run/node";
 import {json} from "@remix-run/node";
@@ -26,9 +25,6 @@ import {cn} from "~/src/shared/utils";
 import * as React from "react";
 
 const pageTitle = 'Створення користувача'
-export const links: LinksFunction = () => [
-    {rel: "stylesheet", href: styles}
-];
 
 export function meta() {
     return [

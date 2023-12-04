@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {Input} from "@nextui-org/input";
+import {Input} from "@nextui-org/react";
 import {useIMask} from "react-imask";
 import type {FactoryOpts} from "imask";
 import type {InputProps} from "@nextui-org/react";

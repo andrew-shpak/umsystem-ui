@@ -1,10 +1,9 @@
 import {useActionData} from "@remix-run/react";
-import {Accordion, AccordionItem, Card, CardBody, Divider} from "@nextui-org/react";
-import {Chip} from "@nextui-org/chip";
+import {Accordion, AccordionItem, Card, CardBody, Divider,Chip} from "@nextui-org/react";
 import UserFullNamesTable from "~/src/shared/tables/user-full-names-table";
 import type {FullName, UserEducation} from "~/src/shared/types";
 import {UserEducationTable} from "~/src/shared/tables";
-import { cn } from "~/src/shared/utils";
+import {cn} from "~/src/shared/utils";
 
 type Student = {
     url: string
@@ -30,7 +29,7 @@ export default function DuplicatesSection(props: {}) {
         <div className={`w-full ${actionData?.students ? "block" : "hidden"}`}>
             <Divider/>
             <section className="w-full flex flex-col gap-4 mt-4">
-                <h3 className={cn("text-center text-xl font-medium",{
+                <h3 className={cn("text-center text-xl font-medium", {
                     hidden: actionData?.students.length === 0
                 })}>
                     Знайдено схожих користувачів

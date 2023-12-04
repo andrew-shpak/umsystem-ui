@@ -3,25 +3,16 @@ import type {ContextType} from "../types";
 import {Copyright} from "~/src/components";
 import {GoogleIcon} from "~/src/icons";
 import {Button} from "@nextui-org/react";
-import {json, LoaderFunctionArgs} from "@remix-run/node";
-import {auth} from "~/auth.server";
+import type { LoaderFunctionArgs} from "@remix-run/node";
+import {json} from "@remix-run/node";
 import {routes} from "~/src/constants";
+import {auth} from "~/auth.server";
 
 
 type LoaderData = {
     image: string | null
     host: string
 }
-
-type LoaderError = { message: string } | null;
-export const loader = async ({request}: LoaderFunctionArgs) => {
-    await auth.isAuthenticated(request, {successRedirect: routes.dashboard});
-    const session = await sessionStorage.getSession(
-        request.headers.get("Cookie"),
-    );
-    const error = session.get(auth.sessionErrorKey) as LoaderError;
-    return json({error});
-};
 export default function SignIn() {
     const response = useLoaderData<LoaderData>()
     const context = useOutletContext<ContextType>()

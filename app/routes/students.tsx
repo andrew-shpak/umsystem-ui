@@ -1,12 +1,11 @@
 import {Form, useLoaderData, useNavigation, useSearchParams} from "@remix-run/react"
 import Layout from "~/src/layout";
-import styles from "../styles/layout.css";
 import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Pagination, Spinner} from "@nextui-org/react";
 import *as  React from "react";
 import {conform, FormProvider, useForm} from "@conform-to/react";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import type {EducationForm, EducationLevel, EducationProgram, User,} from "~/src/entities";
-import type {LinksFunction, LoaderFunction} from "@remix-run/node";
+import type { LoaderFunction} from "@remix-run/node";
 import {json} from "@remix-run/node";
 import {environment} from "~/environment.server";
 import {endpoints, routes} from "~/src/constants";
@@ -19,9 +18,6 @@ import {validateResponseStatusCode} from "~/helpers.server";
 
 const pageTitle = 'Список студентів'
 
-export const links: LinksFunction = () => [
-    {rel: "stylesheet", href: styles}
-];
 
 export function meta() {
     return [

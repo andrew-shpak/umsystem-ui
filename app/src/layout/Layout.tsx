@@ -5,7 +5,7 @@ import {useState} from 'react'
 // import {minSidebarWidth} from '~/src/components/layout/constants'
 import type {ContextType} from '~/src/shared/types'
 import {useOutletContext} from "@remix-run/react";
-
+import "~/styles/layout.css"
 export type LayoutProps = {
     title: NonNullable<string>
     children: NonNullable<ReactNode>

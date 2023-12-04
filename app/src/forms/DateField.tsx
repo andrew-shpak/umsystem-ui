@@ -1,9 +1,10 @@
 import {useRef, useState} from 'react'
-import {Input} from "@nextui-org/input";
+import type {InputProps} from "@nextui-org/react";
+import {Input} from "@nextui-org/react";
 import {useIMask} from 'react-imask'
 import type {FactoryOpts} from "imask";
-import {conform, Field, useField, useInputEvent} from "@conform-to/react";
-import {InputProps} from "@nextui-org/react";
+import type { Field} from "@conform-to/react";
+import {conform, useField, useInputEvent} from "@conform-to/react";
 import {convertToISOString} from "~/src/constants";
 
 export type DateFieldProps = InputProps & {

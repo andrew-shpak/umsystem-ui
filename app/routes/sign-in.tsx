@@ -1,8 +1,10 @@
 import type {LoaderFunction} from "@remix-run/node";
-import {json} from "@remix-run/node";
+import {json, LoaderFunctionArgs} from "@remix-run/node";
 import {environment} from "~/environment.server";
-import {endpoints} from "~/src/constants";
+import {endpoints, routes} from "~/src/constants";
 import {SignIn} from "~/src/shared/pages";
+import {auth} from "~/auth.server";
+import {validateResponseStatusCode} from "~/helpers.server";
 
 const pageTitle = 'Вхід у систему'
 
@@ -14,18 +16,25 @@ export function meta() {
 }
 
 export const loader: LoaderFunction = async ({request}) => {
+    const {extraParams} = await auth.isAuthenticated(request, {
+        failureRedirect: routes.signIn,
+    });
     const {headers} = request
     const url = new URL(request.url)
-    const cookie = headers.get('cookie') as string
-    const organizationRes = await fetch(
+    const response = await fetch(
         `${environment().ORGANIZATIONS_SERVICE_BASE_URL}/${endpoints.organizations}/login/${url.host}`,
         {
             method: 'GET',
-            headers: {Accept: 'application/json', cookie},
-            credentials: 'include',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${extraParams.id_token} `,
+            },
         },
     )
-    const organization = await organizationRes.json()
+    const validationResult = validateResponseStatusCode(request, response);
+    if (validationResult) return validationResult;
+
+    const organization = await response.json()
 
     return json(
         {

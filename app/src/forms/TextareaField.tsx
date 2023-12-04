@@ -1,6 +1,6 @@
 import type {ReactNode} from 'react';
 import {useState} from "react";
-import {Textarea} from "@nextui-org/input";
+import {Textarea} from "@nextui-org/react";
 import type {TextAreaProps} from '@nextui-org/react';
 import {conform, Field, useField} from "@conform-to/react";
 

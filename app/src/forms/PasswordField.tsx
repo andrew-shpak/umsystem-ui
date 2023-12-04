@@ -1,7 +1,7 @@
 import {EyeIcon, EyeSlashIcon} from '@heroicons/react/24/outline'
 import type {ReactNode} from 'react';
 import {useState} from "react";
-import {Input} from "@nextui-org/input";
+import {Input} from "@nextui-org/react";
 import type {InputProps} from "@nextui-org/react";
 import type {Field} from "@conform-to/react";
 import {conform, useField} from "@conform-to/react";
