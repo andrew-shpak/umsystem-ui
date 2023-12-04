@@ -3,7 +3,7 @@ import type {InputProps} from "@nextui-org/react";
 import {Input} from "@nextui-org/react";
 import {useIMask} from 'react-imask'
 import type {FactoryOpts} from "imask";
-import type { Field} from "@conform-to/react";
+import type {Field} from "@conform-to/react";
 import {conform, useField, useInputEvent} from "@conform-to/react";
 import {convertToISOString} from "~/src/constants";
 

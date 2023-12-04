@@ -1,5 +1,5 @@
 import {useActionData} from "@remix-run/react";
-import {Accordion, AccordionItem, Card, CardBody, Divider,Chip} from "@nextui-org/react";
+import {Accordion, AccordionItem, Card, CardBody, Chip, Divider} from "@nextui-org/react";
 import UserFullNamesTable from "~/src/shared/tables/user-full-names-table";
 import type {FullName, UserEducation} from "~/src/shared/types";
 import {UserEducationTable} from "~/src/shared/tables";

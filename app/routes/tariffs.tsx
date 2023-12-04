@@ -2,11 +2,12 @@ import {useLoaderData} from "@remix-run/react"
 import type {Tariff} from "~/src/entities";
 import Layout from "~/src/layout";
 import {endpoints} from "~/src/constants";
-import type { LoaderFunction} from "@remix-run/node";
+import type {LoaderFunction} from "@remix-run/node";
 import {environment} from "~/environment.server";
 import {DataGrid} from "~/src/data-grid";
 import {tariffsColumns} from "~/src/columns";
 import {validateResponseStatusCode} from "~/helpers.server";
+
 const pageTitle = 'Створення студента'
 
 export function meta() {

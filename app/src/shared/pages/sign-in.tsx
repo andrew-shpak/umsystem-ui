@@ -3,10 +3,7 @@ import type {ContextType} from "../types";
 import {Copyright} from "~/src/components";
 import {GoogleIcon} from "~/src/icons";
 import {Button} from "@nextui-org/react";
-import type { LoaderFunctionArgs} from "@remix-run/node";
-import {json} from "@remix-run/node";
 import {routes} from "~/src/constants";
-import {auth} from "~/auth.server";
 
 
 type LoaderData = {
@@ -37,7 +34,8 @@ export default function SignIn() {
                 />
             </div>
             <Form method="post" action={routes.googleAuth} className="bg-white  sm:w-full md:w-2/5">
-                <div className="container m-auto flex h-screen w-3/5 flex-col flex-wrap items-center justify-center content-center">
+                <div
+                    className="container m-auto flex h-screen w-3/5 flex-col flex-wrap items-center justify-center content-center">
                     <img
                         loading="lazy"
                         decoding="async"

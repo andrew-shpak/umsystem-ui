@@ -1,8 +1,8 @@
 import {useState} from 'react'
+import type {InputProps} from "@nextui-org/react";
 import {Input} from "@nextui-org/react";
 import {useIMask} from "react-imask";
 import type {FactoryOpts} from "imask";
-import type {InputProps} from "@nextui-org/react";
 import {conform, Field, useField} from '@conform-to/react';
 
 type NumberFieldParams = InputProps & Field<number> & {

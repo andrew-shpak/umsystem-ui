@@ -69,7 +69,7 @@ export default function UploadEdboStudents() {
     const navigation = useNavigation();
     const [currentPage, setCurrentPage] = React.useState(1);
     const rowsPerPage = 12;
-    const pages = actionData ?  Math.ceil(actionData?.students.length / rowsPerPage) : 0;
+    const pages = actionData ? Math.ceil(actionData?.students.length / rowsPerPage) : 0;
     const onNextPage = React.useCallback(() => {
         if (currentPage < pages) {
             setCurrentPage(currentPage + 1);
@@ -127,8 +127,8 @@ export default function UploadEdboStudents() {
                 </Form>
             </FormProvider>
 
-            <Spinner label="Завантаження файлу" className={cn("flex justify-center",{
-                hidden : navigation.state === "idle"
+            <Spinner label="Завантаження файлу" className={cn("flex justify-center", {
+                hidden: navigation.state === "idle"
             })}/>
             <div className={cn("grid lg:grid-cols-3 md:grid-cols-2 gap-4 mt-4", {
                 "hidden": actionData?.students.length === 0
@@ -185,13 +185,13 @@ export default function UploadEdboStudents() {
         </Layout>
     )
 }
-type ActionData={
+type ActionData = {
     students: Student[]
 }
-type Student = User&{
-    errors:string[]
-    created:boolean
-    updated:boolean
+type Student = User & {
+    errors: string[]
+    created: boolean
+    updated: boolean
 }
 export const action: ActionFunction = async ({request}) => {
     const formData = await request.formData();

@@ -1,11 +1,11 @@
 import {Form, useLoaderData, useNavigation, useSearchParams} from "@remix-run/react"
 import Layout from "~/src/layout";
-import {Avatar, Button, Card, CardBody, CardFooter, CardHeader, Divider, Pagination, Spinner} from "@nextui-org/react";
+import {Avatar, Button, Card, CardFooter, CardHeader, Divider, Pagination, Spinner} from "@nextui-org/react";
 import *as  React from "react";
 import {conform, FormProvider, useForm} from "@conform-to/react";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import type {EducationForm, EducationLevel, EducationProgram, User,} from "~/src/entities";
-import type { LoaderFunction} from "@remix-run/node";
+import type {LoaderFunction} from "@remix-run/node";
 import {json} from "@remix-run/node";
 import {environment} from "~/environment.server";
 import {endpoints, routes} from "~/src/constants";
@@ -139,7 +139,7 @@ export default function CreateNewUserPage() {
                                         </div>
                                     </div>
                                 </CardHeader>
-                              {/*  <CardBody className="px-3 py-0 text-small text-default-400">
+                                {/*  <CardBody className="px-3 py-0 text-small text-default-400">
                                 </CardBody>*/}
                                 <Divider/>
                                 <CardFooter className="gap-3 justify-end w-full">
@@ -170,7 +170,7 @@ export default function CreateNewUserPage() {
                 "hidden": response.students.length === 0
             })}>
                 <span className="w-[30%] text-small text-default-400">
-                    Студентів на сторінці: { response.students.length > (rowsPerPage * currentPage) ?
+                    Студентів на сторінці: {response.students.length > (rowsPerPage * currentPage) ?
                     rowsPerPage * currentPage
                     : response.students.length
                 }/{response.students.length}

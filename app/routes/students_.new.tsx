@@ -4,17 +4,17 @@ import Layout from "~/src/layout";
 import {getFieldsetConstraint, parse} from "@conform-to/zod";
 import {endpoints, routes} from "~/src/constants";
 import {
+    createUserSchema,
     DuplicatesSection,
     EducationSection,
     FullNameSection,
     GeneralInformationSection,
     PassportSection,
     PasswordSection,
-    RoleSection,
-    createUserSchema
+    RoleSection
 } from "~/src/services/users-service/pages/create-user-page";
 import {Button, Spinner} from "@nextui-org/react";
-import type {ActionFunction, LinksFunction, LoaderFunction} from "@remix-run/node";
+import type {ActionFunction, LoaderFunction} from "@remix-run/node";
 import {json} from "@remix-run/node";
 import {uk} from "~/src/i18n";
 import {environment} from "~/environment.server";

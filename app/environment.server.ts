@@ -24,5 +24,14 @@ const environmentSchema = z.object({
     CDN_URL: z.string().url(),
 })
 
-const environment = () => environmentSchema.parse(process.env)
+const environment = () => ({
+    BASE_URL: 'https://dev.umsys.com.ua',
+    CDN_URL: 'https://cdn.umsys.com.ua',
+    USERS_SERVICE_BASE_URL: 'https://umsystem-users.azurewebsites.net',
+    TARRIFS_SERVICE_BASE_URL: 'https://umsystem-tariffs.azurewebsites.net',
+    EMAILS_SERVICE_BASE_URL: 'https://umsystem-emails.azurewebsites.net',
+    ORGANIZATIONS_SERVICE_BASE_URL: 'https://umsystem-organizations.azurewebsites.net',
+    GOOGLE_CLIENT_ID:'987722473204-v4ckcihtamuqlv4aa02voc8ioee0jfnl.apps.googleusercontent.com',
+    GOOGLE_CLIENT_SECRET:'nMnxT3352vAhuzxSd1B5jgp0',
+});
 export {environment, environmentSchema}

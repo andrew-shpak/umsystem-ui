@@ -1,5 +1,5 @@
 import type {LoaderFunction} from "@remix-run/node";
-import {json, LoaderFunctionArgs} from "@remix-run/node";
+import {json} from "@remix-run/node";
 import {environment} from "~/environment.server";
 import {endpoints, routes} from "~/src/constants";
 import {SignIn} from "~/src/shared/pages";
