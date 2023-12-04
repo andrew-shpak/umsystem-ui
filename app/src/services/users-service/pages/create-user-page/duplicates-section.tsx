@@ -1,5 +1,5 @@
 import {useActionData} from "@remix-run/react";
-import {Accordion, AccordionItem, Card, CardBody, Divider} from "@nextui-org/react";
+import {Accordion, AccordionItem, Card, CardBody, cn, Divider} from "@nextui-org/react";
 import {Chip} from "@nextui-org/chip";
 import UserFullNamesTable from "~/src/shared/tables/user-full-names-table";
 import type {FullName, UserEducation} from "~/src/shared/types";
@@ -29,8 +29,10 @@ export default function DuplicatesSection(props: {}) {
         <div className={`w-full ${actionData?.students ? "block" : "hidden"}`}>
             <Divider/>
             <section className="w-full flex flex-col gap-4 mt-4">
-                <h3 className="text-center text-xl font-medium">
-                    Знайдені збіги
+                <h3 className={cn("text-center text-xl font-medium",{
+                    hidden: actionData?.students.length === 0
+                })}>
+                    Знайдено схожих користувачів
                 </h3>
                 <h4 className='text-lg'>У разі створення користувача буде створено наступний emil: <span
                     className="font-semibold text-3xl">{actionData?.primaryEmail}</span></h4>
