@@ -102,12 +102,12 @@ export default function CreateNewUserPage() {
                     })}/>
                     <DuplicatesSection/>
 
-                    <div
+                    {/*<div
                         className={cn("w-full text-center text-2xl font-semibold block", {
                             hidden: actionData?.students.length === 0 || !actionData,
                         })}>
                         Валідація пройшла успішно - збігів не знайдено
-                    </div>
+                    </div>*/}
                     <div className="flex w-full mt-7 md:flex-row flex-col items-center justify-center gap-4">
                         <Button
                             as={Link}

@@ -142,10 +142,9 @@ export default function CreateNewUserPage() {
                                             <h5 className="text-small tracking-tight text-default-400">{user.primaryEmail}</h5>
                                         </div>
                                     </div>
-
                                 </CardHeader>
-                                <CardBody className="px-3 py-0 text-small text-default-400">
-                                </CardBody>
+                              {/*  <CardBody className="px-3 py-0 text-small text-default-400">
+                                </CardBody>*/}
                                 <Divider/>
                                 <CardFooter className="gap-3 justify-end w-full">
                                     <Button
